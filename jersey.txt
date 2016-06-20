@@ -1,0 +1,14 @@
+OK
+	修改照片底層機制
+	傳到git
+	------------------
+調整controller和view
+全用HIBERNATE
+篩選商品條件改成jQuery
+分頁
+選擇照片的checkBox拿掉，改成jQuery
+
+權限管理
+
+談打水、一年收費3000
+
