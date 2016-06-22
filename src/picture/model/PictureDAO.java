@@ -1,8 +1,6 @@
 package picture.model;
 
-import java.security.spec.DSAGenParameterSpec;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +15,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import javafx.scene.chart.PieChart.Data;
 import tools.DAOInterface;
 
 public class PictureDAO implements DAOInterface<PictureVO> {
