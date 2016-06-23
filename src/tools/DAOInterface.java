@@ -2,16 +2,22 @@ package tools;
 
 import java.util.List;
 
-public abstract interface DAOInterface<E> {
-	public abstract List<E> getAll();
+import org.hibernate.criterion.Criterion;
 
-	public abstract E getOne(Integer paramInteger);
+public interface DAOInterface<E> {
+	
+	public List<E> getAll();
 
-	public abstract Integer create(E paramE);
+	public E getOne(Integer id);
 
-	public abstract boolean update(E paramE);
+	public Integer create(E vo);
 
-	public abstract boolean delete(Integer paramInteger);
+	public boolean update(E vo);
 
-	public abstract boolean delete(Integer[] paramArrayOfInteger);
+	public boolean delete(E vo);
+
+	public boolean delete(Integer[] ids);
+	
+	public List<E> getHelper(Criterion... criterions);
+	
 }
