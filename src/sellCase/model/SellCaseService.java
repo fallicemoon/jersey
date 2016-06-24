@@ -33,10 +33,6 @@ public class SellCaseService {
 		return this.dao.update(vo);
 	}
 
-	public boolean delete(Integer id) {
-		return this.dao.delete(id);
-	}
-
 	public boolean delete(Integer[] ids) {
 		return this.dao.delete(ids);
 	}

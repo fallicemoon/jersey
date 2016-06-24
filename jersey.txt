@@ -1,14 +1,26 @@
-OK
-	修改照片底層機制
-	傳到git
-	------------------
-調整controller和view
+OK:
+修改照片底層機制
+傳到git
+---------------------
+待檢查:
 全用HIBERNATE
+---------------------
+調整controller和view
+	調整商品(listOne以外)
+	調整進貨(listOne以外)
+	調整出貨(listOne以外)+會計
+	調整商店
+	調整圖片
+	新增三合一(商品、進貨、出貨的listOne)
+----------------------	
+
 篩選商品條件改成jQuery
 分頁
 選擇照片的checkBox拿掉，改成jQuery
+forward的時候url的parameter會變嗎?
+
+
 
 權限管理
-
 談打水、一年收費3000
 

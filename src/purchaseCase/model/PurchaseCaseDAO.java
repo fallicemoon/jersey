@@ -15,7 +15,7 @@ import tools.HibernateSessionFactory;
 public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
 	
 
-public PurchaseCaseDAO(Class<PurchaseCaseVO> type, String pk) {
+public PurchaseCaseDAO() {
 		super(PurchaseCaseVO.class, "purchaseCaseId");
 		// TODO Auto-generated constructor stub
 	}
@@ -128,7 +128,7 @@ public PurchaseCaseDAO(Class<PurchaseCaseVO> type, String pk) {
 	}
 
 	public boolean updateSellCaseId(Integer sellCaseId, Integer[] purchaseCaseIds) {
-		session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
 			SellCaseVO sellCaseVO = new SellCaseVO();
@@ -145,13 +145,12 @@ public PurchaseCaseDAO(Class<PurchaseCaseVO> type, String pk) {
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
-		}
-		
-		return false;
+			return false;
+		}	
 	}
 
 	public boolean deleteSellCaseId(Integer[] purchaseCaseIds) {
-		session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
 
@@ -163,11 +162,9 @@ public PurchaseCaseDAO(Class<PurchaseCaseVO> type, String pk) {
 			}
 
 			session.getTransaction().commit();
-			
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			
 			return false;
 		}
 

@@ -19,12 +19,12 @@
 	</c:if>
 	<br/><br/>
 	
-	<c:if test="${param.commodityId != null}">
-		<jsp:include page="/CommodityServlet">
-			<jsp:param name="action" value="getOne" />
-			<jsp:param name="commodityId" value="${param.commodityId}" />
-		</jsp:include>
-	</c:if>
+<%-- 	<c:if test="${param.commodityId != null}"> --%>
+<%-- 		<jsp:include page="/CommodityServlet"> --%>
+<%-- 			<jsp:param name="action" value="getOne" /> --%>
+<%-- 			<jsp:param name="commodityId" value="${param.commodityId}" /> --%>
+<%-- 		</jsp:include> --%>
+<%-- 	</c:if> --%>
 	<br/><br/>
 	<c:forEach items="${sessionScope.errors}" var="error">
 		<p style="color: red">${error}</p>

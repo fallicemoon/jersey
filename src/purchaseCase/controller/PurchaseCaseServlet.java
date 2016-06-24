@@ -12,14 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+
 import commodity.model.CommodityVO;
 import purchaseCase.model.PurchaseCaseService;
 import purchaseCase.model.PurchaseCaseVO;
 
 public class PurchaseCaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String action;
-	private LinkedHashSet<String> errors;
+	private final String forwardUrl = "/WEB-INF/pages/purchaseCase";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -28,30 +29,30 @@ public class PurchaseCaseServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		this.action = request.getParameter("action");
+		String action = request.getParameter("action");
+		LinkedHashSet<String> errors = new LinkedHashSet<String>();
 		PurchaseCaseService service = new PurchaseCaseService();
 
-		errors = new LinkedHashSet<String>();
-
-		if (this.action.isEmpty()) {
+		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("purchaseCaseList", service.getAll());
-		} else if ("getProgressNotComplete".equals(this.action)) {
+			request.getRequestDispatcher(forwardUrl+"/list.jsp");
+		} else if ("getProgressNotComplete".equals(action)) {
 			request.setAttribute("purchaseCaseList", service.getAllOfNotComplete());
-		} else if ("getOne".equals(this.action)) {
+		} else if ("getOne".equals(action)) {
 			try {
 				Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
 				request.setAttribute("purchaseCase", service.getOne(purchaseCaseId));
 			} catch (NumberFormatException e) {
-				this.errors.add("進貨編號須為數字!");
+				errors.add("進貨編號須為數字!");
 			}
-		} else if ("getCommodityListByPurchaseCaseId".equals(this.action)) {
+		} else if ("getCommodityListByPurchaseCaseId".equals(action)) {
 			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
 			Set<CommodityVO> commodityList1 = service.getCommoditysByPurchaseCaseId(purchaseCaseId);
 			request.setAttribute("commodityList1", commodityList1);
-		} else if ("getCommodityListByPurchaseCaseIdIsNull".equals(this.action)) {
+		} else if ("getCommodityListByPurchaseCaseIdIsNull".equals(action)) {
 			List<CommodityVO> list = service.getCommoditysByPurchaseCaseIdIsNull();
 			request.setAttribute("commodityList2", list);
-		} else if ("create".equals(this.action)) {
+		} else if ("create".equals(action)) {
 			PurchaseCaseVO purchaseCaseVO = new PurchaseCaseVO();
 
 			String store = request.getParameter("store").trim();
@@ -68,13 +69,13 @@ public class PurchaseCaseServlet extends HttpServlet {
 			try {
 				cost = Integer.valueOf(request.getParameter("cost"));
 			} catch (NumberFormatException e) {
-				this.errors.add("成本需為數字!");
+				errors.add("成本需為數字!");
 			}
 			Integer agentCost = Integer.valueOf(0);
 			try {
 				agentCost = Integer.valueOf(request.getParameter("agentCost"));
 			} catch (NumberFormatException e) {
-				this.errors.add("國際運費需為數字!");
+				errors.add("國際運費需為數字!");
 			}
 
 			purchaseCaseVO.setStore(store);
@@ -90,10 +91,10 @@ public class PurchaseCaseServlet extends HttpServlet {
 			purchaseCaseVO.setCost(cost);
 			purchaseCaseVO.setAgentCost(agentCost);
 
-			if (!this.errors.isEmpty()) {
+			if (!errors.isEmpty()) {
 				HttpSession session = request.getSession();
 
-				session.setAttribute("errors", this.errors);
+				session.setAttribute("errors", errors);
 				response.sendRedirect("/jersey/purchaseCase/add.jsp");
 				return;
 			}
@@ -107,7 +108,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 			if (commodityIds != null)
 				service.addPurchaseCaseIdToCommoditys(purchaseCaseId, commodityIds);
 			session.removeAttribute("commodityIds");
-		} else if ("update".equals(this.action)) {
+		} else if ("update".equals(action)) {
 			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
 			PurchaseCaseVO purchaseCaseVO = service.getOne(purchaseCaseId);
 
@@ -125,13 +126,13 @@ public class PurchaseCaseServlet extends HttpServlet {
 			try {
 				cost = Integer.valueOf(request.getParameter("cost"));
 			} catch (NumberFormatException e) {
-				this.errors.add("成本需為數字");
+				errors.add("成本需為數字");
 			}
 			Integer agentCost = Integer.valueOf(0);
 			try {
 				agentCost = Integer.valueOf(request.getParameter("agentCost"));
 			} catch (NumberFormatException e) {
-				this.errors.add("國際運費需為數字!");
+				errors.add("國際運費需為數字!");
 			}
 
 			purchaseCaseVO.setStore(store);
@@ -147,9 +148,9 @@ public class PurchaseCaseServlet extends HttpServlet {
 			purchaseCaseVO.setCost(cost);
 			purchaseCaseVO.setAgentCost(agentCost);
 
-			if (!this.errors.isEmpty()) {
+			if (!errors.isEmpty()) {
 				HttpSession session = request.getSession();
-				session.setAttribute("errors", this.errors);
+				session.setAttribute("errors", errors);
 				response.sendRedirect("/jersey/purchaseCase/update.jsp?purchaseCaseId=" + purchaseCaseId);
 				return;
 			}
@@ -160,7 +161,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 				String id = request.getParameter("purchaseCaseId");
 				response.sendRedirect("/jersey/OtherServlet?action=purchaseCase&purchaseCaseId=" + id);
 			}
-		} else if ("delete".equals(this.action)) {
+		} else if ("delete".equals(action)) {
 			String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
 			if (purchaseCaseIds == null) {
 				response.sendRedirect("/jersey/purchaseCase/list.jsp");
@@ -172,7 +173,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 			}
 			service.delete(ids);
 		} else {
-			if ("addPurchaseCaseId".equals(this.action)) {
+			if ("addPurchaseCaseId".equals(action)) {
 				Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
 				String[] commodityIds = request.getParameterValues("commodityIds");
 				if (commodityIds == null) {
@@ -194,7 +195,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 				}
 				return;
 			}
-			if ("deletePurchaseCaseId".equals(this.action)) {
+			if ("deletePurchaseCaseId".equals(action)) {
 				String purchaseCaseId = request.getParameter("purchaseCaseId");
 				String[] commodityIds = request.getParameterValues("commodityIds");
 				if (commodityIds == null) {

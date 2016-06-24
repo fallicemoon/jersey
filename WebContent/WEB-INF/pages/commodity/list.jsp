@@ -17,7 +17,7 @@
   </jsp:include>
   <form action="/jersey/CommodityServlet" method="POST">
     <c:import url="/header.jsp"/><span style="display: inline-block; width: 100px"></span>
-    <a href="/jersey/commodity/add.jsp"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
+    <a href="/jersey/CommodityServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   	<button type="submit" name="action" value="getByRule" class="btn btn-warning" data-toggle="modal">篩選</button>
   	<button type="submit" name="action" value="copy" class="btn btn-warning" data-toggle="modal">複製</button>
@@ -145,7 +145,7 @@
 		<input type="checkbox" name="commodityIds" value="${vo.commodityId}">
   	  </td>
   	  <td>
-		<a href="/jersey/commodity/update.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-warning">修改</button></a>
+		<a href="/jersey/CommodityServlet?action=getOne&commodityId=${vo.commodityId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  <c:if test="${not empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCountMap[vo.commodityId]}</button></a></td></c:if> 
   	  <c:if test="${empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
