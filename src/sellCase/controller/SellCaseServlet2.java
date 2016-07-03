@@ -18,14 +18,10 @@ import purchaseCase.model.PurchaseCaseVO;
 import sellCase.model.SellCaseService;
 import sellCase.model.SellCaseVO;
 
-public class SellCaseServlet extends HttpServlet {
+public class SellCaseServlet2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String forwardUrl = "/WEB-INF/pages/sellCase";
-	private final String forwardListUrl = forwardUrl + "/list.jsp";
-	private final String forwardAddUrl = forwardUrl + "/add.jsp";
-	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
-	private final String forwardAddPurchaseCaseUrl = forwardUrl + "/addPurchaseCase.jsp";
-
+	private String action;
+	private Set<String> errors;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -34,19 +30,19 @@ public class SellCaseServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action");
+		this.action = request.getParameter("action");
 		SellCaseService service = new SellCaseService();
-		Set<String> errors = new LinkedHashSet<String>();
+		this.errors = new LinkedHashSet<String>();
 
-		if ("getAll".equals(action)) {
+		if ("getAll".equals(this.action)) {
 			request.setAttribute("sellCaseList", service.getAll());
-		} else if ("getUncollectedNotZero".equals(action)) {
+		} else if ("getUncollectedNotZero".equals(this.action)) {
 			request.setAttribute("sellCaseList", service.getUncollectedNotZero());
-		} else if ("getIsClosed".equals(action)) {
+		} else if ("getIsClosed".equals(this.action)) {
 			request.setAttribute("sellCaseList", service.getIsClosed());
-		} else if ("getNotClosed".equals(action)) {
+		} else if ("getNotClosed".equals(this.action)) {
 			request.setAttribute("sellCaseList", service.getNotClosed());
-		} else if ("getOne".equals(action)) {
+		} else if ("getOne".equals(this.action)) {
 			Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
 			SellCaseVO sellCaseVO = service.getOne(sellCaseId);
 
@@ -72,13 +68,13 @@ public class SellCaseServlet extends HttpServlet {
 			request.setAttribute("estimateBenefit", estimateBenefit);
 			request.setAttribute("costs", costs);
 			request.setAttribute("agentCosts", agentCosts);
-		} else if ("getPurchaseCaseListBySellCaseId".equals(action)) {
+		} else if ("getPurchaseCaseListBySellCaseId".equals(this.action)) {
 			Integer purchaseCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
 			request.setAttribute("purchaseCaseList1", service.getPurchaseCasesBySellCaseId(purchaseCaseId));
-		} else if ("getPurchaseCaseListBySellCaseIdIsNull".equals(action)) {
+		} else if ("getPurchaseCaseListBySellCaseIdIsNull".equals(this.action)) {
 			List<PurchaseCaseVO> list = service.getPurchaseCasesBySellCaseIdIsNull();
 			request.setAttribute("purchaseCaseList2", list);
-		} else if ("create".equals(action)) {
+		} else if ("create".equals(this.action)) {
 			SellCaseVO sellCaseVO = new SellCaseVO();
 
 			sellCaseVO.setAddressee(request.getParameter("addressee").trim());
@@ -92,26 +88,26 @@ public class SellCaseServlet extends HttpServlet {
 				sellCaseVO.setIncome(Integer.valueOf(request.getParameter("income").trim()));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				errors.add("總價需為數字!");
+				this.errors.add("總價需為數字!");
 			}
 			try {
 				sellCaseVO.setTransportCost(Integer.valueOf(request.getParameter("transportCost").trim()));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				errors.add("運費需為數字!");
+				this.errors.add("運費需為數字!");
 			}
 			try {
 				sellCaseVO.setCollected(Integer.valueOf(request.getParameter("collected").trim()));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				errors.add("已收額須為數字");
+				this.errors.add("已收額須為數字");
 			}
 			sellCaseVO.setIsChecked(Boolean.valueOf(request.getParameter("isChecked")));
 
-			if (!errors.isEmpty()) {
+			if (!this.errors.isEmpty()) {
 				HttpSession session = request.getSession();
 
-				session.setAttribute("errors", errors);
+				session.setAttribute("errors", this.errors);
 				response.sendRedirect("/jersey/sellCase/add.jsp");
 				return;
 			}
@@ -140,7 +136,7 @@ public class SellCaseServlet extends HttpServlet {
 				service.addSellCaseIdToPurchaseCases(sellCaseId, purchaseCaseIds);
 			session.removeAttribute("purchaseCaseIds");
 		} else {
-			if ("update".equals(action)) {
+			if ("update".equals(this.action)) {
 				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
 				SellCaseVO sellCaseVO = service.getOne(sellCaseId);
 
@@ -155,25 +151,25 @@ public class SellCaseServlet extends HttpServlet {
 					sellCaseVO.setIncome(Integer.valueOf(request.getParameter("income").trim()));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
-					errors.add("總價需為數字!");
+					this.errors.add("總價需為數字!");
 				}
 				try {
 					sellCaseVO.setTransportCost(Integer.valueOf(request.getParameter("transportCost").trim()));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
-					errors.add("運費需為數字!");
+					this.errors.add("運費需為數字!");
 				}
 				try {
 					sellCaseVO.setCollected(Integer.valueOf(request.getParameter("collected").trim()));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
-					errors.add("已收額須為數字");
+					this.errors.add("已收額須為數字");
 				}
 				sellCaseVO.setIsChecked(Boolean.valueOf(request.getParameter("isChecked")));
 
-				if (!errors.isEmpty()) {
+				if (!this.errors.isEmpty()) {
 					HttpSession session = request.getSession();
-					session.setAttribute("errors", errors);
+					session.setAttribute("errors", this.errors);
 					response.sendRedirect("/jersey/sellCase/update.jsp?sellCaseId=" + sellCaseId);
 					return;
 				}
@@ -190,7 +186,7 @@ public class SellCaseServlet extends HttpServlet {
 					sellCaseVO.setShippingTime(null);
 				}
 
-				if ((uncollected.intValue() == 0) && (sellCaseVO.getIsChecked().booleanValue())) {
+				if ((uncollected == 0) && (sellCaseVO.getIsChecked().booleanValue())) {
 //					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 //					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					//TODO 測試
@@ -211,7 +207,7 @@ public class SellCaseServlet extends HttpServlet {
 				response.sendRedirect("/jersey/sellCase/list.jsp?action=getAll&page=" + page);
 				return;
 			}
-			if ("delete".equals(action)) {
+			if ("delete".equals(this.action)) {
 				String[] sellCaseIds = request.getParameterValues("sellCaseIds");
 				String page = request.getParameter("page");
 				if (sellCaseIds == null) {
@@ -224,7 +220,7 @@ public class SellCaseServlet extends HttpServlet {
 				}
 				service.delete(ids);
 			} else {
-				if ("addSellCaseId".equals(action)) {
+				if ("addSellCaseId".equals(this.action)) {
 					Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
 					String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
 					if (purchaseCaseIds == null) {
@@ -246,7 +242,7 @@ public class SellCaseServlet extends HttpServlet {
 					}
 					return;
 				}
-				if ("deleteSellCaseId".equals(action)) {
+				if ("deleteSellCaseId".equals(this.action)) {
 					String sellCaseId = request.getParameter("sellCaseId");
 					String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
 					if (purchaseCaseIds == null) {
@@ -267,3 +263,8 @@ public class SellCaseServlet extends HttpServlet {
 		response.sendRedirect("/jersey/sellCase/list.jsp?action=getAll&page=1");
 	}
 }
+
+/*
+ * Location: C:\Users\fallicemoon\Desktop\jersey\WEB-INF\classes\ Qualified
+ * Name: sellCase.controller.SellCaseServlet JD-Core Version: 0.6.2
+ */

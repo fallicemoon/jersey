@@ -1,6 +1,7 @@
 package picture.controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,14 +14,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.lang3.StringUtils;
 
 import picture.model.PictureService;
 
-public class PictureServlet extends HttpServlet {
+public class PictureServlet2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String forwardUrl = "/WEB-INF/pages/picture";
-	private final String forwardUploadPictureUrl = forwardUrl + "/uploadPicture.jsp";
+	private String action;
+	private Set<String> errors;
+	private HttpSession session;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -29,32 +30,31 @@ public class PictureServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action");
-		Set<String> errors = new LinkedHashSet<String>();
-		HttpSession session = request.getSession();
-		
+		this.action = request.getParameter("action");
 		PictureService service = new PictureService();
-		
-		if (StringUtils.isEmpty(action)) {
+		errors = new LinkedHashSet<String>();
+		if (this.action == null) {
 			try {
 				service.uploadPicture(request);
 			} catch (SizeLimitExceededException e) {
 				e.printStackTrace();
-				errors.add("上傳檔案需小於20MB!");				
-				session.setAttribute("errors", errors);
+
+				this.errors.add("上傳檔案需小於20MB!");
+				this.session = request.getSession();
+				this.session.setAttribute("errors", this.errors);
 			} catch (FileUploadException e) {
 				e.printStackTrace();
 
 				if ("extensionName".equals(e.getMessage())) {
-					errors.add("副檔名須為jpg, gif, png 三者其中之一");
-					session = request.getSession();
-					session.setAttribute("errors", errors);
+					this.errors.add("副檔名須為jpg, gif, png 三者其中之一");
+					this.session = request.getSession();
+					this.session.setAttribute("errors", this.errors);
 				}
 			}
 
 			response.sendRedirect(
 					"/jersey/picture/uploadPicture.jsp?commodityId=" + request.getParameter("commodityId"));
-		} else if ("getPicturesBase64".equals(action)) {
+		} else if ("getPicturesBase64".equals(this.action)) {
 			Integer commodityId = Integer.valueOf(request.getParameter("commodityId"));
 			Map<Integer, String> pictureBase64Map = service.getPictureBase64(commodityId);
 			request.setAttribute("pictureBase64Map", pictureBase64Map);
@@ -69,7 +69,7 @@ public class PictureServlet extends HttpServlet {
 			response.setContentType("image/*");
 			service.getPicrture(pictureId, response.getOutputStream());
 			return;
-		} else if ("delete".equals(action)) {
+		} else if ("delete".equals(this.action)) {
 			String[] pictureIds = request.getParameterValues("pictureId");
 			String commodityId = request.getParameter("commodityId");
 			if (pictureIds == null) {
@@ -79,7 +79,7 @@ public class PictureServlet extends HttpServlet {
 			}
 			service.deletePictures(pictureIds);
 			response.sendRedirect(request.getContextPath() + "/picture/uploadPicture.jsp?commodityId=" + commodityId);
-		} else if ("download".equals(action)) {
+		} else if ("download".equals(this.action)) {
 			String[] pictureIds = request.getParameterValues("pictureId");
 			String commodityId = request.getParameter("commodityId");
 			if (pictureIds == null) {
@@ -89,7 +89,7 @@ public class PictureServlet extends HttpServlet {
 			}
 			response.setHeader("Content-disposition", "attachment; filename=" + commodityId + ".zip");
 			service.getPicturesZip(pictureIds, response.getOutputStream());
-		} else if ("downloadAll".equals(action)) {
+		} else if ("downloadAll".equals(this.action)) {
 			String commodityId = request.getParameter("commodityId");
 			response.setHeader("Content-disposition", "attachment; filename=" + commodityId + "All.zip");
 			service.getPicturesZip(commodityId, response.getOutputStream());

@@ -30,7 +30,7 @@
 		<p style="color: red">${error}</p>
 	</c:forEach>
 	
-	<form action="/jersey/CommodityServlet" method="post" class="form-horizontal">
+	<form action="/jersey/CommodityServlet?listOne=${param.listOne}" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="update">
 	
     <div class="form-group">

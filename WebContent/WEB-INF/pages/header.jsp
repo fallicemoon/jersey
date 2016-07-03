@@ -5,19 +5,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
-<link href="/jersey/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/jersey/lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="/jersey/WEB-INF/pages/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/jersey/WEB-INF/pages/lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
-<script src="/jersey/lib/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/jersey/lib/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/jersey/lib/moment-with-locales.min.js"></script>
-<script src="/jersey/lib/bootstrap/bootstrap-datetimepicker.min.js"></script>
+<script src="/jersey/WEB-INF/pages/lib/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="/jersey/WEB-INF/pages/lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/jersey/WEB-INF/pages/lib/moment-with-locales.min.js"></script>
+<script src="/jersey/WEB-INF/pages/lib/bootstrap/bootstrap-datetimepicker.min.js"></script>
 
 </head>
 <body>
 
 <div class="btn-group">
-  <a href="/jersey/commodity/list.jsp">
+  <a href="/jersey/CommodityServlet">
   <button type="button" class="btn btn-info dropdown-toggle">
     商品
   </button>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="btn-group">
-  <a href="/jersey/purchaseCase/list.jsp">
+  <a href="/jersey/PurchaseServlet">
   <button type="button" class="btn btn-primary dropdown-toggle">
     進貨 
   </button>
@@ -33,7 +33,7 @@
 </div>
 
 <div class="btn-group">
-  <a href="/jersey/sellCase/list.jsp?action=getAll&page=1">
+  <a href="/jersey/SellCaseServlet">
   <button type="button" class="btn btn-success dropdown-toggle">
     出貨
   </button>
@@ -41,7 +41,7 @@
 </div>
 
 <div class="btn-group">
-  <a href="/jersey/store/list.jsp">
+  <a href="/jersey/StoreServlet">
   <button type="button" class="btn btn-danger dropdown-toggle">
     商家
   </button>
@@ -49,7 +49,7 @@
 </div>
 
 <div class="btn-group">
-  <a href="/jersey/accounting/datePicker.jsp">
+  <a href="/jersey/SellCaseServlet">
   <button type="button" class="btn btn-warning dropdown-toggle">
     會計
   </button>
