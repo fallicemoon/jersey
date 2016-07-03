@@ -1,5 +1,6 @@
 package sellCase.model;
 
+import java.util.Date;
 import java.util.Set;
 import purchaseCase.model.PurchaseCaseVO;
 
@@ -17,7 +18,7 @@ public class SellCaseVO {
 	private Integer collected;
 	private Integer uncollected;
 	private String shippingTime;
-	private String closeTime;
+	private Date closeTime;
 	private Boolean isChecked;
 	private Set<PurchaseCaseVO> purchaseCases;
 
@@ -45,11 +46,11 @@ public class SellCaseVO {
 		this.shippingTime = shippingTime;
 	}
 
-	public String getCloseTime() {
+	public Date getCloseTime() {
 		return this.closeTime;
 	}
 
-	public void setCloseTime(String closeTime) {
+	public void setCloseTime(Date closeTime) {
 		this.closeTime = closeTime;
 	}
 
@@ -148,9 +149,16 @@ public class SellCaseVO {
 	public void setTransportCost(Integer transportCost) {
 		this.transportCost = transportCost;
 	}
+
+	@Override
+	public String toString() {
+		return "SellCaseVO [sellCaseId=" + sellCaseId + ", addressee=" + addressee + ", phone=" + phone + ", address="
+				+ address + ", description=" + description + ", trackingNumber=" + trackingNumber + ", transportMethod="
+				+ transportMethod + ", isShipping=" + isShipping + ", income=" + income + ", transportCost="
+				+ transportCost + ", collected=" + collected + ", uncollected=" + uncollected + ", shippingTime="
+				+ shippingTime + ", closeTime=" + closeTime + ", isChecked=" + isChecked + "]";
+	}
+	
+	
 }
 
-/*
- * Location: C:\Users\fallicemoon\Desktop\jersey\WEB-INF\classes\ Qualified
- * Name: sellCase.model.SellCaseVO JD-Core Version: 0.6.2
- */

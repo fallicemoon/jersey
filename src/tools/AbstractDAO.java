@@ -1,11 +1,17 @@
 package tools;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.transform.Transformers;
 
 public abstract class AbstractDAO<E> implements DAOInterface<E> {
 
@@ -20,31 +26,52 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 
 	@Override
 	public List<E> getAll() {
-		Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		session.getTransaction().begin();
-		List<E> list = session.createQuery("from " + voType.getName()).list();
-		session.getTransaction().commit();
+		List<E> list;
+		try {
+			list = session.createQuery("from " + voType.getName()).list();
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			list = new ArrayList<>();
+		}
 		return list;
 	}
 
 	@Override
 	public E getOne(Integer id) {
-		Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		session.getTransaction().begin();
-		E vo = (E) session.get(voType, id);
-		session.getTransaction().commit();
+		E vo = null;
+		try {
+			vo = (E) session.get(voType, id);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			try {
+				vo = voType.newInstance();
+			} catch (InstantiationException e1) {
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
+		}
 		return vo;
 	}
 
 	@Override
 	public Integer create(E vo) {
-		Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
 			Integer id = (Integer) session.save(vo);
 			session.getTransaction().commit();
 			return id;
 		} catch (HibernateException e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 			return null;
 		}
@@ -52,13 +79,14 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 
 	@Override
 	public boolean update(E vo) {
-		Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
 			session.update(vo);
 			session.getTransaction().commit();
 			return true;
 		} catch (HibernateException e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
 		}
@@ -66,14 +94,14 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 
 	@Override
 	public boolean delete(E vo) {
-		Session session = HibernateSessionFactory.getSessionFactory().getCurrentSession();
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
 			session.delete(vo);
 			session.getTransaction().commit();
-
 			return true;
 		} catch (HibernateException e) {
+			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return false;
@@ -84,7 +112,7 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
-			session.createQuery("delete from " + voType.getName() + " vo where vo." + pk + " in :ids")
+			session.createQuery("delete " + voType.getName() + " vo where vo." + pk + " in (:ids)")
 					.setParameterList("ids", ids).executeUpdate();
 			return true;
 		} catch (HibernateException e) {
@@ -95,16 +123,58 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 	}
 
 	@Override
-	public List<E> getHelper(Criterion... criterions) {
+	public List<E> getHelper(String[] columnNames, Order order, Criterion... criterions) {
 		Session session = HibernateSessionFactory.getSession();
 		session.beginTransaction();
-		Criteria criteria = session.createCriteria(voType);
-		for (Criterion criterion : criterions) {
-			criteria.add(criterion);
+		List<E> list;
+		try {
+			Criteria criteria = session.createCriteria(voType);
+
+			if (criterions != null && criterions.length != 0) {
+				for (Criterion criterion : criterions) {
+					criteria.add(criterion);
+				}
+			}
+
+			if (order != null) {
+				criteria.addOrder(order);
+			}
+
+			// 將欲查詢的屬性欄位放到projectionList
+			if (columnNames != null && columnNames.length != 0) {
+				ProjectionList projectionList = Projections.projectionList();
+				for (String columnName : columnNames) {
+					// 第二個參數為別名, 這樣才能跟VO的屬性對應
+					projectionList.add(Property.forName(columnName), columnName);
+				}
+				criteria.setProjection(projectionList);
+				criteria.setResultTransformer(Transformers.aliasToBean(voType));
+			}
+
+			list = criteria.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			list = new ArrayList<>();
+			e.printStackTrace();
 		}
-		List<E> list = criteria.list();
-		session.getTransaction().commit();
+
 		return list;
+	}
+
+	@Override
+	public List<E> getHelper(Criterion... criterions) {
+		return getHelper(null, null, criterions);
+	}
+
+	@Override
+	public List<E> getHelper(String[] columnNames) {
+		return getHelper(columnNames, null, new Criterion[]{});
+	}
+
+	@Override
+	public List<E> getHelper(String[] columnNames, Criterion... criterions) {
+		return getHelper(columnNames, null, criterions);
 	}
 
 }

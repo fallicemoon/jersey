@@ -1,7 +1,6 @@
 package sellCase.model;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -31,10 +30,6 @@ public class SellCaseService {
 
 	public boolean update(SellCaseVO vo) {
 		return this.dao.update(vo);
-	}
-
-	public boolean delete(Integer id) {
-		return this.dao.delete(id);
 	}
 
 	public boolean delete(Integer[] ids) {
@@ -76,36 +71,36 @@ public class SellCaseService {
 	}
 
 	public List<SellCaseVO> getBetweenCloseTime(Date start, Date end) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		List<Object[]> sellCaseList = dao.getBetweenCloseTime(sdf.format(start), sdf.format(end));
-		List<SellCaseVO> list = new ArrayList<SellCaseVO>();
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		List<SellCaseVO> sellCaseList = dao.getBetweenCloseTime(start, end);
+//		List<SellCaseVO> list = new ArrayList<SellCaseVO>();
+//
+//		for (Object[] object : sellCaseList) {
+//			SellCaseVO sellCaseVO = new SellCaseVO();
+//			sellCaseVO.setSellCaseId((Integer) object[0]);
+//			sellCaseVO.setAddressee((String) object[1]);
+//			sellCaseVO.setPhone((String) object[2]);
+//			sellCaseVO.setAddress((String) object[3]);
+//			sellCaseVO.setDescription((String) object[4]);
+//			sellCaseVO.setTrackingNumber((String) object[5]);
+//			sellCaseVO.setTransportMethod((String) object[6]);
+//			if (((Byte) object[7]).byteValue() == 1)
+//				sellCaseVO.setIsShipping(Boolean.valueOf(true));
+//			else
+//				sellCaseVO.setIsShipping(Boolean.valueOf(false));
+//			sellCaseVO.setIncome((Integer) object[8]);
+//			sellCaseVO.setTransportCost((Integer) object[9]);
+//			sellCaseVO.setCollected((Integer) object[10]);
+//			sellCaseVO.setUncollected((Integer) object[11]);
+//			sellCaseVO.setShippingTime((String) object[12]);
+//			sellCaseVO.setCloseTime((String) object[13]);
+//			if (((Byte) object[14]).byteValue() == 1)
+//				sellCaseVO.setIsChecked(Boolean.valueOf(true));
+//			else
+//				sellCaseVO.setIsChecked(Boolean.valueOf(false));
+//			list.add(sellCaseVO);
+//		}
 
-		for (Object[] object : sellCaseList) {
-			SellCaseVO sellCaseVO = new SellCaseVO();
-			sellCaseVO.setSellCaseId((Integer) object[0]);
-			sellCaseVO.setAddressee((String) object[1]);
-			sellCaseVO.setPhone((String) object[2]);
-			sellCaseVO.setAddress((String) object[3]);
-			sellCaseVO.setDescription((String) object[4]);
-			sellCaseVO.setTrackingNumber((String) object[5]);
-			sellCaseVO.setTransportMethod((String) object[6]);
-			if (((Byte) object[7]).byteValue() == 1)
-				sellCaseVO.setIsShipping(Boolean.valueOf(true));
-			else
-				sellCaseVO.setIsShipping(Boolean.valueOf(false));
-			sellCaseVO.setIncome((Integer) object[8]);
-			sellCaseVO.setTransportCost((Integer) object[9]);
-			sellCaseVO.setCollected((Integer) object[10]);
-			sellCaseVO.setUncollected((Integer) object[11]);
-			sellCaseVO.setShippingTime((String) object[12]);
-			sellCaseVO.setCloseTime((String) object[13]);
-			if (((Byte) object[14]).byteValue() == 1)
-				sellCaseVO.setIsChecked(Boolean.valueOf(true));
-			else
-				sellCaseVO.setIsChecked(Boolean.valueOf(false));
-			list.add(sellCaseVO);
-		}
-
-		return list;
+		return sellCaseList;
 	}
 }

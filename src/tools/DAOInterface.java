@@ -3,6 +3,7 @@ package tools;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 
 public interface DAOInterface<E> {
 	
@@ -18,6 +19,12 @@ public interface DAOInterface<E> {
 
 	public boolean delete(Integer[] ids);
 	
+	public List<E> getHelper(String[] columnNames, Order order, Criterion... criterions);
+	
 	public List<E> getHelper(Criterion... criterions);
+	
+	public List<E> getHelper(String[] columnNames);
+	
+	public List<E> getHelper(String[] columnNames, Criterion... criterions);
 	
 }

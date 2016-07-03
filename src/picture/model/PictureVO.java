@@ -1,12 +1,14 @@
 package picture.model;
 
-import java.io.InputStream;
+import java.sql.Blob;
+
+import commodity.model.CommodityVO;
 
 public class PictureVO {
 	private Integer pictureId;
-	private Integer commodityId;
+	private CommodityVO commodityVO;
 	private Integer sequenceId;
-	private InputStream picture;
+	private Blob picture;
 	private String fileName;
 
 	public String getFileName() {
@@ -25,12 +27,12 @@ public class PictureVO {
 		this.pictureId = pictureId;
 	}
 
-	public Integer getCommodityId() {
-		return this.commodityId;
+	public CommodityVO getCommodityVO() {
+		return this.commodityVO;
 	}
 
-	public void setCommodityId(Integer commodityId) {
-		this.commodityId = commodityId;
+	public void setCommodityVO(CommodityVO commodityVO) {
+		this.commodityVO = commodityVO;
 	}
 
 	public Integer getSequenceId() {
@@ -41,16 +43,11 @@ public class PictureVO {
 		this.sequenceId = sequenceId;
 	}
 
-	public InputStream getPicture() {
+	public Blob getPicture() {
 		return this.picture;
 	}
 
-	public void setPicture(InputStream picture) {
+	public void setPicture(Blob picture) {
 		this.picture = picture;
 	}
 }
-
-/*
- * Location: C:\Users\fallicemoon\Desktop\jersey\WEB-INF\classes\ Qualified
- * Name: picture.model.PictureVO JD-Core Version: 0.6.2
- */

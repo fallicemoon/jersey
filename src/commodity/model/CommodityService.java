@@ -35,12 +35,12 @@ public class CommodityService {
 		return this.dao.getByRule(rule);
 	}
 
-	public Map<Integer, Integer> getCommodityIdPictureCountMap() {
+	public Map<Integer, Long> getCommodityIdPictureCountMap() {
 		PictureDAO pictureDAO = new PictureDAO();
 		return pictureDAO.getCommodityIdPictureCountMap();
 	}
 
-	public Integer getCommodityIdPictureCount(Integer commodityId) {
+	public Long getCommodityIdPictureCount(Integer commodityId) {
 		PictureDAO pictureDAO = new PictureDAO();
 		return pictureDAO.getCommodityIdPictureCount(commodityId);
 	}

@@ -151,9 +151,19 @@ public class PurchaseCaseVO {
 	public void setSellCaseVO(SellCaseVO sellCaseVO) {
 		this.sellCaseVO = sellCaseVO;
 	}
-}
 
-/*
- * Location: C:\Users\fallicemoon\Desktop\jersey\WEB-INF\classes\ Qualified
- * Name: purchaseCase.model.PurchaseCaseVO JD-Core Version: 0.6.2
- */
+	@Override
+	public String toString() {
+		return "PurchaseCaseVO [purchaseCaseId=" + purchaseCaseId + ", sellCaseVO=" + sellCaseVO + ", store=" + store
+				+ ", progress=" + progress + ", shippingCompany=" + shippingCompany + ", trackingNumber="
+				+ trackingNumber + ", trackingNumberLink=" + trackingNumberLink + ", agent=" + agent
+				+ ", agentTrackingNumber=" + agentTrackingNumber + ", agentTrackingNumberLink="
+				+ agentTrackingNumberLink + ", isAbroad=" + isAbroad + ", cost=" + cost + ", agentCost=" + agentCost
+				+ ", description=" + description + ", time=" + time + "]";
+	}
+
+	
+	
+	
+	
+}

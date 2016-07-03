@@ -28,10 +28,10 @@ public class JerseyFilter implements Filter {
 
 		HttpSession session = httpServletRequest.getSession();
 
-		if (!"OK".equals(session.getAttribute("login"))) {
-			httpServletResponse.sendRedirect("/jersey/login.jsp");
-			return;
-		}
+//		if (!"OK".equals(session.getAttribute("login"))) {
+//			httpServletResponse.sendRedirect("/jersey/login.jsp");
+//			return;
+//		}
 
 		chain.doFilter(httpServletRequest, httpServletResponse);
 	}

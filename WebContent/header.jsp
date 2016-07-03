@@ -17,7 +17,7 @@
 <body>
 
 <div class="btn-group">
-  <a href="/jersey/commodity/list.jsp">
+  <a href="/jersey/CommodityServlet">
   <button type="button" class="btn btn-info dropdown-toggle">
     商品
   </button>

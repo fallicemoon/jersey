@@ -41,6 +41,7 @@
 		<mapping resource="purchaseCase/model/PurchaseCaseVO.hbm.xml" />
 		<mapping resource="sellCase/model/SellCaseVO.hbm.xml" />
 		<mapping resource="store/model/StoreVO.hbm.xml" />
+		<mapping resource="picture/model/PictureVO.hbm.xml" />
 
 
 

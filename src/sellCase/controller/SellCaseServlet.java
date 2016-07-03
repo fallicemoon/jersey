@@ -3,6 +3,7 @@ package sellCase.controller;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -122,9 +123,10 @@ public class SellCaseServlet extends HttpServlet {
 			}
 
 			if ((uncollected.intValue() == 0) && (sellCaseVO.getIsChecked().booleanValue())) {
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				sellCaseVO.setCloseTime(sdf.format(timestamp));
+//				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				//TODO 測試
+				sellCaseVO.setCloseTime(new Date());
 			}
 
 			Integer sellCaseId = service.create(sellCaseVO);
@@ -184,10 +186,11 @@ public class SellCaseServlet extends HttpServlet {
 					sellCaseVO.setShippingTime(null);
 				}
 
-				if ((uncollected.intValue() == 0) && (sellCaseVO.getIsChecked().booleanValue())) {
-					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					sellCaseVO.setCloseTime(sdf.format(timestamp));
+				if ((uncollected == 0) && (sellCaseVO.getIsChecked().booleanValue())) {
+//					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					//TODO 測試
+					sellCaseVO.setCloseTime(new Date());
 				} else {
 					sellCaseVO.setCloseTime(null);
 				}

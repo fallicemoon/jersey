@@ -9,7 +9,7 @@ import tools.AbstractDAO;
 public class StoreDAO extends AbstractDAO<StoreVO> {
 	
 
-	public StoreDAO(Class<StoreVO> type, String pk) {
+	public StoreDAO() {
 		super(StoreVO.class, "storeId");
 		
 	}
@@ -125,5 +125,5 @@ public class StoreDAO extends AbstractDAO<StoreVO> {
 //			e.printStackTrace();
 //		}
 //		return false;
-//	}
+	// }
 }

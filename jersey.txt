@@ -1,9 +1,17 @@
-OK
-	修改照片底層機制
-	傳到git
-	------------------
-調整controller和view
+OK:
+修改照片底層機制
+傳到git
 全用HIBERNATE
+---------------------
+確認中:
+
+
+---------------------
+sellCase的close_time update的部分要測試
+Date不要用varchar
+
+調整controller和view
+
 篩選商品條件改成jQuery
 分頁
 選擇照片的checkBox拿掉，改成jQuery
