@@ -25,7 +25,7 @@
 </div>
 
 <div class="btn-group">
-  <a href="/jersey/purchaseCase/list.jsp">
+  <a href="/jersey/PurchaseCaseServlet">
   <button type="button" class="btn btn-primary dropdown-toggle">
     進貨 
   </button>

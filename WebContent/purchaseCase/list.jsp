@@ -10,9 +10,9 @@
 <title>進貨</title>
 </head>
 <body>
-  <jsp:include page="/PurchaseCaseServlet">
-  	<jsp:param name="action" value="${param.action}"/>
-  </jsp:include>
+<%--   <jsp:include page="/PurchaseCaseServlet"> --%>
+<%--   	<jsp:param name="action" value="${param.action}"/> --%>
+<%--   </jsp:include> --%>
   
   <form action="/jersey/PurchaseCaseServlet" method="POST">
     <c:import url="/header.jsp"/><span style="display: inline-block; width: 100px"></span>
