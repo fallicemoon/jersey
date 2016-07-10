@@ -106,10 +106,10 @@
   	  </td>
   	  <td><a href="/jersey/OtherServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
   	  <td><c:forEach items="${vo.purchaseCases}" var="purchaseCase">
-  	   	<jsp:include page="/StoreServlet">
-  	  		<jsp:param value="getOne" name="action"/>
-  	  		<jsp:param value="${purchaseCase.store}" name="storeId"/>
-  	  	</jsp:include>
+<%--   	   	<jsp:include page="/StoreServlet"> --%>
+<%--   	  		<jsp:param value="getOne" name="action"/> --%>
+<%--   	  		<jsp:param value="${purchaseCase.store}" name="storeId"/> --%>
+<%--   	  	</jsp:include> --%>
   	  	${purchaseCase.purchaseCaseId}-${store.name}<br>
   	  </c:forEach></td>
 	  <td>${vo.transportMethod}</td>

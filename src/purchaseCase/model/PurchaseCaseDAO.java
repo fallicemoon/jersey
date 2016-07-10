@@ -20,8 +20,7 @@ public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
 			+ "p.trackingNumberLink as trackingNumberLink, p.agent as agent, p.agentTrackingNumber as agentTrackingNumber,"
 			+ "p.agentTrackingNumberLink as agentTrackingNumberLink, p.isAbroad as isAbroad, p.cost as cost,"
 			+ "p.agentCost as agentCost, p.description as description, p.time as time, a.name as storeName, b.name as shippingCompanyName "
-			+ "from PurchaseCaseVO as p left join StoreVO as a on a.storeId = p.store"
-			+ "left join StoreVO as b on b.storeId = p.shippingCompnay";
+			+ "from PurchaseCaseVO as p left join p.store as a left join p.shippingCompany as b";
 
 	public PurchaseCaseDAO() {
 		super(PurchaseCaseVO.class, "purchaseCaseId");
