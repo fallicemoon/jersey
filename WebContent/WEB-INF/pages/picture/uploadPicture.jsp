@@ -14,7 +14,7 @@
 <title>上傳圖片</title>
 </head>
 <body>
-	<c:import url="/header.jsp"/>
+	<c:import url="/WEB-INF/pages/header.jsp"/>
 	<br><br>
 	
 	<c:forEach items="${sessionScope.errors}" var="error">

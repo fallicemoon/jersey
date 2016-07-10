@@ -8,7 +8,7 @@
 <title>會計</title>
 </head>
 <body>
-	<c:import url="/header.jsp"/>
+	<c:import url="/WEB-INF/pages/header.jsp"/>
 	<br>
 	<h2>${requestScope.start} ~ ${requestScope.end}</h2>
 	<br>	

@@ -112,8 +112,9 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
-			session.createQuery("delete " + voType.getName() + " vo where vo." + pk + " in (:ids)")
+			session.createQuery("delete from " + voType.getSimpleName() + " vo where vo." + pk + " in (:ids)")
 					.setParameterList("ids", ids).executeUpdate();
+			session.getTransaction().commit();
 			return true;
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
@@ -169,7 +170,7 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 
 	@Override
 	public List<E> getHelper(String[] columnNames) {
-		return getHelper(columnNames, null, new Criterion[]{});
+		return getHelper(columnNames, null, new Criterion[] {});
 	}
 
 	@Override

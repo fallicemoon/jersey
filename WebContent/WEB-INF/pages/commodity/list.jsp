@@ -16,7 +16,7 @@
 <%--   	<jsp:param name="action" value="${param.action}"/> --%>
 <%--   </jsp:include> --%>
   <form action="/jersey/CommodityServlet" method="POST">
-    <c:import url="/header.jsp"/><span style="display: inline-block; width: 100px"></span>
+    <c:import url="/WEB-INF/pages/header.jsp"/><span style="display: inline-block; width: 100px"></span>
     <a href="/jersey/CommodityServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   	<button type="submit" name="action" value="getByRule" class="btn btn-warning" data-toggle="modal">篩選</button>
@@ -178,7 +178,7 @@
   </form>
 
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 
 
 </body>

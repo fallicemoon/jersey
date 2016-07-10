@@ -14,8 +14,8 @@ public class PurchaseCaseService {
 		this.dao = new PurchaseCaseDAO();
 	}
 
-	public List<PurchaseCaseVO> getAll() {
-		return this.dao.getAll();
+	public List<PurchaseCaseWithStoreNameVO> getAll() {
+		return dao.getAllWithStoreName();
 	}
 
 	public List<PurchaseCaseVO> getAllOfNotComplete() {

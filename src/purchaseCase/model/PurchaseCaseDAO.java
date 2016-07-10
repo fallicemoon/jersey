@@ -1,16 +1,27 @@
 package purchaseCase.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 import sellCase.model.SellCaseVO;
 import tools.AbstractDAO;
 import tools.HibernateSessionFactory;
 
 public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
+	
+	private static final String GET_ALL = "select p.purchaseCaseId as purchaseCaseId, p.sellCaseVO as sellCaseVO, p.store as store,"
+			+ "p.progress as progress, p.shippingCompany as shippingCompany, p.trackingNumber as trackingNumber,"
+			+ "p.trackingNumberLink as trackingNumberLink, p.agent as agent, p.agentTrackingNumber as agentTrackingNumber,"
+			+ "p.agentTrackingNumberLink as agentTrackingNumberLink, p.isAbroad as isAbroad, p.cost as cost,"
+			+ "p.agentCost as agentCost, p.description as description, p.time as time, a.name as storeName, b.name as shippingCompanyName "
+			+ "from PurchaseCaseVO as p left join StoreVO as a on a.storeId = p.store"
+			+ "left join StoreVO as b on b.storeId = p.shippingCompnay";
 
 	public PurchaseCaseDAO() {
 		super(PurchaseCaseVO.class, "purchaseCaseId");
@@ -26,6 +37,24 @@ public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
 	//
 	// return list;
 	// }
+
+
+	public List<PurchaseCaseWithStoreNameVO> getAllWithStoreName() {
+		List<PurchaseCaseWithStoreNameVO> list;
+		Session session = HibernateSessionFactory.getSession();
+		session.beginTransaction();
+		try {
+			Query query = session.createQuery(GET_ALL);
+			query.setResultTransformer(Transformers.aliasToBean(PurchaseCaseWithStoreNameVO.class));
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			list = new ArrayList<>();
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	public List<PurchaseCaseVO> getAllOfNotProgress(String progress) {
 		return getHelper(Restrictions.ne("progress", progress));
@@ -149,7 +178,7 @@ public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
 			session.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
-		}		
+		}
 	}
 
 	public boolean deleteSellCaseId(Integer[] purchaseCaseIds) {

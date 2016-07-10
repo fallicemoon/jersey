@@ -15,7 +15,7 @@
 <%--   </jsp:include> --%>
   
   <form action="/jersey/PurchaseCaseServlet" method="POST">
-    <c:import url="/header.jsp"/><span style="display: inline-block; width: 100px"></span>
+    <c:import url="/WEB-INF/pages/header.jsp"/><span style="display: inline-block; width: 100px"></span>
     <a href="/jersey/PurchaseCaseServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   	<a href="/jersey/PurchaseCaseServlet?action=getProgressNotComplete"><button type="button" class="btn btn-normal">進貨未完成</button></a>
@@ -47,18 +47,18 @@
   	  <td>
 		<a href="/jersey/PurchaseCaseServlet?action=getOne&purchaseCaseId=${vo.purchaseCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.store}" name="storeId"/>
-  	  </jsp:include>
-  	  <td><a href="/jersey/OtherServlet?action=purchaseCase&purchaseCaseId=${vo.purchaseCaseId}">${vo.purchaseCaseId} - <c:out value="${store.name}" /></a></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.store}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td><a href="/jersey/OtherServlet?action=purchaseCase&purchaseCaseId=${vo.purchaseCaseId}">${vo.purchaseCaseId} - <c:out value="${vo.storeName}" /></a></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity">${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
   	  <td>${vo.progress}</td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/>
-  	  </jsp:include>
-  	  <td><c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td><c:out value="${vo.shippingCompanyName}" /></td>
   	  <td><c:out value="${vo.trackingNumber}" /><c:if test="${!empty vo.trackingNumberLink}"><a href="${vo.trackingNumberLink}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.trackingNumberLink}"></c:if></td>
   	  <td><c:out value="${vo.agent}" /></td>
@@ -75,7 +75,7 @@
   </table>
   </form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 
 
 </body>

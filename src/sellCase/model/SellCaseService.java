@@ -1,6 +1,8 @@
 package sellCase.model;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Set;
 
 import purchaseCase.model.PurchaseCaseDAO;
 import purchaseCase.model.PurchaseCaseVO;
+import tools.Tools;
 
 public class SellCaseService {
 	private SellCaseDAO dao;
@@ -16,19 +19,51 @@ public class SellCaseService {
 		this.dao = new SellCaseDAO();
 	}
 
-	public List<SellCaseVO> getAll() {
-		return this.dao.getAll();
+	public List<SellCaseWithBenefitVo> getAll() {
+		List<SellCaseVO> oldList = this.dao.getAll();
+		List<SellCaseWithBenefitVo> newList = new ArrayList<>();
+		SellCaseWithBenefitVo sellCaseWithBenefitVo;
+		for (SellCaseVO sellCaseVO : oldList) {
+			sellCaseWithBenefitVo = getSellCaseWithBenefitVo(sellCaseVO);
+			newList.add(sellCaseWithBenefitVo);
+		}
+		return newList;
 	}
 
 	public SellCaseVO getOne(Integer id) {
-		return this.dao.getOne(id);
+		return dao.getOne(id);
 	}
 
 	public Integer create(SellCaseVO vo) {
+		vo.setUncollected(vo.getIncome() - vo.getCollected());
+		
+		if (vo.getIsShipping()) {
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			vo.setShippingTime(sdf.format(timestamp));
+		}
+		
+		if ((vo.getUncollected() == 0) && (vo.getIsChecked())) {
+			// TODO 測試
+			vo.setCloseTime(new Date());
+		}
+		
 		return this.dao.create(vo);
 	}
 
 	public boolean update(SellCaseVO vo) {
+		vo.setUncollected(vo.getIncome() - vo.getCollected());
+		
+		if (vo.getIsShipping()) {
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			vo.setShippingTime(sdf.format(timestamp));
+		}
+		
+		if ((vo.getUncollected() == 0) && (vo.getIsChecked())) {
+			// TODO 測試
+			vo.setCloseTime(new Date());
+		}
 		return this.dao.update(vo);
 	}
 
@@ -103,4 +138,31 @@ public class SellCaseService {
 
 		return sellCaseList;
 	}
+	
+	public SellCaseWithBenefitVo getSellCaseWithBenefitVo (SellCaseVO sellCaseVO) {
+		SellCaseWithBenefitVo sellCaseWithBenefitVo = new SellCaseWithBenefitVo();
+		Tools.copyBeanProperties(sellCaseVO, sellCaseWithBenefitVo);
+		
+		Integer costs = 0;
+		Integer agentCosts = 0;
+		Set<PurchaseCaseVO> purchaseCases = sellCaseVO.getPurchaseCases();
+		if (purchaseCases!=null) {
+			for (PurchaseCaseVO purchaseCaseVO : purchaseCases) {
+				costs = costs + purchaseCaseVO.getCost();
+				agentCosts = agentCosts + purchaseCaseVO.getAgentCost();
+			}
+		}
+		sellCaseWithBenefitVo.setBenefit(sellCaseVO.getCollected() - sellCaseVO.getTransportCost() - costs - agentCosts);
+		sellCaseWithBenefitVo.setEstimateBenefit(sellCaseVO.getIncome() - sellCaseVO.getTransportCost() - costs - agentCosts);
+		sellCaseWithBenefitVo.setCosts(costs);
+		sellCaseWithBenefitVo.setAgentCosts(agentCosts);
+		return sellCaseWithBenefitVo;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

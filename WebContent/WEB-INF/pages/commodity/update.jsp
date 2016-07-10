@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>修改商品項目</title>
 </head>
-<c:import url="/header.jsp"/>
+<c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
 <%-- 	<c:if test="${param.commodityId == null}"> --%>
 <%-- 		<c:redirect context="/jersey" url="/commodity/list.jsp" /> --%>
@@ -30,7 +30,7 @@
 		<p style="color: red">${error}</p>
 	</c:forEach>
 	
-	<form action="/jersey/CommodityServlet?listOne=${param.listOne}" method="post" class="form-horizontal">
+	<form action="/jersey/CommodityServlet" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="update">
 	
     <div class="form-group">
@@ -226,6 +226,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

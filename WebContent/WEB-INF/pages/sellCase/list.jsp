@@ -12,13 +12,13 @@
 <title>出貨</title>
 </head>
 <body>
-  <jsp:include page="/SellCaseServlet">
-  	<jsp:param name="action" value="${param.action}"/>
-  </jsp:include>
+<%--   <jsp:include page="/SellCaseServlet"> --%>
+<%--   	<jsp:param name="action" value="${param.action}"/> --%>
+<%--   </jsp:include> --%>
 
   <form action="/jersey/SellCaseServlet" method="POST">
-    <c:import url="/header.jsp"/><span style="display: inline-block; width: 100px"></span>
-  	<a href="/jersey/sellCase/add.jsp"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
+    <c:import url="/WEB-INF/pages/header.jsp"/><span style="display: inline-block; width: 100px"></span>
+  	<a href="/jersey/SellCaseServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   	<c:if test="${param.action != 'getUncollectedNotZero'}"><a href="/jersey/sellCase/list.jsp?action=getUncollectedNotZero&page=${param.page}" class="btn btn-default btn-lg">尚有未收額</a></c:if>
   	<c:if test="${param.action == 'getUncollectedNotZero'}"><a href="/jersey/sellCase/list.jsp?action=getUncollectedNotZero&page=${param.page}" class="btn btn-default btn-lg disabled" style="color:red;">尚有未收額</a></c:if>
@@ -27,7 +27,7 @@
   	<c:if test="${param.action != 'getNotClosed'}"><a href="/jersey/sellCase/list.jsp?action=getNotClosed&page=${param.page}" class="btn btn-default btn-lg">未結案</a></c:if>
   	<c:if test="${param.action == 'getNotClosed'}"><a href="/jersey/sellCase/list.jsp?action=getNotClosed&page=${param.page}" class="btn btn-default btn-lg disabled" style="color:red;">未結案</a></c:if>  	<c:if test="${param.action != 'getAll'}"><a href="/jersey/sellCase/list.jsp?action=getAll&page=${param.page}" class="btn btn-default btn-lg">列出全部</a></c:if>
 	<c:if test="${param.action == 'getAll'}"><a href="/jersey/sellCase/list.jsp?action=getAll&page=${param.page}" class="btn btn-default btn-lg disabled" style="color:red;">列出全部</a></c:if>
-  <c:if test="${param.page == 1}">
+
     <a href="list.jsp?action=${param.action}&page=2"><button type="button" class="btn btn-normal">第二頁</button></a>
   <table border=1 width="1500px" class="table table-hover">
     <thead>
@@ -49,7 +49,7 @@
   	  	<input type="checkbox" name="sellCaseIds" value="${vo.sellCaseId}">
   	  </td>
   	  <td>
-  	  	<a href="/jersey/sellCase/update.jsp?sellCaseId=${vo.sellCaseId}&page=1"><button type="button" class="btn btn-warning">修改</button></a>
+  	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  <td><a href="/jersey/OtherServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
   	  <td>${vo.income}</td>
@@ -60,22 +60,22 @@
   	  <td>${vo.uncollected}</td>
   	  <td><c:if test="${vo.uncollected==0 && vo.isChecked}">是</c:if>
   	      <c:if test="${!vo.isChecked || vo.uncollected!=0}">否</c:if></td>
-  	  <jsp:include page="/SellCaseServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.sellCaseId}" name="sellCaseId"/>
-  	  </jsp:include>
-  	  <td>已收額${vo.collected} (總價${vo.income}) - 成本${requestScope.costs} - 國際運費${requestScope.agentCosts} - 國內運費${vo.transportCost} =   	  
-  	  	  <c:if test="${requestScope.benefit < 0}"><span style="color: red">${requestScope.benefit} / </span></c:if>
-		  <c:if test="${requestScope.benefit >= 0}"><span style="color: blue">${requestScope.benefit} / </span></c:if>
-  	  	  <c:if test="${requestScope.estimateBenefit < 0}"><span style="color: red">${requestScope.estimateBenefit}</span></c:if>
-		  <c:if test="${requestScope.estimateBenefit >= 0}"><span style="color: blue">${requestScope.estimateBenefit}</span></c:if>
+<%--   	  <jsp:include page="/SellCaseServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.sellCaseId}" name="sellCaseId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td>已收額${vo.collected} (總價${vo.income}) - 成本${vo.costs} - 國際運費${vo.agentCosts} - 國內運費${vo.transportCost} =   	  
+  	  	  <c:if test="${vo.benefit < 0}"><span style="color: red">${vo.benefit} / </span></c:if>
+		  <c:if test="${vo.benefit >= 0}"><span style="color: blue">${vo.benefit} / </span></c:if>
+  	  	  <c:if test="${vo.estimateBenefit < 0}"><span style="color: red">${vo.estimateBenefit}</span></c:if>
+		  <c:if test="${vo.estimateBenefit >= 0}"><span style="color: blue">${vo.estimateBenefit}</span></c:if>
 	  </td>
   	</tr>
   	</c:forEach>
   </table>
-  </c:if>
+
   
-  <c:if test="${param.page == 2}">
+
     <a href="list.jsp?action=${param.action}&page=1"><button type="button" class="btn btn-normal">第一頁</button></a>
   <table border=1 width="1500px" class="table table-hover">
   	<thead>
@@ -102,7 +102,7 @@
   	  	<input type="checkbox" name="sellCaseIds" value="${vo.sellCaseId}">
   	  </td>
   	  <td>
-  	  	<a href="/jersey/sellCase/update.jsp?sellCaseId=${vo.sellCaseId}&page=2"><button type="button" class="btn btn-warning">修改</button></a>
+  	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  <td><a href="/jersey/OtherServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
   	  <td><c:forEach items="${vo.purchaseCases}" var="purchaseCase">
@@ -124,10 +124,10 @@
   	</tr>
   	</c:forEach>
   </table>
-  </c:if>
+
   </form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 
 
 </body>

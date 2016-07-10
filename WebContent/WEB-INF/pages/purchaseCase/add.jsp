@@ -14,14 +14,14 @@
 <title>新增進貨項目</title>
 </head>
 <body>
-<c:import url="/header.jsp"/>
+<c:import url="/WEB-INF/pages/header.jsp"/>
 	<br/><br/>
-	<c:forEach items="${sessionScope.errors}" var="error">
+	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
 	</c:forEach>
-	<c:remove var="errors" scope="session"/>
 	
 	<form action="/jersey/PurchaseCaseServlet" method="post" class="form-horizontal">
+	<input type="hidden" name="action" value="create">
     <div class="form-group">
 	<label for="inputEmail3" class="col-sm-2 control-label">商品編號/商品名稱：</label>
 	    	<div class="col-sm-10">
@@ -39,12 +39,15 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家名稱：</label>
     	<div class="col-sm-10">
-    	<jsp:include page="/StoreServlet">
-    		<jsp:param value="getStores" name="action"/>
-    	</jsp:include>
+<%--     	<jsp:include page="/StoreServlet"> --%>
+<%--     		<jsp:param value="getStores" name="action"/> --%>
+<%--     	</jsp:include> --%>
     	<select name="store">
     		<c:forEach items="${requestScope.stores}" var="vo">
-    		<option value="${vo.storeId}">${vo.name}</option>
+    			<c:choose>
+    			<c:when test="${vo.storeId==purchaseCase.store}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
+				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
+    			</c:choose>
     		</c:forEach>
     	</select>
     	</div>
@@ -54,13 +57,34 @@
     <label for="inputEmail3" class="col-sm-2 control-label">進度：</label>
     	<div class="col-sm-10">
     	<select name="progress">
-    		<option value="下單付款">下單付款</option>
-    		<option value="商家出貨">商家出貨</option>
-    		<option value="缺貨未退款">缺貨未退款</option>
-    		<option value="缺貨退款">缺貨退款</option>
-    		<option value="已達代運">已達代運</option>
-    		<option value="代運寄回">代運寄回</option>
-    		<option value="進貨完成">進貨完成</option>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='下單付款'}"><option value="下單付款" selected="selected">下單付款</option></c:when>
+    		<c:otherwise><option value="下單付款">下單付款</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='商家出貨'}"><option value="商家出貨" selected="selected">商家出貨</option></c:when>
+    		<c:otherwise><option value="商家出貨">商家出貨</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='缺貨未退款'}"><option value="缺貨未退款" selected="selected">缺貨未退款</option></c:when>
+    		<c:otherwise><option value="缺貨未退款">缺貨未退款</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='缺貨退款'}"><option value="缺貨退款" selected="selected">缺貨退款</option></c:when>
+    		<c:otherwise><option value="缺貨退款">缺貨退款</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='已達代運'}"><option value="已達代運" selected="selected">已達代運</option></c:when>
+    		<c:otherwise><option value="已達代運">已達代運</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='代運寄回'}"><option value="代運寄回" selected="selected">代運寄回</option></c:when>
+    		<c:otherwise><option value="代運寄回">代運寄回</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${purchaseCase.progress=='進貨完成'}"><option value="進貨完成" selected="selected">進貨完成</option></c:when>
+    		<c:otherwise><option value="進貨完成">進貨完成</option></c:otherwise>
+    		</c:choose>
     	</select>
     	</div>
     </div>
@@ -68,12 +92,15 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">託運公司：</label>
     	<div class="col-sm-10">
-    	<jsp:include page="/StoreServlet">
-    		<jsp:param value="getShippingCompanys" name="action"/>
-    	</jsp:include>
+<%--     	<jsp:include page="/StoreServlet"> --%>
+<%--     		<jsp:param value="getShippingCompanys" name="action"/> --%>
+<%--     	</jsp:include> --%>
     	<select name="shippingCompany">
     		<c:forEach items="${requestScope.shippingCompanys}" var="vo">
-    		<option value="${vo.storeId}">${vo.name}</option>
+    			<c:choose>
+    			<c:when test="${vo.storeId==purchaseCase.shippingCompany}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
+				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
+    			</c:choose>
     		</c:forEach>
     	</select>
     	</div>
@@ -82,56 +109,56 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Tracking number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="trackingNumber">
+    	<input type="text" name="trackingNumber" value="${purchaseCase.trackingNumber}">
     	</div>
     </div>
 
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Tracking number link：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="trackingNumberLink" value="${requestScope.purchaseCase.trackingNumberLink}">
+    	<input type="text" name="trackingNumberLink" value="${purchaseCase.trackingNumberLink}">
     	</div>
     </div>
         
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">代運人：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agent">
+    	<input type="text" name="agent" value="${purchaseCase.agent}">
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">代運Tracking number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agentTrackingNumber">
+    	<input type="text" name="agentTrackingNumber" value="${purchaseCase.agentTrackingNumber}">
     	</div>
     </div>
 
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">代運Tracking number link：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agentTrackingNumberLink">
+    	<input type="text" name="agentTrackingNumberLink" value="${purchaseCase.agentTrackingNumberLink}">
     	</div>
     </div>
         
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">成本：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="cost" value="0">請輸入數字!
+    	<input type="text" name="cost" value="${purchaseCase.cost}">請輸入數字!
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">國際運費：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agentCost" value="0">請輸入數字!
+    	<input type="text" name="agentCost" value="${purchaseCase.agentCost}">請輸入數字!
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">備註：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="description">
+    	<input type="text" name="description" value="${purchaseCase.description}">
     	</div>
     </div>
     
@@ -139,14 +166,12 @@
     <div class="col-sm-offset-2 col-sm-10">
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="isAbroad" value="true"> 是否為代購case
+          <input type="checkbox" name="isAbroad" value="${purchaseCase.isAbroad}"> 是否為代購case
         </label>
       </div>
     </div>
   	</div>
 	
-
-	<input type="hidden" name="action" value="create">
 	<div class="form-group">
 		<label for="inputEmail3" class="col-sm-2 control-label">
 			<button type="submit" class="btn btn-success" >新增</button>
@@ -154,6 +179,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

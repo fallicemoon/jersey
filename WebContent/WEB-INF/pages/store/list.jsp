@@ -12,21 +12,21 @@
 <title>商家</title>
 </head>
 <body>
-  <jsp:include page="/StoreServlet">
-  	<jsp:param name="action" value="getAll"/>
-  </jsp:include>
+<%--   <jsp:include page="/StoreServlet"> --%>
+<%--   	<jsp:param name="action" value="getAll"/> --%>
+<%--   </jsp:include> --%>
   
-  <c:if test="${param.action=='update'}">
-  	<c:forEach items="${storeList}" var="vo">
-  		<c:if test="${vo.storeId==param.storeId}">
-  		<c:set var="store" value="${vo}" scope="request"/>
-  		<jsp:forward page="/store/update.jsp"/>
-  		</c:if>
-  	</c:forEach>
-  </c:if>
+<%--   <c:if test="${param.action=='update'}"> --%>
+<%--   	<c:forEach items="${storeList}" var="vo"> --%>
+<%--   		<c:if test="${vo.storeId==param.storeId}"> --%>
+<%--   		<c:set var="store" value="${vo}" scope="request"/> --%>
+<%--   		<jsp:forward page="/store/update.jsp"/> --%>
+<%--   		</c:if> --%>
+<%--   	</c:forEach> --%>
+<%--   </c:if> --%>
   <form action="/jersey/StoreServlet" method="POST">
-    <c:import url="/header.jsp"/><span style="display: inline-block; width: 100px"></span>
-  	<a href="/jersey/store/add.jsp"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
+    <c:import url="/WEB-INF/pages/header.jsp"/><span style="display: inline-block; width: 100px"></span>
+  	<a href="/jersey/StoreServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   <table border=1 width="1500px" class="table table-hover">
     <thead>
@@ -54,7 +54,7 @@
   </table>
   </form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 
 
 </body>

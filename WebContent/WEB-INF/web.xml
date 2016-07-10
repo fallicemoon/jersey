@@ -5,16 +5,16 @@
 	id="WebApp_ID" version="2.5">
 	<display-name>jersey</display-name>
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>/WEB-INF/pages/index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/error.jsp</location>
+		<location>/WEB-INF/pages/error.jsp</location>
 	</error-page>
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
-		<location>/error.jsp</location>
+		<location>/WEB-INF/pages/error.jsp</location>
 	</error-page>
 
 	<context-param>

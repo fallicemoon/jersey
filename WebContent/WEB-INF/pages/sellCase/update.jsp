@@ -12,25 +12,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>修改出貨項目</title>
 </head>
-<c:import url="/header.jsp"/>
+<c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
 	
-	<c:if test="${param.sellCaseId == null}">
-		<c:redirect context="/jersey" url="/sellCase/list.jsp?action=getAll&page=1" />
-	</c:if>
+<%-- 	<c:if test="${param.sellCaseId == null}"> --%>
+<%-- 		<c:redirect context="/jersey" url="/sellCase/list.jsp?action=getAll&page=1" /> --%>
+<%-- 	</c:if> --%>
 	<br/><br/>
 	
-	<c:if test="${param.sellCaseId != null}">
-		<jsp:include page="/SellCaseServlet">
-			<jsp:param name="action" value="getOne" />
-			<jsp:param name="sellCaseId" value="${param.sellCaseId}" />
-		</jsp:include>
-	</c:if>
+<%-- 	<c:if test="${param.sellCaseId != null}"> --%>
+<%-- 		<jsp:include page="/SellCaseServlet"> --%>
+<%-- 			<jsp:param name="action" value="getOne" /> --%>
+<%-- 			<jsp:param name="sellCaseId" value="${param.sellCaseId}" /> --%>
+<%-- 		</jsp:include> --%>
+<%-- 	</c:if> --%>
 	
-	<c:forEach items="${sessionScope.errors}" var="error">
+	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
 	</c:forEach>
-	<c:remove var="errors" scope="session"/>
+
 
 	<form action="/jersey/SellCaseServlet?listOne=${param.listOne}" method="post" class="form-horizontal">
     <input type="hidden" name="action" value="update">
@@ -119,7 +119,7 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">已收額：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="collected"  value="${sellCase.collected}">請輸入數字!
+    	<input type="text" name="collected" value="${sellCase.collected}">請輸入數字!
     	</div>
     </div>
     
@@ -171,6 +171,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

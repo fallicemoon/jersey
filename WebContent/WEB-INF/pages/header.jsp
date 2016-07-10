@@ -5,13 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
-<link href="/jersey/WEB-INF/pages/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="/jersey/WEB-INF/pages/lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
-<script src="/jersey/WEB-INF/pages/lib/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="/jersey/WEB-INF/pages/lib/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/jersey/WEB-INF/pages/lib/moment-with-locales.min.js"></script>
-<script src="/jersey/WEB-INF/pages/lib/bootstrap/bootstrap-datetimepicker.min.js"></script>
+<script src="lib/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/moment-with-locales.min.js"></script>
+<script src="lib/bootstrap/bootstrap-datetimepicker.min.js"></script>
 
 </head>
 <body>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="btn-group">
-  <a href="/jersey/PurchaseServlet">
+  <a href="/jersey/PurchaseCaseServlet">
   <button type="button" class="btn btn-primary dropdown-toggle">
     進貨 
   </button>

@@ -12,7 +12,7 @@
 <title>修改出貨中之進貨</title>
 </head>
 <body>
-  <c:import url="/header.jsp"/>
+  <c:import url="/WEB-INF/pages/header.jsp"/>
   
   <!-- purchaseCaseList1 -->
   <jsp:include page="/SellCaseServlet">
@@ -140,7 +140,7 @@
   </form>
   </c:if>
   
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 
 
 </body>

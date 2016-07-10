@@ -12,7 +12,7 @@
 <title>關聯條目</title>
 </head>
 <body>
-  <c:import url="/header.jsp"/>
+  <c:import url="/WEB-INF/pages/header.jsp"/>
   <br>
   <h1>${requestScope.title}</h1>
 <!-- 商品 -->
@@ -52,10 +52,10 @@
 		<a href="/jersey/commodity/update.jsp?commodityId=${vo.commodityId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  
-  	  <jsp:include page="/CommodityServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.commodityId}" name="commodityId"/>
-  	  </jsp:include>
+<%--   	  <jsp:include page="/CommodityServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.commodityId}" name="commodityId"/> --%>
+<%--   	  </jsp:include> --%>
   	  <c:if test="${requestScope.commodityIdPictureCount != 0}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCount}</button></a></td></c:if> 
   	  <c:if test="${requestScope.commodityIdPictureCount == 0}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
   	  
@@ -223,7 +223,7 @@
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   </form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 
 
 </body>

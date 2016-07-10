@@ -5,13 +5,14 @@ import java.util.Set;
 
 import commodity.model.CommodityVO;
 import sellCase.model.SellCaseVO;
+import store.model.StoreVO;
 
 public class PurchaseCaseVO {
 	private Integer purchaseCaseId;
 	private SellCaseVO sellCaseVO;
-	private String store;
+	private StoreVO store;
 	private String progress;
-	private String shippingCompany;
+	private StoreVO shippingCompany;
 	private String trackingNumber;
 	private String trackingNumberLink;
 	private String agent;
@@ -56,11 +57,11 @@ public class PurchaseCaseVO {
 		this.purchaseCaseId = purchaseCaseId;
 	}
 
-	public String getStore() {
+	public StoreVO getStore() {
 		return this.store;
 	}
 
-	public void setStore(String store) {
+	public void setStore(StoreVO store) {
 		this.store = store;
 	}
 
@@ -72,11 +73,11 @@ public class PurchaseCaseVO {
 		this.progress = progress;
 	}
 
-	public String getShippingCompany() {
+	public StoreVO getShippingCompany() {
 		return this.shippingCompany;
 	}
 
-	public void setShippingCompany(String shippingCompany) {
+	public void setShippingCompany(StoreVO shippingCompany) {
 		this.shippingCompany = shippingCompany;
 	}
 

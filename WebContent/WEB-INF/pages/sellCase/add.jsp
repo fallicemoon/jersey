@@ -14,12 +14,11 @@
 <title>新增出貨項目</title>
 </head>
 <body>
-<c:import url="/header.jsp"/>
+<c:import url="/WEB-INF/pages/header.jsp"/>
 	<br/><br/>
-	<c:forEach items="${sessionScope.errors}" var="error">
+	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
 	</c:forEach>
-	<c:remove var="errors" scope="session"/>
 	
 	<form action="/jersey/SellCaseServlet" method="post" class="form-horizontal">
 	<div class="form-group">
@@ -27,10 +26,10 @@
 	    	<div class="col-sm-10">
 	    	<a href="/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=0"><button type="button" class="btn btn-warning">匯入</button></a>
 	    	<c:forEach items="${sessionScope.purchaseCaseIds}" var="purchaseCaseId">
-	    		<jsp:include page="/PurchaseCaseServlet">
-	    			<jsp:param value="getOne" name="action"/>
-	    			<jsp:param value="${purchaseCaseId}" name="purchaseCaseId"/>
-	    		</jsp:include>
+<%-- 	    		<jsp:include page="/PurchaseCaseServlet"> --%>
+<%-- 	    			<jsp:param value="getOne" name="action"/> --%>
+<%-- 	    			<jsp:param value="${purchaseCaseId}" name="purchaseCaseId"/> --%>
+<%-- 	    		</jsp:include> --%>
 	    		<span>${purchaseCaseId} - ${purchaseCase.store} / </span>
 	    	</c:forEach>
 	    	</div>
@@ -40,10 +39,22 @@
     <label for="inputEmail3" class="col-sm-2 control-label">運送方式：</label>
     	<div class="col-sm-10">
     	<select name="transportMethod">
-    		<option value="面交">面交</option>
-    		<option value="郵局">郵局</option>
-    		<option value="ezShip">ezShip</option>
-    		<option value="7-11">7-11</option>
+    		<c:choose>
+    		<c:when test="${sellCase.transportMethod=='面交'}"><option value="面交" selected="selected">面交</option></c:when>
+    		<c:otherwise><option value="面交">面交</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${sellCase.transportMethod=='郵局'}"><option value="郵局" selected="selected">郵局</option></c:when>
+    		<c:otherwise><option value="郵局">郵局</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${sellCase.transportMethod=='ezShip'}"><option value="ezShip" selected="selected">ezShip</option></c:when>
+    		<c:otherwise><option value="ezShip">ezShip</option></c:otherwise>
+    		</c:choose>
+    		<c:choose>
+    		<c:when test="${sellCase.transportMethod=='7-11'}"><option value="7-11">7-11</option></c:when>
+    		<c:otherwise><option value="7-11">7-11</option></c:otherwise>
+    		</c:choose>
     	</select>
     	</div>
     </div>
@@ -51,56 +62,56 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">收件人：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="addressee">
+    	<input type="text" name="addressee" value="${sellCase.addressee}">
     	</div>
     </div>
 
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">手機</label>
     	<div class="col-sm-10">
-    	<input type="text" name="phone">
+    	<input type="text" name="phone" value="${sellCase.phone}">
     	</div>
     </div>
         
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">地址/店名：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="address">
+    	<input type="text" name="address" value="${sellCase.address}">
     	</div>
     </div>
         
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Tracking number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="trackingNumber">
+    	<input type="text" name="trackingNumber" value="${sellCase.trackingNumber}">
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">運費：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="transportCost" value="0">請輸入數字!
+    	<input type="text" name="transportCost" value="${sellCase.transportCost}">請輸入數字!
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">總價：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="income" value="0">請輸入數字!
+    	<input type="text" name="income" value="${sellCase.income}">請輸入數字!
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">已收額：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="collected" value="0">請輸入數字!
+    	<input type="text" name="collected" value="${sellCase.collected}">請輸入數字!
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">備註：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="description">
+    	<input type="text" name="description" value="${sellCase.description}">
     	</div>
     </div>
         
@@ -108,7 +119,14 @@
     <div class="col-sm-offset-2 col-sm-10">
       <div class="checkbox">
         <label>
+          <c:choose>
+          <c:when test="${sellCase.isShipping==true}">
+          <input type="checkbox" name="isShipping" value="true" checked="checked"> 是否已出貨
+          </c:when>
+          <c:otherwise>
           <input type="checkbox" name="isShipping" value="true"> 是否已出貨
+          </c:otherwise>
+		  </c:choose>
         </label>
       </div>
     </div>
@@ -118,13 +136,19 @@
     <div class="col-sm-offset-2 col-sm-10">
       <div class="checkbox">
         <label>
+          <c:choose>
+          <c:when test="${sellCase.isChecked==true}">
+          <input type="checkbox" name="isChecked" value="true" checked="checked"> 是否已查收
+          </c:when>
+          <c:otherwise>
           <input type="checkbox" name="isChecked" value="true"> 是否已查收
+          </c:otherwise>
+		  </c:choose>
         </label>
       </div>
     </div>
   	</div>
   	
-	<c:if test="${param.error != null}">${param.error}</c:if>
 	<input type="hidden" name="action" value="create">
 	<div class="form-group">
 		<label for="inputEmail3" class="col-sm-2 control-label">
@@ -133,6 +157,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>修改進貨項目</title>
 </head>
-<c:import url="/header.jsp"/>
+<c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
 	<c:if test="${param.purchaseCaseId == null}">
 		<c:redirect context="/jersey" url="/purchaseCase/list.jsp" />
@@ -22,19 +22,18 @@
 		<p style="color: red">${error}</p>
 	</c:forEach>
 	
-	<c:if test="${param.purchaseCaseId != null}">
-		<jsp:include page="/PurchaseCaseServlet">
-			<jsp:param name="action" value="getOne" />
-			<jsp:param name="purchaseCaseId" value="${param.purchaseCaseId}" />
-		</jsp:include>
-	</c:if>
+<%-- 	<c:if test="${param.purchaseCaseId != null}"> --%>
+<%-- 		<jsp:include page="/PurchaseCaseServlet"> --%>
+<%-- 			<jsp:param name="action" value="getOne" /> --%>
+<%-- 			<jsp:param name="purchaseCaseId" value="${param.purchaseCaseId}" /> --%>
+<%-- 		</jsp:include> --%>
+<%-- 	</c:if> --%>
 
-	<c:forEach items="${sessionScope.errors}" var="error">
+	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p><br>
 	</c:forEach>
-	<c:remove var="errors" scope="session"/>
 	
-	<form action="/jersey/PurchaseCaseServlet?listOne=${param.listOne}" method="post" class="form-horizontal">
+	<form action="/jersey/PurchaseCaseServlet" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="update">
 
     <div class="form-group">
@@ -54,9 +53,9 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家名稱：</label>
     	<div class="col-sm-10">
-    	<jsp:include page="/StoreServlet">
-    		<jsp:param value="getStores" name="action"/>
-    	</jsp:include>
+<%--     	<jsp:include page="/StoreServlet"> --%>
+<%--     		<jsp:param value="getStores" name="action"/> --%>
+<%--     	</jsp:include> --%>
     	<select name="store">
     		<c:forEach items="${requestScope.stores}" var="vo">
     			<c:choose>
@@ -107,9 +106,9 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">託運公司：</label>
     	<div class="col-sm-10">
-    	<jsp:include page="/StoreServlet">
-    		<jsp:param value="getShippingCompanys" name="action"/>
-    	</jsp:include>
+<%--     	<jsp:include page="/StoreServlet"> --%>
+<%--     		<jsp:param value="getShippingCompanys" name="action"/> --%>
+<%--     	</jsp:include> --%>
     	<select name="shippingCompany">
     		<c:forEach items="${requestScope.shippingCompanys}" var="vo">
     			<c:choose>
@@ -200,6 +199,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

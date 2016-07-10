@@ -14,20 +14,26 @@
 <title>新增商家</title>
 </head>
 <body>
-<c:import url="/header.jsp"/>
-	<c:if test="${param.action=='create'}">
-    	<jsp:useBean id="store" class="store.model.StoreVO" scope="request"/>
-    	<jsp:setProperty property="*" name="store"/>
-    	<jsp:forward page="/StoreServlet"/>
-    </c:if>
+<c:import url="/WEB-INF/pages/header.jsp"/>
+<%-- 	<c:if test="${param.action=='create'}"> --%>
+<%--     	<jsp:useBean id="store" class="store.model.StoreVO" scope="request"/> --%>
+<%--     	<jsp:setProperty property="*" name="store"/> --%>
+<%--     	<jsp:forward page="/StoreServlet"/> --%>
+<%--     </c:if> --%>
 	<br/><br/>
 	<form action="" method="post" class="form-horizontal">
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家類型：</label>
     	<div class="col-sm-10">
     	<select name="type" class="form-control" style="width: 14%">
-			<option value="store">商店</option>
-			<option value="shippingCompany">託運公司</option>
+    		<c:if test="${store.type=='store'}">
+    		<option value="store" selected="selected">商店</option>
+    		<option value="shippingCompany">託運公司</option>
+    		</c:if>
+    		<c:if test="${store.type=='shippingCompany'}">
+    		<option value="store">商店</option>
+    		<option value="shippingCompany" selected="selected">託運公司</option>
+    		</c:if>
     	</select>
     	</div>
     </div>
@@ -47,6 +53,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

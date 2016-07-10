@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>修改商家</title>
 </head>
-<c:import url="/header.jsp"/>
+<c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
 	<c:if test="${param.action=='updateOne'}">
 	<jsp:useBean id="store" class="store.model.StoreVO" scope="request"/>
@@ -67,6 +67,6 @@
 	</div>
 	</form>
 
-<c:import url="/footer.jsp"></c:import>
+<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
 </body>
 </html>

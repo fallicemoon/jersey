@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import store.model.StoreDAO;
 import store.model.StoreVO;
 
 public class StoreServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String forwardUrl = "/WEB-INF/StoreServlet";
+	private final String forwardUrl = "/WEB-INF/pages/store";
 	private final String forwardListUrl = forwardUrl + "/list.jsp";
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
@@ -28,11 +30,21 @@ public class StoreServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		StoreDAO storeDAO = new StoreDAO();
 
-		if ("getAll".equals(action)) {
+		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("storeList", storeDAO.getAll());
+			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			return;
 		} else if ("getOne".equals(action)) {
-			Integer storeId = Integer.valueOf(request.getParameter("storeId"));
-			request.setAttribute("store", storeDAO.getOne(storeId));
+			String forwardUrl;
+			try {
+				Integer storeId = Integer.valueOf(request.getParameter("storeId"));
+				request.setAttribute("store", storeDAO.getOne(storeId));
+				forwardUrl = forwardUpdateUrl;
+			} catch (NumberFormatException e) {
+				forwardUrl = forwardAddUrl;
+			}
+			request.getRequestDispatcher(forwardUrl).forward(request, response);
+			return;
 		} else if ("create".equals(action)) {
 			StoreVO storeVO = (StoreVO) request.getAttribute("store");
 			storeDAO.create(storeVO);

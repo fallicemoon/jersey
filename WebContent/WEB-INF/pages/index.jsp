@@ -10,8 +10,8 @@
 <body>
 <div class="container-fluid">
   <div class="row">
-    <img src="/jersey/pic/nazi.png" style="height:100px">
-  	<c:import url="/header.jsp"/>
+    <img src="pic/nazi.png" style="height:100px">
+  	<c:import url="/WEB-INF/pages/header.jsp"/>
   </div>
 </div>
 

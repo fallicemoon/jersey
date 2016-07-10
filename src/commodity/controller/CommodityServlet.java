@@ -20,10 +20,12 @@ import commodity.model.CommodityVO;
 
 public class CommodityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final String sendResponseUrl = "/jersey/CommodityServlet";
 	private final String forwardUrl = "/WEB-INF/pages/commodity";
 	private final String forwardListUrl = forwardUrl + "/list.jsp";
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
+	private final String forwardListOneUrl = "/WEB-INF/pages/listOne.jsp";
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,15 +37,18 @@ public class CommodityServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-		LinkedHashSet<String> errors = new LinkedHashSet<String>();
 		CommodityService service = new CommodityService();
 
 		if (StringUtils.isEmpty(action)) {
 			List<CommodityVO> commodityList = service.getAll();			
-			addRule(request, commodityList);	
+			addRule(request, commodityList);
+			
+			//response.setHeader("Cache-Control", "no-store");
+			
 			request.setAttribute("commodityList", commodityList);
 			request.setAttribute("commodityIdPictureCountMap", service.getCommodityIdPictureCountMap());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			return;
 		} else if ("getOne".equals(action)) {
 			//用在create和update的時候去DB取出資料
 			try {
@@ -53,9 +58,11 @@ public class CommodityServlet extends HttpServlet {
 			} catch (NumberFormatException e) {
 				//create
 				request.getRequestDispatcher(forwardAddUrl).forward(request, response);
+				return;
 			}
 			//update
 			request.getRequestDispatcher(forwardUrl + "/update.jsp").forward(request, response);
+			return;
 		} else if ("getByRule".equals(action)) {
 			String itemName = request.getParameter("itemName");
 			String player = request.getParameter("player");
@@ -98,26 +105,14 @@ public class CommodityServlet extends HttpServlet {
 
 			request.setAttribute("commodityList", service.getByRule(rule));
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			return;
 		} else if ("create".equals(action)) {
 				CommodityVO commodityVO = new CommodityVO();
+				LinkedHashSet<String> errors = new LinkedHashSet<String>();
 
 				commodityVO.setItemName(request.getParameter("itemName").trim());
 				commodityVO.setQty(Integer.valueOf(1));
 				commodityVO.setStyle(request.getParameter("style").trim());
-				try {
-					commodityVO.setCost(Integer.valueOf(request.getParameter("cost").trim()));
-				} catch (NumberFormatException e) {
-					errors.add("成本需輸入數字!");
-				}
-				try {
-					commodityVO.setSellPrice(Integer.valueOf(request.getParameter("sellPrice").trim()));
-				} catch (NumberFormatException e) {
-					errors.add("售價需輸入數字!");
-				}
-				if (!errors.isEmpty()) {
-					request.setAttribute("errors", errors);
-					request.getRequestDispatcher(forwardAddUrl).forward(request, response);
-				}
 				commodityVO.setLink(request.getParameter("link").trim());
 				commodityVO.setPlayer(request.getParameter("player").trim());
 				commodityVO.setNumber(request.getParameter("number").trim());
@@ -134,12 +129,36 @@ public class CommodityServlet extends HttpServlet {
 				commodityVO.setOwner(request.getParameter("owner").trim());
 				commodityVO.setSellPlatform(request.getParameter("sellPlatform").trim());
 				commodityVO.setIsStored(Boolean.valueOf(true));
+				try {
+					commodityVO.setCost(Integer.valueOf(request.getParameter("cost").trim()));
+				} catch (NumberFormatException e) {
+					errors.add("成本需輸入數字!");
+				}
+				try {
+					commodityVO.setSellPrice(Integer.valueOf(request.getParameter("sellPrice").trim()));
+				} catch (NumberFormatException e) {
+					errors.add("售價需輸入數字!");
+				}
+				if (!errors.isEmpty()) {
+					request.setAttribute("errors", errors);
+					request.setAttribute("commodity", commodityVO);
+					request.getRequestDispatcher(forwardAddUrl).forward(request, response);
+					return;
+				}
+
 			
 			service.create(commodityVO);
+			
+			List<CommodityVO> list = new ArrayList<>();
+			list.add(commodityVO);
+			request.setAttribute("commodityList", list);
+			
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			return;
 		} else if ("update".equals(action)) {
 			Integer commodityId = Integer.valueOf(request.getParameter("commodityId").trim());
 			CommodityVO commodityVO = new CommodityVO();
+			LinkedHashSet<String> errors = new LinkedHashSet<String>();
 			commodityVO.setCommodityId(Integer.valueOf(request.getParameter("commodityId").trim()));
 			commodityVO.setItemName(request.getParameter("itemName").trim());
 			try {
@@ -161,6 +180,7 @@ public class CommodityServlet extends HttpServlet {
 			if (!errors.isEmpty()) {
 				request.setAttribute("commodityId", commodityId);
 				request.getRequestDispatcher(forwardUpdateUrl).forward(request, response);
+				return;
 			}
 			commodityVO.setLink(request.getParameter("link").trim());
 			commodityVO.setPlayer(request.getParameter("player").trim());
@@ -184,8 +204,11 @@ public class CommodityServlet extends HttpServlet {
 			List<CommodityVO> list = new ArrayList<>();
 			list.add(commodityVO);
 			request.setAttribute("commodityList", list);
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			
+			request.setAttribute("title", "商品:" + commodityVO.getCommodityId() + "/" + commodityVO.getItemName());
+			
+			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			return;
 		} else if ("delete".equals(action)) {
 			String[] commodityIds = request.getParameterValues("commodityIds");
 			if (commodityIds != null) {
@@ -195,7 +218,8 @@ public class CommodityServlet extends HttpServlet {
 				}
 				service.delete(ids);
 			}
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			response.sendRedirect(sendResponseUrl);
+			return;
 		} else if ("copy".equals(action)) {
 			String[] commodityIds = request.getParameterValues("commodityIds");
 			if ((commodityIds != null) && (commodityIds.length == 1)) {
@@ -204,6 +228,7 @@ public class CommodityServlet extends HttpServlet {
 				service.create(commodityVO);
 			}
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			return;
 		}
 	}
 
