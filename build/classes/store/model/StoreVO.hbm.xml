@@ -9,7 +9,12 @@
             <generator class="identity"/>
         </id>
         
-        <property name="type" column="type" />
+        <property name="type" column="type">
+        	<type name="org.hibernate.type.EnumType">
+        		<param name="enumClass">tools.JerseyEnum$StoreType</param>
+        	</type>
+        </property>
+        
         <property name="name" column="name" />
         
     </class>

@@ -14,27 +14,28 @@
 </head>
 <c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
-	<c:if test="${param.action=='updateOne'}">
-	<jsp:useBean id="store" class="store.model.StoreVO" scope="request"/>
-	<jsp:setProperty property="*" name="store"/>
-	<jsp:forward page="/StoreServlet">
-		<jsp:param value="update" name="action"/>
-	</jsp:forward>
-	</c:if>
+<%-- 	<c:if test="${param.action=='updateOne'}"> --%>
+<%-- 	<jsp:useBean id="store" class="store.model.StoreVO" scope="request"/> --%>
+<%-- 	<jsp:setProperty property="*" name="store"/> --%>
+<%-- 	<jsp:forward page="/StoreServlet"> --%>
+<%-- 		<jsp:param value="update" name="action"/> --%>
+<%-- 	</jsp:forward> --%>
+<%-- 	</c:if> --%>
 	
-	<c:if test="${param.storeId == null}">
-		<c:redirect context="/jersey" url="/store/list.jsp" />
-	</c:if>
+<%-- 	<c:if test="${param.storeId == null}"> --%>
+<%-- 		<c:redirect context="/jersey" url="/store/list.jsp" /> --%>
+<%-- 	</c:if> --%>
 	<br/><br/>
 	
-	<c:if test="${param.storeId != null}">
-		<jsp:include page="/StoreServlet">
-			<jsp:param name="action" value="getOne" />
-			<jsp:param name="storeId" value="${param.storeId}" />
-		</jsp:include>
-	</c:if>
+<%-- 	<c:if test="${param.storeId != null}"> --%>
+<%-- 		<jsp:include page="/StoreServlet"> --%>
+<%-- 			<jsp:param name="action" value="getOne" /> --%>
+<%-- 			<jsp:param name="storeId" value="${param.storeId}" /> --%>
+<%-- 		</jsp:include> --%>
+<%-- 	</c:if> --%>
 
-	<form action="/jersey/store/update.jsp" method="post" class="form-horizontal">
+	<form action="/jersey/StoreServlet" method="post" class="form-horizontal">
+	<input type="hidden" name="action" value="update">
     <input type="hidden" name="storeId" value="${store.storeId}">
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家類別:</label>
@@ -59,7 +60,6 @@
     	</div>
     </div>
 
-	<input type="hidden" name="action" value="updateOne">
 	<div class="form-group">
 		<label for="inputEmail3" class="col-sm-2 control-label">
 			<button type="submit" class="btn btn-warning" >修改</button>

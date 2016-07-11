@@ -118,46 +118,7 @@ public class OtherServlet extends HttpServlet {
 				request.setAttribute("sellCaseList", sellCaseList);
 
 				request.getRequestDispatcher("/listOne.jsp").forward(request, response);
-			} else if ("accounting".equals(this.action)) {
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-				String startString = request.getParameter("start");
-				String endString = request.getParameter("end");
-				errors = new LinkedHashSet<String>();
-				if (startString == null)
-					this.errors.add("請選擇開始時間");
-				if (endString == null)
-					this.errors.add("請選擇結束時間");
-
-				Date start = new Date();
-				Date end = new Date();
-				try {
-					start = sdf.parse(request.getParameter("start").replaceAll("AM", "上午").replaceAll("PM", "下午"));
-				} catch (ParseException e) {
-					this.errors.add("開始時間請用下拉式選單選擇，勿自行輸入");
-				}
-				try {
-					end = sdf.parse(request.getParameter("end").replaceAll("AM", "上午").replaceAll("PM", "下午"));
-				} catch (ParseException e) {
-					this.errors.add("結束時間請用下拉式選單選擇，勿自行輸入");
-				}
-
-				if (!this.errors.isEmpty()) {
-					this.session = request.getSession();
-					this.session.setAttribute("errors", this.errors);
-					response.sendRedirect("/jersey/accounting/datePicker.jsp");
-					return;
-				}
-
-				SellCaseService sellCaseService = new SellCaseService();
-				List<SellCaseVO> list = sellCaseService.getBetweenCloseTime(start, end);
-				request.setAttribute("start", sdf.format(start));
-				request.setAttribute("end", sdf.format(end));
-				request.setAttribute("sellCaseList", list);
-				for(SellCaseVO sellCaseVO:list){
-					System.out.println(sellCaseVO.getSellCaseId());
-				}
-				request.getRequestDispatcher("/accounting/accounting.jsp").forward(request, response);
-			}
+			} 
 		}
 	}
 }

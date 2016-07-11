@@ -14,9 +14,9 @@
 </head>
 <c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
-	<c:if test="${param.purchaseCaseId == null}">
-		<c:redirect context="/jersey" url="/purchaseCase/list.jsp" />
-	</c:if>
+<%-- 	<c:if test="${param.purchaseCaseId == null}"> --%>
+<%-- 		<c:redirect context="/jersey" url="/purchaseCase/list.jsp" /> --%>
+<%-- 	</c:if> --%>
 	<br/><br/>
 	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>

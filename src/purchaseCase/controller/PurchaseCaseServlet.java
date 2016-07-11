@@ -164,9 +164,10 @@ public class PurchaseCaseServlet extends HttpServlet {
 			return;
 		} else if ("update".equals(action)) {
 			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
-			PurchaseCaseVO purchaseCaseVO = service.getOne(purchaseCaseId);
+			PurchaseCaseVO purchaseCaseVO = new PurchaseCaseVO();
 			LinkedHashSet<String> errors = new LinkedHashSet<String>();
-
+			purchaseCaseVO.setPurchaseCaseId(purchaseCaseId);
+			
 			String store = request.getParameter("store").trim();
 			String progress = request.getParameter("progress").trim();
 			String shippingCompany = request.getParameter("shippingCompany").trim();

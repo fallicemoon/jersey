@@ -2,6 +2,10 @@ package purchaseCase.model;
 
 public class PurchaseCaseWithStoreNameVO extends PurchaseCaseVO {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6978639835136696049L;
 	private String storeName;
 	private String shippingCompanyName;
 	

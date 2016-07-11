@@ -1,10 +1,15 @@
 package picture.model;
 
+import java.io.Serializable;
 import java.sql.Blob;
 
 import commodity.model.CommodityVO;
 
-public class PictureVO {
+public class PictureVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6563278643281171369L;
 	private Integer pictureId;
 	private CommodityVO commodityVO;
 	private Integer sequenceId;

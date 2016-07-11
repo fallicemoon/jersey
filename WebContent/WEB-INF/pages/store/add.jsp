@@ -21,12 +21,13 @@
 <%--     	<jsp:forward page="/StoreServlet"/> --%>
 <%--     </c:if> --%>
 	<br/><br/>
-	<form action="" method="post" class="form-horizontal">
+	<form action="/jersey/StoreServlet" method="post" class="form-horizontal">
+	<input type="hidden" name="action" value="create">
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家類型：</label>
     	<div class="col-sm-10">
     	<select name="type" class="form-control" style="width: 14%">
-    		<c:if test="${store.type=='store'}">
+    		<c:if test="${store.type!='store'}">
     		<option value="store" selected="selected">商店</option>
     		<option value="shippingCompany">託運公司</option>
     		</c:if>

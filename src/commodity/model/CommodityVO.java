@@ -1,8 +1,14 @@
 package commodity.model;
 
+import java.io.Serializable;
+
 import purchaseCase.model.PurchaseCaseVO;
 
-public class CommodityVO {
+public class CommodityVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5376904358224813395L;
 	private Integer commodityId;
 	private PurchaseCaseVO purchaseCaseVO;
 	private String itemName;

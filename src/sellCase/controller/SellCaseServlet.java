@@ -126,8 +126,9 @@ public class SellCaseServlet extends HttpServlet {
 			return;
 		} else if ("update".equals(action)) {
 			Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
-			SellCaseVO sellCaseVO = service.getOne(sellCaseId);
+			SellCaseVO sellCaseVO = new SellCaseVO();
 
+			sellCaseVO.setSellCaseId(sellCaseId);
 			sellCaseVO.setAddressee(request.getParameter("addressee").trim());
 			sellCaseVO.setPhone(request.getParameter("phone").trim());
 			sellCaseVO.setAddress(request.getParameter("address").trim());

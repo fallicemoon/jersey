@@ -44,7 +44,7 @@
 		<input type="checkbox" name="storeIds" value="${vo.storeId}">
   	  </td>
   	  <td>
-		<a href="/jersey/store/update.jsp?storeId=${vo.storeId}"><button type="button" class="btn btn-warning">修改</button></a>
+		<a href="/jersey/StoreServlet?action=getOne&storeId=${vo.storeId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  <td>${vo.storeId} - <c:out value="${vo.name}" /></td>
   	  <c:if test="${vo.type=='store'}"><td>商店</td></c:if>

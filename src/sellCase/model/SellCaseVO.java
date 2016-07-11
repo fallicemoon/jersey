@@ -1,10 +1,15 @@
 package sellCase.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import purchaseCase.model.PurchaseCaseVO;
 
-public class SellCaseVO {
+public class SellCaseVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2114817843335424889L;
 	private Integer sellCaseId;
 	private String addressee;
 	private String phone;

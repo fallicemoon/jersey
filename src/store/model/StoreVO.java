@@ -1,8 +1,16 @@
 package store.model;
 
-public class StoreVO {
+import java.io.Serializable;
+
+import tools.JerseyEnum.StoreType;
+
+public class StoreVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4628934097511568808L;
 	private Integer storeId;
-	private String type;
+	private StoreType type;
 	private String name;
 
 	public Integer getStoreId() {
@@ -13,11 +21,11 @@ public class StoreVO {
 		this.storeId = storeId;
 	}
 
-	public String getType() {
+	public StoreType getType() {
 		return this.type;
 	}
 
-	public void setType(String type) {
+	public void setType(StoreType type) {
 		this.type = type;
 	}
 

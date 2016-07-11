@@ -2,6 +2,10 @@ package sellCase.model;
 
 public class SellCaseWithBenefitVo extends SellCaseVO {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6417685656982413917L;
 	private Integer benefit;
 	private Integer estimateBenefit;
 	private Integer costs;
