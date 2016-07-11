@@ -1,6 +1,6 @@
 package sellCase.model;
 
-public class SellCaseWithBenefitVo extends SellCaseVO {
+public class SellCaseWithBenefitVO extends SellCaseVO {
 	
 	/**
 	 * 

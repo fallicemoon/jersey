@@ -1,6 +1,7 @@
 package purchaseCase.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class PurchaseCaseVO implements Serializable{
 	private Integer cost;
 	private Integer agentCost;
 	private String description;
-	private String time;
+	private Date time;
 	private Set<CommodityVO> commoditys = new LinkedHashSet<CommodityVO>();
 
 	public Set<CommodityVO> getCommoditys() {
@@ -38,11 +39,11 @@ public class PurchaseCaseVO implements Serializable{
 		this.commoditys = commoditys;
 	}
 
-	public String getTime() {
+	public Date getTime() {
 		return this.time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 

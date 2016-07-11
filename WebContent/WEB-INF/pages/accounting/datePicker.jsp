@@ -11,12 +11,12 @@
 <body>
 	<c:import url="/WEB-INF/pages/header.jsp"/>
 	<br><br><br>
-	<c:forEach items="${sessionScope.errors}" var="error">
+	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p><br>
 	</c:forEach>
-	<c:remove var="errors" scope="session"/>
+
 	
-	<form action="/jersey/OtherServlet" method="POST">
+	<form action="/jersey/AccountingServlet" method="POST">
 	<div style="length:100%; bottom:9px; text-align:center;">
 	<div class="container">
 	    <div class='col-md-5'>

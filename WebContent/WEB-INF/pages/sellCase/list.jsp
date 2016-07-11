@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -89,7 +90,7 @@
       <th>地址/店名</th>
       <th>Tracking number</th>
       <th>運費</th>
-      <th>出貨時間</th>
+      <th>時間</th>
       <th>備註</th>
       <th>已收額</th>
       <th>結案時間</th>
@@ -117,10 +118,10 @@
   	  <td><c:out value="${vo.address}" /></td>
   	  <td><c:out value="${vo.trackingNumber}" /></td>
   	  <td>${vo.transportCost}</td>
-  	  <td>${vo.shippingTime}</td>
+  	  <td><fmt:formatDate value="${vo.shippingTime}" pattern="yyyy/MM/dd hh:mm:ss" /></td>
   	  <td><c:out value="${vo.description}" /></td>
   	  <td>${vo.collected}</td>
-  	  <td>${vo.closeTime}</td>
+  	  <td><fmt:formatDate value="${vo.closeTime}" pattern="yyyy/MM/dd hh:mm:ss" /></td>
   	</tr>
   	</c:forEach>
   </table>

@@ -12,16 +12,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import sellCase.model.SellCaseService;
-import sellCase.model.SellCaseVO;
+import sellCase.model.SellCaseWithBenefitVO;
 
 
 public class AccountingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private final String forwardUrl = "/WEB-INF/pages/accounting";
-	
-       
+	private final String forwardDatePickerUrl = forwardUrl + "/datePicker.jsp";
+	private final String forwardAccountingUrl = forwardUrl + "/accounting.jsp";
+    
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
@@ -32,7 +35,10 @@ public class AccountingServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		LinkedHashSet<String> errors = new LinkedHashSet<>();
 		
-		if ("accounting".equals(action)) {
+		if (StringUtils.isEmpty(action)) {
+			request.getRequestDispatcher(forwardDatePickerUrl).forward(request, response);
+			return;
+		} else if ("accounting".equals(action)) {
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 			String startString = request.getParameter("start");
 			String endString = request.getParameter("end");
@@ -57,17 +63,18 @@ public class AccountingServlet extends HttpServlet {
 
 			if (!errors.isEmpty()) {
 				request.setAttribute("errors", errors);
-				response.sendRedirect("/jersey/accounting/datePicker.jsp");
+				request.getRequestDispatcher(forwardDatePickerUrl).forward(request, response);
 				return;
 			}
 
 			SellCaseService sellCaseService = new SellCaseService();
-			List<SellCaseVO> list = sellCaseService.getBetweenCloseTime(start, end);
+			List<SellCaseWithBenefitVO> list = sellCaseService.getBetweenCloseTime(start, end);
 			request.setAttribute("start", sdf.format(start));
 			request.setAttribute("end", sdf.format(end));
 			request.setAttribute("sellCaseList", list);
+			request.setAttribute("totalBenefit", sellCaseService.getTotalBenefit(list));
 
-			request.getRequestDispatcher("/accounting/accounting.jsp").forward(request, response);
+			request.getRequestDispatcher(forwardAccountingUrl).forward(request, response);
 		}
 	}
 

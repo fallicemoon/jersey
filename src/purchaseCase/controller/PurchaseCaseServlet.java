@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -147,8 +148,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 				return;
 			}
 
-			String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Long.valueOf(System.currentTimeMillis()));
-			purchaseCaseVO.setTime(time);
+			purchaseCaseVO.setTime(new Date());
 
 			Integer purchaseCaseId = service.create(purchaseCaseVO);
 			HttpSession session = request.getSession();

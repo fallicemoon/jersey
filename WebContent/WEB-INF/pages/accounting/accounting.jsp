@@ -19,33 +19,31 @@
 			<th>實際利潤</th>
 		</tr>
 		</thead>
-		<c:set var="totalBenefit" value="0" scope="page"/>
 		<c:forEach items="${requestScope.sellCaseList}" var="sellCase">
 		<tr>
 		<td>${sellCase.sellCaseId}  ${sellCase.addressee}</td>
-		<jsp:include page="/SellCaseServlet">
-  	  		<jsp:param value="getOne" name="action"/>
-  	  		<jsp:param value="${sellCase.sellCaseId}" name="sellCaseId"/>
-  	  	</jsp:include>
-  	  	<td>已收額${sellCase.collected} - 成本${requestScope.costs} - 國際運費${requestScope.agentCosts} - 國內運費${sellCase.transportCost} = 
-  	  	  <c:if test="${requestScope.benefit < 0}"><span style="color: red">${requestScope.benefit}</span></c:if>
-		  <c:if test="${requestScope.benefit >= 0}"><span style="color: blue">${requestScope.benefit}</span></c:if>
+<%-- 		<jsp:include page="/SellCaseServlet"> --%>
+<%--   	  		<jsp:param value="getOne" name="action"/> --%>
+<%--   	  		<jsp:param value="${sellCase.sellCaseId}" name="sellCaseId"/> --%>
+<%--   	  	</jsp:include> --%>
+  	  	<td>已收額${sellCase.collected} - 成本${sellCase.costs} - 國際運費${sellCase.agentCosts} - 國內運費${sellCase.transportCost} = 
+  	  	  <c:if test="${sellCase.benefit < 0}"><span style="color: red">${sellCase.benefit}</span></c:if>
+		  <c:if test="${sellCase.benefit >= 0}"><span style="color: blue">${sellCase.benefit}</span></c:if>
 	  	</td>
 		</tr>
-		<c:set var="totalBenefit" value="${pageScope.totalBenefit+requestScope.benefit}" scope="page"/>
 		</c:forEach>
 	</table>
 	
   	<div style="length:100%; bottom:9px; text-align:center;">
 	<div>
-	<h2>總利潤 : ${pageScope.totalBenefit}元</h2>
+	<h2>總利潤 : ${requestScope.totalBenefit}元</h2>
   	</div>
   	</div>
   	
   <br><br><br>
   <div style="length:100%; bottom:9px; text-align:center;">
 		<div>
-  		<a href="/jersey/accounting/datePicker.jsp"> <button type="button" class="btn btn-primary btn-lg">時間選單</button></a>
+  		<a href="/jersey/AccountingServlet"> <button type="button" class="btn btn-primary btn-lg">時間選單</button></a>
   		</div>
   </div>
 

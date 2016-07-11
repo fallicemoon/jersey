@@ -22,7 +22,7 @@ public class SellCaseVO implements Serializable{
 	private Integer transportCost;
 	private Integer collected;
 	private Integer uncollected;
-	private String shippingTime;
+	private Date shippingTime;
 	private Date closeTime;
 	private Boolean isChecked;
 	private Set<PurchaseCaseVO> purchaseCases;
@@ -43,11 +43,11 @@ public class SellCaseVO implements Serializable{
 		this.isChecked = isChecked;
 	}
 
-	public String getShippingTime() {
+	public Date getShippingTime() {
 		return this.shippingTime;
 	}
 
-	public void setShippingTime(String shippingTime) {
+	public void setShippingTime(Date shippingTime) {
 		this.shippingTime = shippingTime;
 	}
 

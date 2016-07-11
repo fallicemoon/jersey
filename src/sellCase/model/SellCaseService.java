@@ -1,7 +1,5 @@
 package sellCase.model;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,10 +17,10 @@ public class SellCaseService {
 		this.dao = new SellCaseDAO();
 	}
 
-	public List<SellCaseWithBenefitVo> getAll() {
+	public List<SellCaseWithBenefitVO> getAll() {
 		List<SellCaseVO> oldList = this.dao.getAll();
-		List<SellCaseWithBenefitVo> newList = new ArrayList<>();
-		SellCaseWithBenefitVo sellCaseWithBenefitVo;
+		List<SellCaseWithBenefitVO> newList = new ArrayList<>();
+		SellCaseWithBenefitVO sellCaseWithBenefitVo;
 		for (SellCaseVO sellCaseVO : oldList) {
 			sellCaseWithBenefitVo = getSellCaseWithBenefitVo(sellCaseVO);
 			newList.add(sellCaseWithBenefitVo);
@@ -38,13 +36,10 @@ public class SellCaseService {
 		vo.setUncollected(vo.getIncome() - vo.getCollected());
 		
 		if (vo.getIsShipping()) {
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			vo.setShippingTime(sdf.format(timestamp));
+			vo.setShippingTime(new Date());
 		}
 		
 		if ((vo.getUncollected() == 0) && (vo.getIsChecked())) {
-			// TODO 測試
 			vo.setCloseTime(new Date());
 		}
 		
@@ -55,13 +50,10 @@ public class SellCaseService {
 		vo.setUncollected(vo.getIncome() - vo.getCollected());
 		
 		if (vo.getIsShipping()) {
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			vo.setShippingTime(sdf.format(timestamp));
+			vo.setShippingTime(new Date());
 		}
 		
 		if ((vo.getUncollected() == 0) && (vo.getIsChecked())) {
-			// TODO 測試
 			vo.setCloseTime(new Date());
 		}
 		return this.dao.update(vo);
@@ -105,9 +97,14 @@ public class SellCaseService {
 		return this.dao.getNotClosed();
 	}
 
-	public List<SellCaseVO> getBetweenCloseTime(Date start, Date end) {
+	public List<SellCaseWithBenefitVO> getBetweenCloseTime(Date start, Date end) {
 		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<SellCaseVO> sellCaseList = dao.getBetweenCloseTime(start, end);
+		List<SellCaseWithBenefitVO> list = new ArrayList<>();
+		for (SellCaseVO sellCaseVO : sellCaseList) {
+			list.add(getSellCaseWithBenefitVo(sellCaseVO));
+		}
+		return list;
 //		List<SellCaseVO> list = new ArrayList<SellCaseVO>();
 //
 //		for (Object[] object : sellCaseList) {
@@ -134,13 +131,11 @@ public class SellCaseService {
 //			else
 //				sellCaseVO.setIsChecked(Boolean.valueOf(false));
 //			list.add(sellCaseVO);
-//		}
-
-		return sellCaseList;
+//		}		
 	}
 	
-	public SellCaseWithBenefitVo getSellCaseWithBenefitVo (SellCaseVO sellCaseVO) {
-		SellCaseWithBenefitVo sellCaseWithBenefitVo = new SellCaseWithBenefitVo();
+	public SellCaseWithBenefitVO getSellCaseWithBenefitVo (SellCaseVO sellCaseVO) {
+		SellCaseWithBenefitVO sellCaseWithBenefitVo = new SellCaseWithBenefitVO();
 		Tools.copyBeanProperties(sellCaseVO, sellCaseWithBenefitVo);
 		
 		Integer costs = 0;
@@ -158,6 +153,16 @@ public class SellCaseService {
 		sellCaseWithBenefitVo.setAgentCosts(agentCosts);
 		return sellCaseWithBenefitVo;
 	}
+	
+	public Integer getTotalBenefit (List<SellCaseWithBenefitVO> list) {
+		Integer totalBenefit = 0;
+		for (SellCaseWithBenefitVO sellCaseWithBenefitVO : list) {
+			totalBenefit+=sellCaseWithBenefitVO.getBenefit();
+		}
+		return totalBenefit;
+	}
+	
+	
 	
 	
 	

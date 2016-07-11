@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import purchaseCase.model.PurchaseCaseVO;
 import sellCase.model.SellCaseService;
 import sellCase.model.SellCaseVO;
-import sellCase.model.SellCaseWithBenefitVo;
+import sellCase.model.SellCaseWithBenefitVO;
 
 public class SellCaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -119,7 +119,7 @@ public class SellCaseServlet extends HttpServlet {
 				service.addSellCaseIdToPurchaseCases(sellCaseId, purchaseCaseIds);
 			session.removeAttribute("purchaseCaseIds");
 
-			List<SellCaseWithBenefitVo> sellCaseList = new ArrayList<>();
+			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
 			sellCaseList.add(service.getSellCaseWithBenefitVo(sellCaseVO));
 			request.setAttribute("sellCaseList", sellCaseList);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
@@ -177,7 +177,7 @@ public class SellCaseServlet extends HttpServlet {
 			// String page = request.getParameter("page");
 			// response.sendRedirect("/jersey/sellCase/list.jsp?action=getAll&page="
 			// + page);
-			List<SellCaseWithBenefitVo> sellCaseList = new ArrayList<>();
+			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
 			sellCaseList.add(service.getSellCaseWithBenefitVo(sellCaseVO));
 			request.setAttribute("sellCaseList", sellCaseList);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
