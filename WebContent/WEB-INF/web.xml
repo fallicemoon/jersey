@@ -146,4 +146,14 @@
     <servlet-name>AccountingServlet</servlet-name>
     <url-pattern>/AccountingServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>TripleServlet</display-name>
+    <servlet-name>TripleServlet</servlet-name>
+    <servlet-class>triple.controller.TripleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TripleServlet</servlet-name>
+    <url-pattern>/TripleServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

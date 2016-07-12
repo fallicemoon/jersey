@@ -14,8 +14,8 @@ public class PurchaseCaseService {
 		this.dao = new PurchaseCaseDAO();
 	}
 
-	public List<PurchaseCaseWithStoreNameVO> getAll() {
-		return dao.getAllWithStoreName();
+	public List<PurchaseCaseVO> getAll() {
+		return dao.getAll();
 	}
 
 	public List<PurchaseCaseVO> getAllOfNotComplete() {
@@ -42,7 +42,7 @@ public class PurchaseCaseService {
 		PurchaseCaseVO vo = this.dao.getOne(id);
 		if (vo != null)
 			return vo.getCommoditys();
-		return new HashSet();
+		return new HashSet<>();
 	}
 
 	public List<CommodityVO> getCommoditysByPurchaseCaseIdIsNull() {
@@ -62,7 +62,3 @@ public class PurchaseCaseService {
 	}
 }
 
-/*
- * Location: C:\Users\fallicemoon\Desktop\jersey\WEB-INF\classes\ Qualified
- * Name: purchaseCase.model.PurchaseCaseService JD-Core Version: 0.6.2
- */

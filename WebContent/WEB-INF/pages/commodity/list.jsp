@@ -149,7 +149,7 @@
   	  </td>
   	  <c:if test="${not empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCountMap[vo.commodityId]}</button></a></td></c:if> 
   	  <c:if test="${empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
-  	  <td><a href="/jersey/OtherServlet?action=commodity&commodityId=${vo.commodityId}">${vo.commodityId} - <c:out value="${vo.itemName}" /></a>
+  	  <td><a href="/jersey/TripleServlet?action=commodity&commodityId=${vo.commodityId}">${vo.commodityId} - <c:out value="${vo.itemName}" /></a>
   	  		<c:if test="${!empty vo.link}"><a href="${vo.link}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.link}"></c:if></td>
   	  <td><c:out value="${vo.qty}" /></td>

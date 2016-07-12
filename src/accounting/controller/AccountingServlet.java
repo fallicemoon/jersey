@@ -24,7 +24,7 @@ public class AccountingServlet extends HttpServlet {
 	private final String forwardUrl = "/WEB-INF/pages/accounting";
 	private final String forwardDatePickerUrl = forwardUrl + "/datePicker.jsp";
 	private final String forwardAccountingUrl = forwardUrl + "/accounting.jsp";
-    
+    private SellCaseService sellCaseService = new SellCaseService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
@@ -66,8 +66,7 @@ public class AccountingServlet extends HttpServlet {
 				request.getRequestDispatcher(forwardDatePickerUrl).forward(request, response);
 				return;
 			}
-
-			SellCaseService sellCaseService = new SellCaseService();
+			
 			List<SellCaseWithBenefitVO> list = sellCaseService.getBetweenCloseTime(start, end);
 			request.setAttribute("start", sdf.format(start));
 			request.setAttribute("end", sdf.format(end));

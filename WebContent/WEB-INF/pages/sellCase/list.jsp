@@ -52,7 +52,7 @@
   	  <td>
   	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-  	  <td><a href="/jersey/OtherServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
+  	  <td><a href="/jersey/TripleServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
   	  <td>${vo.income}</td>
   	  <c:if test="${vo.isShipping}"><td>是</td></c:if>
   	  <c:if test="${!vo.isShipping}"><td>否</td></c:if>
@@ -105,7 +105,7 @@
   	  <td>
   	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-  	  <td><a href="/jersey/OtherServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
+  	  <td><a href="/jersey/TripleServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId} - <c:out value="${vo.addressee}" /></a></td>
   	  <td><c:forEach items="${vo.purchaseCases}" var="purchaseCase">
 <%--   	   	<jsp:include page="/StoreServlet"> --%>
 <%--   	  		<jsp:param value="getOne" name="action"/> --%>

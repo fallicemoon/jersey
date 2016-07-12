@@ -1,7 +1,6 @@
 package purchaseCase.controller;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,6 +32,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
 	private final String forwardAddCommodityUrl = forwardUrl + "/addCommodity.jsp";
+	private PurchaseCaseService service = new PurchaseCaseService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -42,7 +42,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-		PurchaseCaseService service = new PurchaseCaseService();
+		
 
 		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("purchaseCaseList", service.getAll());

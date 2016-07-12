@@ -115,18 +115,18 @@
   	  <td>
 		<a href="/jersey/purchaseCase/update.jsp?purchaseCaseId=${vo.purchaseCaseId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.store}" name="storeId"/>
-  	  </jsp:include>
-  	  <td>${vo.purchaseCaseId} - <c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.store}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td>${vo.purchaseCaseId} - <c:out value="${vo.store.name}" /></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity">${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
   	  <td>${vo.progress}</td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/>
-  	  </jsp:include>
-  	  <td><c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td><c:out value="${vo.shippingCompany.name}" /></td>
   	  <td><c:out value="${vo.trackingNumber}" /><c:if test="${!empty vo.trackingNumberLink}"><a href="${vo.trackingNumberLink}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.trackingNumberLink}"></c:if></td>
   	  <td><c:out value="${vo.agent}" /></td>
@@ -189,22 +189,22 @@
   	  <td>${vo.uncollected}</td>
   	  <td><c:if test="${vo.uncollected==0 && vo.isChecked}">是</c:if>
   	      <c:if test="${!vo.isChecked || vo.uncollected!=0}">否</c:if></td>
-  	  <jsp:include page="/SellCaseServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.sellCaseId}" name="sellCaseId"/>
-  	  </jsp:include>
-  	  <td>已收額${vo.collected} (總價${vo.income}) - 成本${requestScope.costs} - 國際運費${requestScope.agentCosts} - 國內運費${vo.transportCost} =   	  
-  	  	  <c:if test="${requestScope.benefit < 0}"><span style="color: red">${requestScope.benefit} / </span></c:if>
-		  <c:if test="${requestScope.benefit >= 0}"><span style="color: blue">${requestScope.benefit} / </span></c:if>
-  	  	  <c:if test="${requestScope.estimateBenefit < 0}"><span style="color: red">${requestScope.estimateBenefit}</span></c:if>
-		  <c:if test="${requestScope.estimateBenefit >= 0}"><span style="color: blue">${requestScope.estimateBenefit}</span></c:if>
+<%--   	  <jsp:include page="/SellCaseServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.sellCaseId}" name="sellCaseId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td>已收額${vo.collected} (總價${vo.income}) - 成本${vo.costs} - 國際運費${vo.agentCosts} - 國內運費${vo.transportCost} =   	  
+  	  	  <c:if test="${vo.benefit < 0}"><span style="color: red">${vo.benefit} / </span></c:if>
+		  <c:if test="${vo.benefit >= 0}"><span style="color: blue">${vo.benefit} / </span></c:if>
+  	  	  <c:if test="${vo.estimateBenefit < 0}"><span style="color: red">${vo.estimateBenefit}</span></c:if>
+		  <c:if test="${vo.estimateBenefit >= 0}"><span style="color: blue">${vo.estimateBenefit}</span></c:if>
 	  </td>
   	  <td><c:forEach items="${vo.purchaseCases}" var="purchaseCase">
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${purchaseCase.store}" name="storeId"/>
-  	  </jsp:include>
-  	  	${purchaseCase.purchaseCaseId}-${store.name}<br>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${purchaseCase.store}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  	${purchaseCase.purchaseCaseId}-${purchaseCase.store.name}<br>
   	  </c:forEach></td>
 	  <td>${vo.transportMethod}</td>
 	  <td><c:out value="${vo.phone}" /></td>

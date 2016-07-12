@@ -27,6 +27,7 @@ public class SellCaseServlet extends HttpServlet {
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
 	private final String forwardAddPurchaseCaseUrl = forwardUrl + "/addPurchaseCase.jsp";
+	private SellCaseService service = new SellCaseService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -36,7 +37,6 @@ public class SellCaseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-		SellCaseService service = new SellCaseService();
 		Set<String> errors = new LinkedHashSet<String>();
 
 		if (StringUtils.isEmpty(action)) {

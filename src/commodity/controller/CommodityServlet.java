@@ -25,7 +25,7 @@ public class CommodityServlet extends HttpServlet {
 	private final String forwardListUrl = forwardUrl + "/list.jsp";
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
-	private final String forwardListOneUrl = "/WEB-INF/pages/listOne.jsp";
+	private CommodityService service = new CommodityService();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,8 +36,7 @@ public class CommodityServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action");
-		CommodityService service = new CommodityService();
+		String action = request.getParameter("action");	
 
 		if (StringUtils.isEmpty(action)) {
 			List<CommodityVO> commodityList = service.getAll();			
