@@ -10,43 +10,40 @@ import sellCase.model.SellCaseVO;
 import sellCase.model.SellCaseWithBenefitVO;
 
 public class TripleService {
-	
+
 	private SellCaseService scs = new SellCaseService();
 
 	public void generateTriple(CommodityVO commodityVO, List<CommodityVO> commodityVOList,
-			List<PurchaseCaseVO> purchaseCaseVOList, List<SellCaseWithBenefitVO> sellCaseWithBenefitVOList) {		
+			List<PurchaseCaseVO> purchaseCaseVOList, List<SellCaseWithBenefitVO> sellCaseWithBenefitVOList) {
 		commodityVOList.add(commodityVO);
 		purchaseCaseVOList.add(commodityVO.getPurchaseCaseVO());
-		if (commodityVO.getPurchaseCaseVO()!=null) {
-			SellCaseWithBenefitVO vo = scs.getSellCaseWithBenefitVo(commodityVO.getPurchaseCaseVO().getSellCaseVO());
-			sellCaseWithBenefitVOList.add(vo);
+		if (commodityVO.getPurchaseCaseVO() != null && commodityVO.getPurchaseCaseVO().getSellCaseVO() != null) {
+			sellCaseWithBenefitVOList
+					.add(scs.getSellCaseWithBenefitVo(commodityVO.getPurchaseCaseVO().getSellCaseVO()));
 		}
 	}
-	
+
 	public void generateTriple(PurchaseCaseVO purchaseCaseVO, Set<CommodityVO> commodityVOSet,
-			List<PurchaseCaseVO> purchaseCaseVOList, List<SellCaseWithBenefitVO> sellCaseWithBenefitVOList) {		
-		commodityVOSet = purchaseCaseVO.getCommoditys();
+			List<PurchaseCaseVO> purchaseCaseVOList, List<SellCaseWithBenefitVO> sellCaseWithBenefitVOList) {
+		commodityVOSet.addAll(purchaseCaseVO.getCommoditys());
 		purchaseCaseVOList.add(purchaseCaseVO);
-		SellCaseWithBenefitVO vo = scs.getSellCaseWithBenefitVo(purchaseCaseVO.getSellCaseVO());
-		sellCaseWithBenefitVOList.add(vo);
+		if (purchaseCaseVO.getSellCaseVO() != null) {
+			sellCaseWithBenefitVOList.add(scs.getSellCaseWithBenefitVo(purchaseCaseVO.getSellCaseVO()));
+		}
 	}
-	
+
 	public void generateTriple(SellCaseVO sellCaseVO, Set<CommodityVO> commodityVOSet,
-			Set<PurchaseCaseVO> purchaseCaseVOSet, List<SellCaseWithBenefitVO> sellCaseWithBenefitVOList) {		
+			Set<PurchaseCaseVO> purchaseCaseVOSet, List<SellCaseWithBenefitVO> sellCaseWithBenefitVOList) {
 		SellCaseWithBenefitVO sellCaseWithBenefitVO = scs.getSellCaseWithBenefitVo(sellCaseVO);
 		sellCaseWithBenefitVOList.add(sellCaseWithBenefitVO);
-		purchaseCaseVOSet = sellCaseWithBenefitVO.getPurchaseCases();
-		if (purchaseCaseVOSet!=null) {
+		purchaseCaseVOSet.addAll(sellCaseWithBenefitVO.getPurchaseCases());
+		if (purchaseCaseVOSet != null) {
 			for (PurchaseCaseVO purchaseCaseVO : purchaseCaseVOSet) {
 				commodityVOSet.addAll(purchaseCaseVO.getCommoditys());
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
 
+	
+	
 }

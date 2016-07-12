@@ -32,7 +32,7 @@
 	</c:forEach>
 
 
-	<form action="/jersey/SellCaseServlet?listOne=${param.listOne}" method="post" class="form-horizontal">
+	<form action="/jersey/SellCaseServlet" method="post" class="form-horizontal">
     <input type="hidden" name="action" value="update">
     <input type="hidden" name="page" value="${param.page}">
     

@@ -135,22 +135,25 @@ public class SellCaseService {
 	}
 	
 	public SellCaseWithBenefitVO getSellCaseWithBenefitVo (SellCaseVO sellCaseVO) {
-		SellCaseWithBenefitVO sellCaseWithBenefitVo = new SellCaseWithBenefitVO();
-		Tools.copyBeanProperties(sellCaseVO, sellCaseWithBenefitVo);
-		
-		Integer costs = 0;
-		Integer agentCosts = 0;
-		Set<PurchaseCaseVO> purchaseCases = sellCaseVO.getPurchaseCases();
-		if (purchaseCases!=null) {
-			for (PurchaseCaseVO purchaseCaseVO : purchaseCases) {
-				costs = costs + purchaseCaseVO.getCost();
-				agentCosts = agentCosts + purchaseCaseVO.getAgentCost();
+		SellCaseWithBenefitVO sellCaseWithBenefitVo = null;
+		if (sellCaseVO != null) {
+			sellCaseWithBenefitVo = new SellCaseWithBenefitVO();
+			Tools.copyBeanProperties(sellCaseVO, sellCaseWithBenefitVo);
+			
+			Integer costs = 0;
+			Integer agentCosts = 0;
+			Set<PurchaseCaseVO> purchaseCases = sellCaseVO.getPurchaseCases();
+			if (purchaseCases!=null) {
+				for (PurchaseCaseVO purchaseCaseVO : purchaseCases) {
+					costs = costs + purchaseCaseVO.getCost();
+					agentCosts = agentCosts + purchaseCaseVO.getAgentCost();
+				}
 			}
+			sellCaseWithBenefitVo.setBenefit(sellCaseVO.getCollected() - sellCaseVO.getTransportCost() - costs - agentCosts);
+			sellCaseWithBenefitVo.setEstimateBenefit(sellCaseVO.getIncome() - sellCaseVO.getTransportCost() - costs - agentCosts);
+			sellCaseWithBenefitVo.setCosts(costs);
+			sellCaseWithBenefitVo.setAgentCosts(agentCosts);
 		}
-		sellCaseWithBenefitVo.setBenefit(sellCaseVO.getCollected() - sellCaseVO.getTransportCost() - costs - agentCosts);
-		sellCaseWithBenefitVo.setEstimateBenefit(sellCaseVO.getIncome() - sellCaseVO.getTransportCost() - costs - agentCosts);
-		sellCaseWithBenefitVo.setCosts(costs);
-		sellCaseWithBenefitVo.setAgentCosts(agentCosts);
 		return sellCaseWithBenefitVo;
 	}
 	

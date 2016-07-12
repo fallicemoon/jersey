@@ -49,7 +49,7 @@
 		<input type="checkbox" name="commodityIds" value="${vo.commodityId}">
   	  </td>
   	  <td>
-		<a href="/jersey/commodity/update.jsp?commodityId=${vo.commodityId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
+		<a href="/jersey/CommodityServlet?action=getOne&commodityId=${vo.commodityId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  
 <%--   	  <jsp:include page="/CommodityServlet"> --%>
@@ -113,7 +113,7 @@
   	    <input type="checkbox" name="purchaseCaseIds" value="${vo.purchaseCaseId}">
   	  </td>
   	  <td>
-		<a href="/jersey/purchaseCase/update.jsp?purchaseCaseId=${vo.purchaseCaseId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
+		<a href="/jersey/PurchaseCaseServlet?action=getOne&purchaseCaseId=${vo.purchaseCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
 <%--   	  <jsp:include page="/StoreServlet"> --%>
 <%--   	  	<jsp:param value="getOne" name="action"/> --%>
@@ -178,7 +178,7 @@
   	  	<input type="checkbox" name="sellCaseIds" value="${vo.sellCaseId}">
   	  </td>
   	  <td>
-  	  	<a href="/jersey/sellCase/update.jsp?sellCaseId=${vo.sellCaseId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
+  	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
   	  <td>${vo.sellCaseId} - <c:out value="${vo.addressee}" /></td>
   	  <td>${vo.income}</td>
