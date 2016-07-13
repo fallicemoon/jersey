@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -39,8 +40,13 @@ public class CommodityServlet extends HttpServlet {
 		String action = request.getParameter("action");	
 
 		if (StringUtils.isEmpty(action)) {
-			List<CommodityVO> commodityList = service.getAll();			
-			addRule(request, commodityList);			
+			List<CommodityVO> commodityList = service.getAll();
+			
+			Map<String, Set<String>> ruleMap = service.getRule(commodityList);
+			for (String key : ruleMap.keySet()) {
+				request.setAttribute(key, ruleMap.get(key));
+			}
+			
 			request.setAttribute("commodityList", commodityList);
 			request.setAttribute("commodityIdPictureCountMap", service.getCommodityIdPictureCountMap());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
@@ -98,8 +104,13 @@ public class CommodityServlet extends HttpServlet {
 				rule.put("sellPlatform", sellPlatform);
 			if (!isStored.equals("無"))
 				rule.put("isStored", Boolean.valueOf(isStored));
-
-			request.setAttribute("commodityList", service.getByRule(rule));
+			
+			List<CommodityVO> commodityList = service.getByRule(rule);
+			Map<String, Set<String>> ruleMap = service.getRule(commodityList);
+			for (String key : ruleMap.keySet()) {
+				request.setAttribute(key, ruleMap.get(key));
+			}
+			request.setAttribute("commodityList", commodityList);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("create".equals(action)) {
@@ -228,37 +239,4 @@ public class CommodityServlet extends HttpServlet {
 		}
 	}
 
-	private void addRule(HttpServletRequest request, List<CommodityVO> commodityList) {
-		Set<String> itemNames = new LinkedHashSet<String>();
-		Set<String> players = new LinkedHashSet<String>();
-		Set<String> teams = new LinkedHashSet<String>();
-		Set<String> styles = new LinkedHashSet<String>();
-		Set<String> brands = new LinkedHashSet<String>();
-		Set<String> sizes = new LinkedHashSet<String>();
-		Set<String> conditions = new LinkedHashSet<String>();
-		Set<String> owners = new LinkedHashSet<String>();
-		Set<String> sellPlatforms = new LinkedHashSet<String>();
-
-		for (CommodityVO commodityVO : commodityList) {
-			itemNames.add(commodityVO.getItemName());
-			players.add(commodityVO.getPlayer());
-			teams.add(commodityVO.getTeam());
-			styles.add(commodityVO.getStyle());
-			brands.add(commodityVO.getBrand());
-			sizes.add(commodityVO.getSize());
-			conditions.add(commodityVO.getCondition());
-			owners.add(commodityVO.getOwner());
-			sellPlatforms.add(commodityVO.getSellPlatform());
-		}
-
-		request.setAttribute("itemNames", itemNames);
-		request.setAttribute("players", players);
-		request.setAttribute("teams", teams);
-		request.setAttribute("styles", styles);
-		request.setAttribute("brands", brands);
-		request.setAttribute("sizes", sizes);
-		request.setAttribute("conditions", conditions);
-		request.setAttribute("owners", owners);
-		request.setAttribute("sellPlatforms", sellPlatforms);
-	}
 }
