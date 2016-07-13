@@ -18,14 +18,7 @@ public class SellCaseService {
 	}
 
 	public List<SellCaseWithBenefitVO> getAll() {
-		List<SellCaseVO> oldList = this.dao.getAll();
-		List<SellCaseWithBenefitVO> newList = new ArrayList<>();
-		SellCaseWithBenefitVO sellCaseWithBenefitVo;
-		for (SellCaseVO sellCaseVO : oldList) {
-			sellCaseWithBenefitVo = getSellCaseWithBenefitVo(sellCaseVO);
-			newList.add(sellCaseWithBenefitVo);
-		}
-		return newList;
+		return getSellCaseWithBenefitVOList(dao.getAll());
 	}
 
 	public SellCaseVO getOne(Integer id) {
@@ -85,26 +78,21 @@ public class SellCaseService {
 		purchaseCaseDAO.deleteSellCaseId(purchaseCaseIds);
 	}
 
-	public List<SellCaseVO> getUncollectedNotZero() {
-		return this.dao.getUncollectedNotZero();
+	public List<SellCaseWithBenefitVO> getUncollectedNotZero() {
+		return getSellCaseWithBenefitVOList(dao.getUncollectedNotZero());
 	}
 
-	public List<SellCaseVO> getIsClosed() {
-		return this.dao.getIsClosed();
+	public List<SellCaseWithBenefitVO> getIsClosed() {
+		return getSellCaseWithBenefitVOList(dao.getIsClosed());
 	}
 
-	public List<SellCaseVO> getNotClosed() {
-		return this.dao.getNotClosed();
+	public List<SellCaseWithBenefitVO> getNotClosed() {
+		return getSellCaseWithBenefitVOList(dao.getNotClosed());
 	}
 
 	public List<SellCaseWithBenefitVO> getBetweenCloseTime(Date start, Date end) {
 		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		List<SellCaseVO> sellCaseList = dao.getBetweenCloseTime(start, end);
-		List<SellCaseWithBenefitVO> list = new ArrayList<>();
-		for (SellCaseVO sellCaseVO : sellCaseList) {
-			list.add(getSellCaseWithBenefitVo(sellCaseVO));
-		}
-		return list;
+		return getSellCaseWithBenefitVOList(dao.getBetweenCloseTime(start, end));
 //		List<SellCaseVO> list = new ArrayList<SellCaseVO>();
 //
 //		for (Object[] object : sellCaseList) {
@@ -156,6 +144,17 @@ public class SellCaseService {
 		}
 		return sellCaseWithBenefitVo;
 	}
+	
+	public List<SellCaseWithBenefitVO> getSellCaseWithBenefitVOList (List<SellCaseVO> sellCaseList) {
+		List<SellCaseWithBenefitVO> sellCaseWithBenefitList = new ArrayList<>();
+		SellCaseWithBenefitVO sellCaseWithBenefitVo;
+		for (SellCaseVO sellCaseVO : sellCaseList) {
+			sellCaseWithBenefitVo = getSellCaseWithBenefitVo(sellCaseVO);
+			sellCaseWithBenefitList.add(sellCaseWithBenefitVo);
+		}
+		return sellCaseWithBenefitList;
+	}
+ 
 	
 	public Integer getTotalBenefit (List<SellCaseWithBenefitVO> list) {
 		Integer totalBenefit = 0;

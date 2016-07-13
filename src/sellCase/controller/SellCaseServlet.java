@@ -36,12 +36,24 @@ public class SellCaseServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		String sellCasePage = (String)session.getAttribute("sellCasePage");
+		if (sellCasePage==null) {
+			session.setAttribute("sellCasePage", sellCasePage);
+		}		
+		
 		String action = request.getParameter("action");
+		String changePage = request.getParameter("changePage");
+		
 		Set<String> errors = new LinkedHashSet<String>();
+		
+		if ("true".equals(changePage)) {
+			sellCasePage = sellCasePage.equals("after")?"before":"after";
+			session.setAttribute("sellCasePage", sellCasePage);
+		}
 
 		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("sellCaseList", service.getAll());
-			request.setAttribute("page", 1);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("getUncollectedNotZero".equals(action)) {
@@ -113,7 +125,7 @@ public class SellCaseServlet extends HttpServlet {
 
 			Integer sellCaseId = service.create(sellCaseVO);
 
-			HttpSession session = request.getSession();
+
 			Integer[] purchaseCaseIds = (Integer[]) session.getAttribute("purchaseCaseIds");
 			if (purchaseCaseIds != null)
 				service.addSellCaseIdToPurchaseCases(sellCaseId, purchaseCaseIds);
@@ -206,7 +218,6 @@ public class SellCaseServlet extends HttpServlet {
 			}
 
 			if (sellCaseId.intValue() == 0) {
-				HttpSession session = request.getSession();
 				session.setAttribute("purchaseCaseIds", ids);
 				response.sendRedirect("/jersey/sellCase/add.jsp");
 			} else {

@@ -40,10 +40,7 @@ public class CommodityServlet extends HttpServlet {
 
 		if (StringUtils.isEmpty(action)) {
 			List<CommodityVO> commodityList = service.getAll();			
-			addRule(request, commodityList);
-			
-			//response.setHeader("Cache-Control", "no-store");
-			
+			addRule(request, commodityList);			
 			request.setAttribute("commodityList", commodityList);
 			request.setAttribute("commodityIdPictureCountMap", service.getCommodityIdPictureCountMap());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
@@ -226,7 +223,7 @@ public class CommodityServlet extends HttpServlet {
 				CommodityVO commodityVO = service.getOne(Integer.valueOf(commodityId));
 				service.create(commodityVO);
 			}
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+			response.sendRedirect(sendResponseUrl);
 			return;
 		}
 	}

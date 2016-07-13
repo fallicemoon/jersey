@@ -49,7 +49,6 @@ public class SellCaseDAO extends AbstractDAO<SellCaseVO> {
 
 	public List<SellCaseVO> getBetweenCloseTime(Date start, Date end) {
 
-		// TODO 要測試
 		return getHelper(Restrictions.between("closeTime", start, end));
 		// session =
 		// HibernateSessionFactory.getSessionFactory().getCurrentSession();
