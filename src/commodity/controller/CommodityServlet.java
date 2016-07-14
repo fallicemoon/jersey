@@ -2,6 +2,7 @@ package commodity.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import commodity.model.CommodityService;
 import commodity.model.CommodityVO;
+import commodity.model.CommodityWithPicCountVO;
 
 public class CommodityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -40,15 +42,13 @@ public class CommodityServlet extends HttpServlet {
 		String action = request.getParameter("action");	
 
 		if (StringUtils.isEmpty(action)) {
-			List<CommodityVO> commodityList = service.getAll();
-			
+			List<CommodityWithPicCountVO> commodityList = service.getAll();
 			Map<String, Set<String>> ruleMap = service.getRule(commodityList);
 			for (String key : ruleMap.keySet()) {
 				request.setAttribute(key, ruleMap.get(key));
 			}
 			
 			request.setAttribute("commodityList", commodityList);
-			request.setAttribute("commodityIdPictureCountMap", service.getCommodityIdPictureCountMap());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("getOne".equals(action)) {
@@ -56,7 +56,6 @@ public class CommodityServlet extends HttpServlet {
 			try {
 				Integer commodityId = Integer.valueOf(request.getParameter("commodityId"));
 				request.setAttribute("commodity", service.getOne(commodityId));
-				request.setAttribute("commodityIdPictureCount", service.getCommodityIdPictureCount(commodityId));
 			} catch (NumberFormatException e) {
 				//create
 				request.getRequestDispatcher(forwardAddUrl).forward(request, response);

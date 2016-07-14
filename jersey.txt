@@ -14,6 +14,7 @@
 分頁、所有list相關的功能都改成jQuery
 選擇照片的checkBox拿掉，改成jQuery
 update裡面沒有getOne, 所以關聯的資料會被洗掉, 改完關聯關係後要測試
+所有網址帶參數的用jQuery處理掉
 
 權限管理
 談打水、一年收費3000

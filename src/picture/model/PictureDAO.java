@@ -146,7 +146,7 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 		// return list;
 	}
 
-	public Map<Integer, Long> getCommodityIdPictureCountMap() {
+	public Map<Integer, Integer> getCommodityIdPictureCountMap() {
 		Session session = HibernateSessionFactory.getSession();
 		session.beginTransaction();
 		List<Map<String, Object>> result;
@@ -162,20 +162,20 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 			e.printStackTrace();
 		}
 
-		Map<Integer, Long> resultMap = new HashMap<>();
+		Map<Integer, Integer> resultMap = new HashMap<>();
 		for (Map<String, Object> map : result) {
 			CommodityVO commodityVO = (CommodityVO) map.get("commodityVO");
 			Long count = (Long) map.get("count");
-			resultMap.put(commodityVO.getCommodityId(), count);
+			resultMap.put(commodityVO.getCommodityId(), count.intValue());
 		}
 		return resultMap;
 	}
 
-	public Long getCommodityIdPictureCount(Integer commodityId) {
+	public Integer getCommodityIdPictureCount(Integer commodityId) {
 		Session session = HibernateSessionFactory.getSession();
 		session.beginTransaction();
 
-		Long count;
+		Integer count;
 		try {
 			Map<String, Long> map;
 			Query query = session.createQuery(GET_COUNT_BY_COMMODITY_ID);
@@ -185,11 +185,11 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 			query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 			map = (Map<String, Long>) query.uniqueResult();
 			session.getTransaction().commit();
-			count = map.get("count");
+			count = map.get("count").intValue();
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
-			count = 0L;
+			count = 0;
 		}
 		return count;
 

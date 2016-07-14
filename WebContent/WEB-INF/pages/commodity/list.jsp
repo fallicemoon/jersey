@@ -147,8 +147,11 @@
   	  <td>
 		<a href="/jersey/CommodityServlet?action=getOne&commodityId=${vo.commodityId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-  	  <c:if test="${not empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCountMap[vo.commodityId]}</button></a></td></c:if> 
-  	  <c:if test="${empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
+<%--   	  <c:if test="${not empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCountMap[vo.commodityId]}</button></a></td></c:if>  --%>
+<%--   	  <c:if test="${empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if> --%>
+	  <c:if test="${vo.pictureCount!=0}"><td><a href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${vo.pictureCount}</button></a></td></c:if> 
+  	  <c:if test="${vo.pictureCount==0}"><td><a href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
+
   	  <td><a href="/jersey/TripleServlet?action=commodity&commodityId=${vo.commodityId}">${vo.commodityId} - <c:out value="${vo.itemName}" /></a>
   	  		<c:if test="${!empty vo.link}"><a href="${vo.link}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.link}"></c:if></td>

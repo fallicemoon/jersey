@@ -1,6 +1,11 @@
 package tools;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Tools {
 
@@ -12,11 +17,14 @@ public class Tools {
 	 * @param old
 	 * @param target
 	 */
-	public static void copyBeanProperties(Object old, Object target) {
+	public static void copyBeanProperties(Object old, Object target, String... notCopyFields) {
 		Field[] oldFields = old.getClass().getDeclaredFields();
+		Set<String> notCopyFieldSet = new HashSet<>();
+		Collections.addAll(notCopyFieldSet, notCopyFields);
+		notCopyFieldSet.add("serialVersionUID");
 		
 		for (Field field : oldFields) {
-			if (serialVersionUID.equals(field.getName()))
+			if (notCopyFieldSet.contains(field.getName()))
 				continue;
 			field.setAccessible(true);
 			try {

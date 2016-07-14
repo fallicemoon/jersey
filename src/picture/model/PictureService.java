@@ -124,9 +124,9 @@ public class PictureService {
 		os.close();
 	}
 
-	public void getPicturesZip(String commodityId, OutputStream os) throws IOException {
+	public void getPicturesZip(Integer commodityId, OutputStream os) throws IOException {
 		PictureDAO pictureDAO = new PictureDAO();
-		List<PictureVO> list = pictureDAO.getPicturesByCommodityId(Integer.valueOf(commodityId));
+		List<PictureVO> list = pictureDAO.getPicturesByCommodityId(commodityId);
 		ZipOutputStream zos = new ZipOutputStream(os);
 		InputStream is;
 

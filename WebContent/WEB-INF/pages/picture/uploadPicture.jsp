@@ -17,14 +17,14 @@
 	<c:import url="/WEB-INF/pages/header.jsp"/>
 	<br><br>
 	
-	<c:forEach items="${sessionScope.errors}" var="error">
+	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
 	</c:forEach>
-	<c:remove var="errors" scope="session"/>
-    <jsp:include page="/CommodityServlet">
-  	  <jsp:param name="action" value="getOne"/>
-  	  <jsp:param name="commodityId" value="${param.commodityId}"/>
-    </jsp:include>
+
+<%--     <jsp:include page="/CommodityServlet"> --%>
+<%--   	  <jsp:param name="action" value="getOne"/> --%>
+<%--   	  <jsp:param name="commodityId" value="${param.commodityId}"/> --%>
+<%--     </jsp:include> --%>
     
   <table border=1 width="1500px" class="table table-hover">
     <thead>
@@ -100,10 +100,10 @@
 <%-- 		<jsp:param name="action" value="getPicturesBase64" /> --%>
 <%-- 		<jsp:param name="commodityId" value="${param.commodityId}" /> --%>
 <%-- 	</jsp:include> --%>
-	<jsp:include page="/PictureServlet">
-		<jsp:param name="action" value="getPictureIds" />
-		<jsp:param name="commodityId" value="${param.commodityId}" />
-	</jsp:include>
+<%-- 	<jsp:include page="/PictureServlet"> --%>
+<%-- 		<jsp:param name="action" value="getPictureIds" /> --%>
+<%-- 		<jsp:param name="commodityId" value="${param.commodityId}" /> --%>
+<%-- 	</jsp:include> --%>
 
 	<form action="/jersey/PictureServlet" method="POST">
 	<input type="hidden" name="commodityId" value="${param.commodityId}">

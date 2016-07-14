@@ -1,5 +1,6 @@
 package commodity.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import picture.model.PictureDAO;
+import tools.Tools;
 
 public class CommodityService {
 	private CommodityDAO dao;
@@ -15,8 +17,8 @@ public class CommodityService {
 		this.dao = new CommodityDAO();
 	}
 
-	public List<CommodityVO> getAll() {
-		return this.dao.getAll();
+	public List<CommodityWithPicCountVO> getAll() {
+		return getCommodityWithPicCountList(dao.getAll());
 	}
 
 	public CommodityVO getOne(Integer id) {
@@ -35,7 +37,7 @@ public class CommodityService {
 		return this.dao.delete(ids);
 	}
 	
-	public Map<String, Set<String>> getRule (List<CommodityVO> list) {
+	public Map<String, Set<String>> getRule (List<? extends CommodityVO> list) {
 		Map<String, Set<String>> map = new HashMap<>();
 		
 		Set<String> itemNames = new LinkedHashSet<String>();
@@ -70,20 +72,43 @@ public class CommodityService {
 		map.put("owners", owners);
 		map.put("sellPlatforms", sellPlatforms);
 		return map;
-	} 
+	}
 
 	public List<CommodityVO> getByRule(Map<String, Object> rule) {
 		return this.dao.getByRule(rule);
 	}
 
-	public Map<Integer, Long> getCommodityIdPictureCountMap() {
+	public Map<Integer, Integer> getCommodityIdPictureCountMap() {
 		PictureDAO pictureDAO = new PictureDAO();
 		return pictureDAO.getCommodityIdPictureCountMap();
 	}
 
-	public Long getCommodityIdPictureCount(Integer commodityId) {
+	public Integer getCommodityIdPictureCount(Integer commodityId) {
 		PictureDAO pictureDAO = new PictureDAO();
 		return pictureDAO.getCommodityIdPictureCount(commodityId);
 	}
+	
+	public CommodityWithPicCountVO getCommodityWithPicCountVO (CommodityVO commodityVO) {
+		CommodityWithPicCountVO commodityWithPicCountVO = new CommodityWithPicCountVO();
+		Tools.copyBeanProperties(commodityVO, commodityWithPicCountVO);
+		commodityWithPicCountVO.setPictureCount(getCommodityIdPictureCount(commodityVO.getCommodityId()));
+		return commodityWithPicCountVO;
+	}
+	
+	public List<CommodityWithPicCountVO> getCommodityWithPicCountList (List<CommodityVO> commodityList) {
+		Map<Integer, Integer> pictureCountMap = getCommodityIdPictureCountMap();
+		List<CommodityWithPicCountVO> newList = new ArrayList<>();
+		for (CommodityVO commodityVO : commodityList) {
+			CommodityWithPicCountVO commodityWithPicCountVO = new CommodityWithPicCountVO();
+			Tools.copyBeanProperties(commodityVO, commodityWithPicCountVO);
+			Integer count = pictureCountMap.get(commodityWithPicCountVO.getCommodityId());
+			commodityWithPicCountVO.setPictureCount(count==null ? 0:count);
+			newList.add(commodityWithPicCountVO);
+		}
+		return newList;
+	}
+	
+	
+	
 }
 
