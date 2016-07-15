@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession;
 
 public class JerseyFilter implements Filter {
 	private String ENCODING;
+	private final String sendRedirectUrl="/WEB-INF/MemberServlet";
+	private final String ok = "ok";
 
 	public void destroy() {
 	}
@@ -28,10 +30,10 @@ public class JerseyFilter implements Filter {
 
 		HttpSession session = httpServletRequest.getSession();
 
-//		if (!"OK".equals(session.getAttribute("login"))) {
-//			httpServletResponse.sendRedirect("/jersey/login.jsp");
-//			return;
-//		}
+		if (!ok.equals(session.getAttribute("login"))) {
+			httpServletResponse.sendRedirect(sendRedirectUrl);
+			return;
+		}
 
 		chain.doFilter(httpServletRequest, httpServletResponse);
 	}

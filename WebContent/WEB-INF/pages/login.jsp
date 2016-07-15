@@ -16,12 +16,9 @@
 <title>登入</title>
 </head>
 <body>
-	<c:if test="${sessionScope.login=='OK'}">
-		<c:redirect url="/index.jsp"/>
-	</c:if>
 
 <div style="width:500px; height: 500px; position: absolute; left:50%; top: 50%; margin-top: -200px; margin-left: -250px">
-	<form class="form-horizontal" action="/jersey/LoginServlet" method="POST">
+	<form class="form-horizontal" action="/jersey/MemberServlet" method="POST">
 	  <div class="form-group">
     	<label for="inputEmail3" class="col-sm-2 control-label">帳號：</label>
     	<div class="col-sm-10">
@@ -51,6 +48,16 @@
 	      <button type="submit" class="btn btn-default" name="action" value="login">登入</button>
 	    </div>
 	  </div>
+	  
+	  <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <c:forEach items="${requestScope.errors}" var="error">
+		    <p style="color: red">${error}</p>
+	      </c:forEach>
+	    </div>
+	  </div>
+	  
+
 </form>
 </div>
 	

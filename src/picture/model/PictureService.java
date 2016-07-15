@@ -1,8 +1,6 @@
 package picture.model;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,13 +24,15 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.hibernate.Hibernate;
-import org.hibernate.engine.jdbc.ContextualLobCreator;
-import org.hibernate.engine.jdbc.LobCreator;
 
 import commodity.model.CommodityVO;
 import tools.HibernateSessionFactory;
 
 public class PictureService {
+	
+	//單檔上限30MB
+	private final Long singleFileSizeMax = 31457280L;
+	
 	public void uploadPicture(HttpServletRequest request)
 			throws SizeLimitExceededException, IOException, FileUploadException {
 		if (!ServletFileUpload.isMultipartContent(request))
@@ -41,7 +41,7 @@ public class PictureService {
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 
 		ServletFileUpload upload = new ServletFileUpload(factory);
-		upload.setSizeMax(31457280L);
+		upload.setSizeMax(singleFileSizeMax);
 		upload.setHeaderEncoding("UTF-8");
 
 		List<FileItem> items = upload.parseRequest(request);

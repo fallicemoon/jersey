@@ -18,6 +18,8 @@ import picture.model.PictureService;
 
 public class PictureServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private final String sendRedirectUrl = "/jersey/PictureServlet";
 	private final String forwardUrl = "/WEB-INF/pages/picture";
 	private final String forwardUploadPictureUrl = forwardUrl + "/uploadPicture.jsp";
 	private final PictureService service = new PictureService();
@@ -31,13 +33,15 @@ public class PictureServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
+		
+		//取得圖片網址, 不需要forward
 		if ("getPicture".equals(action)) {
-			//圖片網址, 不需要forward
 			Integer pictureId = Integer.valueOf(request.getParameter("pictureId"));
 			response.setContentType("image/*");
 			service.getPicrture(pictureId, response.getOutputStream());
 			return;
 		}
+		
 		Integer commodityId;
 		try {
 			commodityId = Integer.valueOf(request.getParameter("commodityId"));
@@ -50,6 +54,7 @@ public class PictureServlet extends HttpServlet {
 		if (StringUtils.isEmpty(action)) {
 			Set<Integer> pictureIds = service.getPictureIds(commodityId);
 			request.setAttribute("pictureIds", pictureIds);
+			request.setAttribute("commodity", commodityService.getOne(commodityId));
 			request.getRequestDispatcher(forwardUploadPictureUrl).forward(request, response);
 			return;
 		} else if ("upload".equals(action)) {
@@ -57,11 +62,10 @@ public class PictureServlet extends HttpServlet {
 				service.uploadPicture(request);
 			} catch (SizeLimitExceededException e) {
 				e.printStackTrace();
-				errors.add("上傳檔案需小於20MB!");
+				errors.add("上傳檔案需小於30MB!");
 				request.setAttribute("errors", errors);
 			} catch (FileUploadException e) {
 				e.printStackTrace();
-
 				if ("extensionName".equals(e.getMessage())) {
 					errors.add("副檔名須為jpg, gif, png 三者其中之一");
 					request.setAttribute("errors", errors);
@@ -78,25 +82,24 @@ public class PictureServlet extends HttpServlet {
 //		} 
 		else if ("delete".equals(action)) {
 			String[] pictureIds = request.getParameterValues("pictureId");
-			if (pictureIds == null) {
-				response.sendRedirect(
-						request.getContextPath() + "/picture/uploadPicture.jsp?commodityId=" + commodityId);
-				return;
-			}
-			service.deletePictures(pictureIds);
-			response.sendRedirect(request.getContextPath() + "/picture/uploadPicture.jsp?commodityId=" + commodityId);
+			if (pictureIds != null) {
+				service.deletePictures(pictureIds);
+			}			
+			response.sendRedirect(sendRedirectUrl);
+			return;
 		} else if ("download".equals(action)) {
 			String[] pictureIds = request.getParameterValues("pictureId");
-			if (pictureIds == null) {
-				response.sendRedirect(
-						request.getContextPath() + "/picture/uploadPicture.jsp?commodityId=" + commodityId);
-				return;
+			if (pictureIds != null) {
+				response.setHeader("Content-disposition", "attachment; filename=" + commodityId + ".zip");
+				service.getPicturesZip(pictureIds, response.getOutputStream());
 			}
-			response.setHeader("Content-disposition", "attachment; filename=" + commodityId + ".zip");
-			service.getPicturesZip(pictureIds, response.getOutputStream());
+//			response.sendRedirect(sendRedirectUrl);
+//			return;
 		} else if ("downloadAll".equals(action)) {
 			response.setHeader("Content-disposition", "attachment; filename=" + commodityId + "All.zip");
 			service.getPicturesZip(commodityId, response.getOutputStream());
 		}
+//			response.sendRedirect(sendRedirectUrl);
+//			return;
 	}
 }

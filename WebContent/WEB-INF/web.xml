@@ -38,16 +38,6 @@
   </context-param>
   <servlet>
     <description></description>
-    <display-name>OtherServlet</display-name>
-    <servlet-name>OtherServlet</servlet-name>
-    <servlet-class>tools.OtherServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>OtherServlet</servlet-name>
-    <url-pattern>/OtherServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
     <display-name>SellCaseServlet</display-name>
     <servlet-name>SellCaseServlet</servlet-name>
     <servlet-class>sellCase.controller.SellCaseServlet</servlet-class>
@@ -88,18 +78,13 @@
   <filter-mapping>
     <filter-name>JerseyFilter</filter-name>
     <url-pattern>/index.jsp</url-pattern>
-    <url-pattern>/purchaseCase/*</url-pattern>
-    <url-pattern>/sellCase/*</url-pattern>
-    <url-pattern>/commodity/*</url-pattern>
-    <url-pattern>/picture/*</url-pattern>
-    <url-pattern>/store/*</url-pattern>
-    <url-pattern>/accounting/*</url-pattern>
     <url-pattern>/CommodityServlet</url-pattern>
     <url-pattern>/PurchaseCaseServlet</url-pattern>
     <url-pattern>/SellCaseServlet</url-pattern>
     <url-pattern>/StoreServlet</url-pattern>
-    <url-pattern>/OtherServlet</url-pattern>
     <url-pattern>/PictureServlet</url-pattern>
+    <url-pattern>/AccountingServlet</url-pattern>
+    <url-pattern>/TripleServlet</url-pattern>
   </filter-mapping>
   <servlet>
     <description></description>
@@ -110,16 +95,6 @@
   <servlet-mapping>
     <servlet-name>StoreServlet</servlet-name>
     <url-pattern>/StoreServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>LoginServlet</display-name>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>tools.LoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/LoginServlet</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -155,5 +130,15 @@
   <servlet-mapping>
     <servlet-name>TripleServlet</servlet-name>
     <url-pattern>/TripleServlet</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <description></description>
+    <display-name>MemberServlet</display-name>
+    <servlet-name>MemberServlet</servlet-name>
+    <servlet-class>member.controller.MemberServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemberServlet</servlet-name>
+    <url-pattern>/MemberServlet</url-pattern>
   </servlet-mapping>
 </web-app>
