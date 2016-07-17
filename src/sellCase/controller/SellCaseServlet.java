@@ -37,20 +37,20 @@ public class SellCaseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
+		//判斷第一頁還第二頁
 		String sellCasePage = (String)session.getAttribute("sellCasePage");
-		if (sellCasePage==null) {
-			session.setAttribute("sellCasePage", sellCasePage);
-		}		
-		
-		String action = request.getParameter("action");
 		String changePage = request.getParameter("changePage");
-		
-		Set<String> errors = new LinkedHashSet<String>();
-		
+		if (sellCasePage==null) {
+			session.setAttribute("sellCasePage", "before");
+		}
+		//怒換頁
 		if ("true".equals(changePage)) {
 			sellCasePage = sellCasePage.equals("after")?"before":"after";
 			session.setAttribute("sellCasePage", sellCasePage);
 		}
+		
+		String action = request.getParameter("action");		
+		Set<String> errors = new LinkedHashSet<String>();		
 
 		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("sellCaseList", service.getAll());

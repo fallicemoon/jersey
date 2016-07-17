@@ -40,7 +40,7 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 
 	private final static String COMMODITY_ID_PICTURE_COUNT_MAP = "select commodityVO as commodityVO, count(*) as count from PictureVO picture group by picture.commodityVO";
 	private final static String GET_COUNT_BY_COMMODITY_ID = "select count(*) as count from PictureVO picture where picture.commodityVO = :commodityVO";
-
+	private final static String GET_NEXT_SEQUENCE_ID = "select MAX(sequenceId)+1 from PictureVO where commodityVO = :commodityVO";
 	// static {
 	// try {
 	// Class.forName("org.mariadb.jdbc.Driver");
@@ -192,27 +192,27 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 			count = 0;
 		}
 		return count;
-
-		// try {
-		// connection = ds.getConnection();
-		// this.preparedStatement = this.connection
-		// .prepareStatement("select count(*) as count from picture where
-		// commodity_id=?");
-		// this.preparedStatement.setInt(1, commodityId.intValue());
-		// ResultSet rs = this.preparedStatement.executeQuery();
-		// if (rs.next()) {
-		// int result = Integer.valueOf(rs.getInt("count"));
-		// connection.close();
-		// return result;
-		// }
-		// connection.close();
-		// return Integer.valueOf(0);
-		// } catch (SQLException e) {
-		// e.printStackTrace();
-		// }
-		// return Integer.valueOf(0);
 	}
-
+	
+	@Override
+	public Integer create (PictureVO pictureVO) {
+		pictureVO.setSequenceId(getSequenceId(pictureVO.getCommodityVO()));
+		return super.create(pictureVO);
+	}
+	
+	private Integer getSequenceId (CommodityVO commodityVO) {
+		Session session = HibernateSessionFactory.getSession();
+		session.beginTransaction();
+		try {
+			Integer sequenceId = (Integer)session.createQuery(GET_NEXT_SEQUENCE_ID).setParameter("commodityVO", commodityVO).uniqueResult();
+			session.getTransaction().commit();
+			return sequenceId;
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			throw e;
+		}
+	}
+	
 	// public Integer create(PictureVO vo) {
 	// try {
 	// connection = ds.getConnection();

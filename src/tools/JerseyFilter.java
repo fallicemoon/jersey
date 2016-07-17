@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 public class JerseyFilter implements Filter {
 	private String ENCODING;
-	private final String sendRedirectUrl="/WEB-INF/MemberServlet";
+	private final String sendRedirectUrl="/jersey/MemberServlet";
 	private final String ok = "ok";
 
 	public void destroy() {

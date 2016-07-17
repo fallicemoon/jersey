@@ -26,7 +26,7 @@ public class StoreDAOTest {
 	
 	@After
 	public void destroy () {
-		System.out.println(list);
+		System.out.println("picture".hashCode());
 	} 
 
 }

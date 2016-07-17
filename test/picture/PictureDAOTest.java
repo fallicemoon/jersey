@@ -34,13 +34,13 @@ public class PictureDAOTest {
 	
 	@Test
 	public void getCommodityIdPictureCountMap () {
-		Map<Integer, Long> map = pictureDAO.getCommodityIdPictureCountMap();
+		Map<Integer, Integer> map = pictureDAO.getCommodityIdPictureCountMap();
 		System.out.println(map);
 	}
 	
 	@Test
 	public void getCommodityIdPictureCount () {
-		Long count = pictureDAO.getCommodityIdPictureCount(28);
+		Integer count = pictureDAO.getCommodityIdPictureCount(28);
 		System.out.println(count);
 	}
 	

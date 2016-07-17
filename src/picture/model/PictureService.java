@@ -29,10 +29,11 @@ import commodity.model.CommodityVO;
 import tools.HibernateSessionFactory;
 
 public class PictureService {
-	
-	//單檔上限30MB
+	private final PictureDAO pictureDAO = new PictureDAO();
+
+	// 單檔上限30MB
 	private final Long singleFileSizeMax = 31457280L;
-	
+
 	public void uploadPicture(HttpServletRequest request)
 			throws SizeLimitExceededException, IOException, FileUploadException {
 		if (!ServletFileUpload.isMultipartContent(request))
@@ -46,29 +47,27 @@ public class PictureService {
 
 		List<FileItem> items = upload.parseRequest(request);
 		List<PictureVO> pictureVOList = parseFormToPictureVO(items);
-		PictureDAO pictureDAO = new PictureDAO();
+		
 		for (PictureVO pictureVO : pictureVOList)
 			pictureDAO.create(pictureVO);
 	}
-	
+
 	public Set<Integer> getPictureIds(Integer commodityId) {
-		PictureDAO pictureDAO = new PictureDAO();
 		List<PictureVO> list = pictureDAO.getPictureIds(commodityId);
-		
+
 		Set<Integer> set = new TreeSet<>();
 		for (PictureVO pictureVO : list) {
 			set.add(pictureVO.getPictureId());
 		}
 		return set;
 	}
-	
+
 	public void getPicrture(Integer pictureId, OutputStream os) {
-		PictureDAO pictureDAO = new PictureDAO();
 		try {
 			InputStream is = pictureDAO.getOne(pictureId).getPicture().getBinaryStream();
 			byte[] b = new byte[4096];
 			int length;
-			while((length=is.read(b)) != -1){
+			while ((length = is.read(b)) != -1) {
 				os.write(b, 0, length);
 			}
 			os.flush();
@@ -77,13 +76,12 @@ public class PictureService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
-	} 
+	}
 
 	public Map<Integer, String> getPictureBase64(Integer commodityId) throws IOException {
-		PictureDAO pictureDAO = new PictureDAO();
 		List<PictureVO> list = pictureDAO.getPicturesByCommodityId(commodityId);
 		Map<Integer, String> pictures = new LinkedHashMap<Integer, String>();
 
@@ -100,7 +98,6 @@ public class PictureService {
 	}
 
 	public void getPicturesZip(String[] pictureIds, OutputStream os) throws IOException {
-		PictureDAO pictureDAO = new PictureDAO();
 		ZipOutputStream zos = new ZipOutputStream(os);
 
 		try {
@@ -125,7 +122,6 @@ public class PictureService {
 	}
 
 	public void getPicturesZip(Integer commodityId, OutputStream os) throws IOException {
-		PictureDAO pictureDAO = new PictureDAO();
 		List<PictureVO> list = pictureDAO.getPicturesByCommodityId(commodityId);
 		ZipOutputStream zos = new ZipOutputStream(os);
 		InputStream is;
@@ -153,7 +149,6 @@ public class PictureService {
 	}
 
 	public void deletePictures(String[] pictureIds) {
-		PictureDAO pictureDAO = new PictureDAO();
 		Integer[] ids = new Integer[pictureIds.length];
 		for (int i = 0; i < ids.length; i++) {
 			ids[i] = Integer.valueOf(pictureIds[i]);
@@ -162,34 +157,39 @@ public class PictureService {
 	}
 
 	private List<PictureVO> parseFormToPictureVO(List<FileItem> fileItems) throws FileUploadException, IOException {
-		Integer commodityId = Integer.valueOf(((FileItem) fileItems.get(0)).getString());
 		List<PictureVO> list = new ArrayList<PictureVO>();
 
-		for (FileItem fileItem : fileItems)
-			if (fileItem.getFieldName().equals("picture")) {
-				PictureVO pictureVO = new PictureVO();
-				CommodityVO commodityVO = new CommodityVO();
-				commodityVO.setCommodityId(commodityId);
-				pictureVO.setCommodityVO(commodityVO);
-				String str1;
-				switch ((str1 = fileItem.getFieldName()).hashCode()) {
-				case -577741570:
-					if (str1.equals("picture")) {
-						String fileName = fileItem.getName();
-						String extensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
-						if ((!extensionName.equals("jpg")) && (!extensionName.equals("gif"))
-								&& (!extensionName.equals("png")))
-							throw new FileUploadException("extensionName");
-						//TODO need test
-						Blob blob = Hibernate.getLobCreator(HibernateSessionFactory.getSession()).createBlob(fileItem.get());
-						pictureVO.setPicture(blob);
-						pictureVO.setFileName(fileName);
-					}
-					break;
+		FileItem picture = null;
+		Integer commodityId = null;
+		for (FileItem fileItem : fileItems) {
+			if (fileItem.isFormField() && fileItem.getFieldName().equals("commodityId")) {
+				try {
+					commodityId = Integer.valueOf(fileItem.getString("UTF-8"));
+				} catch (NumberFormatException e) {
+					throw new FileUploadException("商品ID格式錯誤");
 				}
-
-				list.add(pictureVO);
+			} else if (!fileItem.isFormField() && fileItem.getFieldName().equals("picture")) {
+				picture = fileItem;
 			}
+		}
+
+		PictureVO pictureVO = new PictureVO();
+		CommodityVO commodityVO = new CommodityVO();
+		commodityVO.setCommodityId(commodityId);
+		pictureVO.setCommodityVO(commodityVO);
+
+		if (commodityId!=null && picture!=null) {
+			String fileName = picture.getName();
+			String extensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
+			if ((!extensionName.equalsIgnoreCase("jpg")) && (!extensionName.equalsIgnoreCase("gif")) && (!extensionName.equalsIgnoreCase("png")))
+				throw new FileUploadException("副檔名須為jpg, gif, png 三者其中之一");
+			// TODO need test
+			Blob blob = Hibernate.getLobCreator(HibernateSessionFactory.getSession()).createBlob(picture.get());
+			pictureVO.setPicture(blob);
+			pictureVO.setFileName(fileName);
+
+			list.add(pictureVO);
+		}
 		return list;
 	}
 

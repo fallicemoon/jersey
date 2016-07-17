@@ -57,7 +57,7 @@
   </a>
 </div>
 
-<a href="/jersey/LoginServlet?action=logout">登出</a>
+<a href="/jersey/MemberServlet?action=logout">登出</a>
 
 </body>
 </html>

@@ -77,9 +77,9 @@
   	  <c:if test="${!requestScope.commodity.isStored}"><td>否</td></c:if>
   	</tr>
   	</table>
+  	<%-- 在url和input裡面都要放commodityId, 不然吃不到 --%>
 	<form action="/jersey/PictureServlet?commodityId=${param.commodityId}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-    <input type="hidden" name="commodityId" value="${param.commodityId}">
-
+	<input type="hidden" name="commodityId" value="${param.commodityId}">
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">圖片(須為jpg / gif / png)：</label>
   		<div class="col-lg-6">
@@ -91,7 +91,7 @@
 
 	<div class="form-group">
 		<label for="inputEmail3" class="col-sm-2 control-label">
-			<button type="submit" class="btn btn-success" name="action" value="upload">新增</button>
+			<button type="submit" class="btn btn-success">新增</button>
 		</label>
 	</div>
 	</form>

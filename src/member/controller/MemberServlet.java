@@ -9,16 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+
 import member.model.MemberService;
 
 public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final String forwardUrl = "/WEB-INF/pages";
 	private final String forwardLoginUrl = forwardUrl + "/login.jsp";
-	private final String sendRedirectUrl = "/jersey/MemberServlet";
-	private final String sendRedirectIndexUrl = "/jersey/index.jsp";
+	//private final String sendRedirectIndexUrl = "/jersey";
+	private final String forwardIndexUrl = forwardUrl + "/index.jsp";
 	private final MemberService memberService = new MemberService();
-	
+
 	private final String login = "login";
 	private final String logout = "logout";
 	private final String ok = "ok";
@@ -32,28 +34,31 @@ public class MemberServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
 		HttpSession session = request.getSession();
+		String loginResult = (String) session.getAttribute(login);
 		LinkedHashSet<String> errors = new LinkedHashSet<>();
-		if (!ok.equals(session.getAttribute("login"))) {
-			request.getRequestDispatcher(forwardLoginUrl).forward(request, response);
-			return;
-		}
-		
-		if (login.equals(action)) {
-			if (processLogin(request)) {
-				response.sendRedirect(sendRedirectIndexUrl);
+
+		if (StringUtils.isEmpty(action)) {
+			if (ok.equals(loginResult)) {
+				request.getRequestDispatcher(forwardIndexUrl).forward(request, response);
+			} else {
+				request.getRequestDispatcher(forwardLoginUrl).forward(request, response);
+			}
+		} else if (login.equals(action)) {
+			if (login(request)) {
+				request.getRequestDispatcher(forwardIndexUrl).forward(request, response);
 			} else {
 				errors.add("廢物, 帳號密碼錯了");
 				request.setAttribute("errors", errors);
 				request.getRequestDispatcher(forwardLoginUrl).forward(request, response);
 			}
-		} else if (logout.equals(request.getParameter("action"))) {
-			logout(session);
+		} else if (logout.equals(action)) {
+			session.invalidate();
 			request.getRequestDispatcher(forwardLoginUrl).forward(request, response);
 		}
+
 	}
 
-	private boolean processLogin(HttpServletRequest request)
-			throws ServletException, IOException {
+	private boolean login(HttpServletRequest request) throws ServletException, IOException {
 		boolean login = false;
 		HttpSession session = request.getSession();
 		String _user = getServletContext().getInitParameter("user");
@@ -70,4 +75,6 @@ public class MemberServlet extends HttpServlet {
 	private void logout(HttpSession session) {
 		session.invalidate();
 	}
+	
+	
 }

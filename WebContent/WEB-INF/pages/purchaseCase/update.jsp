@@ -46,7 +46,7 @@
     <div class="form-group">
 	<label for="inputEmail3" class="col-sm-2 control-label">商品編號/商品名稱：</label>
 	    	<div class="col-sm-10">
-	    	<a href="/jersey/PurchaseCaseServlet?action=getCommodityList&purchaseCaseId=${purchaseCase.purchaseCaseId}"><button type="button" class="btn btn-warning">匯入</button></a>
+	    	<a href="/jersey/PurchaseCaseServlet?action=getCommodityList&purchaseCaseId=${purchaseCase.purchaseCaseId}"><button type="button" class="btn btn-warning">匯入商品</button></a>
 	    	</div>
 	</div>
     
