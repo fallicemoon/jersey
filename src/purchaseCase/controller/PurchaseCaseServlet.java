@@ -2,21 +2,17 @@ package purchaseCase.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
-import commodity.model.CommodityVO;
 import purchaseCase.model.PurchaseCaseService;
 import purchaseCase.model.PurchaseCaseVO;
 import store.model.StoreService;
@@ -30,7 +26,12 @@ public class PurchaseCaseServlet extends HttpServlet {
 	private final String forwardListUrl = forwardUrl + "/list.jsp";
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
-	private final String forwardAddCommodityUrl = forwardUrl + "/addCommodity.jsp";
+	private final String forwardAddCommodityUrl = forwardUrl + "/addCommodity.jsp?purchaseCaseId=%s";
+
+	public String getForwardAddCommodityUrl(Integer purchaseCaseId) {
+		return String.format(forwardAddCommodityUrl, purchaseCaseId);
+	}
+
 	private PurchaseCaseService service = new PurchaseCaseService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -62,21 +63,19 @@ public class PurchaseCaseServlet extends HttpServlet {
 				request.getRequestDispatcher(forwardAddUrl).forward(request, response);
 			}
 		} else if ("getCommodityList".equals(action)) {
-			// 取得已經在進貨單中的商品清單
 			try {
+				// 取得已經在進貨單中的商品清單
 				Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
-				Set<CommodityVO> commodityListInPurchaseCase = service.getCommoditysByPurchaseCaseId(purchaseCaseId);
-				request.setAttribute("commodityListInPurchaseCase", commodityListInPurchaseCase);
+				request.setAttribute("commodityListInPurchaseCase", service.getCommoditysByPurchaseCaseId(purchaseCaseId));
+
+				// 取得可以新增在進貨單中的商品清單
+				request.setAttribute("commodityListNotInPurchaseCase", service.getCommoditysByPurchaseCaseIdIsNull());
+				request.getRequestDispatcher(getForwardAddCommodityUrl(purchaseCaseId)).forward(request, response);
 			} catch (NumberFormatException e) {
 				// 沒有purchaseCaseId, 導回進貨清單
 				response.sendRedirect(sendRedirectUrl);
-				return;
 			}
 
-			// 取得可以新增在進貨單中的商品清單
-			List<CommodityVO> commodityListNotInPurchaseCase = service.getCommoditysByPurchaseCaseIdIsNull();
-			request.setAttribute("commodityListNotInPurchaseCase", commodityListNotInPurchaseCase);
-			request.getRequestDispatcher(forwardAddCommodityUrl).forward(request, response);
 		} else if ("create".equals(action)) {
 			PurchaseCaseVO purchaseCaseVO = new PurchaseCaseVO();
 			LinkedHashSet<String> errors = new LinkedHashSet<String>();
@@ -127,12 +126,14 @@ public class PurchaseCaseServlet extends HttpServlet {
 
 			purchaseCaseVO.setTime(new Date());
 
-			Integer purchaseCaseId = service.create(purchaseCaseVO);
-			HttpSession session = request.getSession();
-			Integer[] commodityIds = (Integer[]) session.getAttribute("commodityIds");
-			if (commodityIds != null)
-				service.addPurchaseCaseIdToCommoditys(purchaseCaseId, commodityIds);
-			session.removeAttribute("commodityIds");
+			service.create(purchaseCaseVO);
+			// HttpSession session = request.getSession();
+			// Integer[] commodityIds = (Integer[])
+			// session.getAttribute("commodityIds");
+			// if (commodityIds != null)
+			// service.addPurchaseCaseIdToCommoditys(purchaseCaseId,
+			// commodityIds);
+			// session.removeAttribute("commodityIds");
 
 			List<PurchaseCaseVO> purchaseCaseList = new ArrayList<>();
 			purchaseCaseList.add(purchaseCaseVO);
@@ -216,25 +217,24 @@ public class PurchaseCaseServlet extends HttpServlet {
 				for (int i = 0; i < commodityIds.length; i++) {
 					ids[i] = Integer.valueOf(commodityIds[i]);
 				}
-
 				service.addPurchaseCaseIdToCommoditys(purchaseCaseId, ids);
-				List<Integer> idList = Arrays.asList(ids);
-				// 直接改requestScope的值, 不要再跟DB讀一次
-				List<CommodityVO> commodityListNotInPurchaseCase = (List<CommodityVO>) request
-						.getAttribute("commodityListNotInPurchaseCase");
-				List<CommodityVO> commodityListInPurchaseCase = (List<CommodityVO>) request
-						.getAttribute("commodityListInPurchaseCase");
-				List<CommodityVO> temp = new ArrayList<>();
-				for (CommodityVO commodityVO : commodityListNotInPurchaseCase) {
-					if (idList.contains(commodityVO.getCommodityId())) {
-						temp.add(commodityVO);
-					}
-				}
-				commodityListNotInPurchaseCase.removeAll(temp);
-				commodityListInPurchaseCase.addAll(temp);
 			}
-			request.getRequestDispatcher(forwardAddCommodityUrl).forward(request, response);
+			// 避免不同帳號互相干擾 每次都要重讀DB
+			try {
+				// 取得已經在進貨單中的商品清單
+				request.setAttribute("commodityListInPurchaseCase", service.getCommoditysByPurchaseCaseId(purchaseCaseId));
+
+				// 取得可以新增在進貨單中的商品清單
+				request.setAttribute("commodityListNotInPurchaseCase", service.getCommoditysByPurchaseCaseIdIsNull());
+			} catch (NumberFormatException e) {
+				// 沒有purchaseCaseId, 導回進貨清單
+				response.sendRedirect(sendRedirectUrl);
+				return;
+			}
+
+			request.getRequestDispatcher(getForwardAddCommodityUrl(purchaseCaseId)).forward(request, response);
 		} else if ("deletePurchaseCaseId".equals(action)) {
+			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
 			String[] commodityIds = request.getParameterValues("commodityIds");
 			if (commodityIds != null) {
 				// 有勾商品
@@ -243,25 +243,24 @@ public class PurchaseCaseServlet extends HttpServlet {
 					ids[i] = Integer.valueOf(commodityIds[i]);
 				}
 				service.deletePurchasCaseIdFromCommoditys(ids);
-
-				List<Integer> idList = Arrays.asList(ids);
-				// 直接改requestScope的值, 不要再跟DB讀一次
-				List<CommodityVO> commodityListNotInPurchaseCase = (List<CommodityVO>) request
-						.getAttribute("commodityListNotInPurchaseCase");
-				List<CommodityVO> commodityListInPurchaseCase = (List<CommodityVO>) request
-						.getAttribute("commodityListInPurchaseCase");
-				List<CommodityVO> temp = new ArrayList<>();
-				for (CommodityVO commodityVO : commodityListInPurchaseCase) {
-					if (idList.contains(commodityVO.getCommodityId())) {
-						temp.add(commodityVO);
-					}
-				}
-				commodityListInPurchaseCase.removeAll(temp);
-				commodityListNotInPurchaseCase.addAll(temp);
 			}
+			// 避免不同帳號互相干擾 每次都要重讀DB
+			try {
+				// 取得已經在進貨單中的商品清單
+				request.setAttribute("commodityListInPurchaseCase", service.getCommoditysByPurchaseCaseId(purchaseCaseId));
 
-			request.getRequestDispatcher(forwardAddCommodityUrl).forward(request, response);
+				// 取得可以新增在進貨單中的商品清單
+				request.setAttribute("commodityListNotInPurchaseCase", service.getCommoditysByPurchaseCaseIdIsNull());
+			} catch (NumberFormatException e) {
+				// 沒有purchaseCaseId, 導回進貨清單
+				response.sendRedirect(sendRedirectUrl);
+				return;
+			}
+			request.getRequestDispatcher(getForwardAddCommodityUrl(purchaseCaseId)).forward(request, response);
 		}
-
+		
 	}
+	
+	
+	
 }

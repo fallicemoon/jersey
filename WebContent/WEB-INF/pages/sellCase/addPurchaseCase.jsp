@@ -13,17 +13,6 @@
 </head>
 <body>
   <c:import url="/WEB-INF/pages/header.jsp"/>
-  
-  <!-- purchaseCaseList1 -->
-  <jsp:include page="/SellCaseServlet">
-  	<jsp:param name="action" value="getPurchaseCaseListBySellCaseId"/>
-  	<jsp:param name="sellCaseId" value="${param.sellCaseId}"/>
-  </jsp:include>
-  
-  <!-- purchaseCaseList2 -->
-  <jsp:include page="/SellCaseServlet">
-  	<jsp:param name="action" value="getPurchaseCaseListBySellCaseIdIsNull"/>
-  </jsp:include>
 
   <form action="/jersey/SellCaseServlet" method="POST">
   <input type="hidden" name="action" value="addSellCaseId">
@@ -47,23 +36,23 @@
     </tr>
     </thead>
       	
-  	<c:forEach items="${purchaseCaseList2}" var="vo">
+  	<c:forEach items="${purchaseCaseListNotInSellCase}" var="vo">
   	<tr>
   	  <td>
 		<input type="checkbox" name="purchaseCaseIds" value="${vo.purchaseCaseId}">
   	  </td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.store}" name="storeId"/>
-  	  </jsp:include>
-  	  <td>${vo.purchaseCaseId} - <c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.store}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td>${vo.purchaseCaseId} - <c:out value="${vo.store.name}" /></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity">${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
   	  <td>${vo.progress}</td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/>
-  	  </jsp:include>
-  	  <td><c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td><c:out value="${vo.store.name}" /></td>
   	  <c:if test="${!empty vo.trackingNumberLink}"><td><c:out value="${vo.trackingNumber}" /><a href="${vo.trackingNumberLink}" target="_blank">連結</a></c:if>
   	  <c:if test="${empty vo.trackingNumberLink}"><td><c:out value="${vo.trackingNumber}" /></td></c:if>
   	  <td><c:out value="${vo.agent}" /></td>
@@ -105,23 +94,23 @@
     </tr>
     </thead>
       	
-  	<c:forEach items="${purchaseCaseList1}" var="vo">
+  	<c:forEach items="${purchaseCaseListInSellCase}" var="vo">
   	<tr>
   	  <td>
 		<input type="checkbox" name="purchaseCaseIds" value="${vo.purchaseCaseId}">
   	  </td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.store}" name="storeId"/>
-  	  </jsp:include>
-  	  <td>${vo.purchaseCaseId} - <c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.store}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td>${vo.purchaseCaseId} - <c:out value="${vo.store.name}" /></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity"> ${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
   	  <td>${vo.progress}</td>
-  	  <jsp:include page="/StoreServlet">
-  	  	<jsp:param value="getOne" name="action"/>
-  	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/>
-  	  </jsp:include>
-  	  <td><c:out value="${store.name}" /></td>
+<%--   	  <jsp:include page="/StoreServlet"> --%>
+<%--   	  	<jsp:param value="getOne" name="action"/> --%>
+<%--   	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/> --%>
+<%--   	  </jsp:include> --%>
+  	  <td><c:out value="${vo.store.name}" /></td>
   	  <c:if test="${!empty vo.trackingNumberLink}"><td><c:out value="${vo.trackingNumber}" /><a href="${vo.trackingNumberLink}" target="_blank"> 連結</a></c:if>
   	  <c:if test="${empty vo.trackingNumberLink}"><td><c:out value="${vo.trackingNumber}" /></td></c:if>
   	  <td><c:out value="${vo.agent}" /></td>

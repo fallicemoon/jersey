@@ -46,7 +46,7 @@
     <div class="form-group">
 	<label for="inputEmail3" class="col-sm-2 control-label">進貨編號/商家名稱：</label>
 	    	<div class="col-sm-10">
-	    	<a href="/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=${sellCase.sellCaseId}"><button type="button" class="btn btn-warning">匯入</button></a>
+	    	<a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${sellCase.sellCaseId}"><button type="button" class="btn btn-warning">匯入進貨單</button></a>
 	    	</div>
 	</div>
     

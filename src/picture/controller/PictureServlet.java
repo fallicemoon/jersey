@@ -47,7 +47,6 @@ public class PictureServlet extends HttpServlet {
 		//除了取得圖片網址, 進此servlet必帶commodityId, 否則導回商品頁
 		Integer commodityId;
 		try {
-			System.out.println(request.getParameter("commodityId"));
 			commodityId = Integer.valueOf(request.getParameter("commodityId"));
 		} catch (NumberFormatException e) {
 			response.sendRedirect(sendRedirectCommodityUrl);

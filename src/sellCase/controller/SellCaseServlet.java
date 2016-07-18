@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
-import purchaseCase.model.PurchaseCaseVO;
 import sellCase.model.SellCaseService;
 import sellCase.model.SellCaseVO;
 import sellCase.model.SellCaseWithBenefitVO;
@@ -26,8 +25,12 @@ public class SellCaseServlet extends HttpServlet {
 	private final String forwardListUrl = forwardUrl + "/list.jsp";
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
-	private final String forwardAddPurchaseCaseUrl = forwardUrl + "/addPurchaseCase.jsp";
+	private final String forwardAddPurchaseCaseUrl = forwardUrl + "/addPurchaseCase.jsp?sellCaseId=%s";
 	private SellCaseService service = new SellCaseService();
+
+	private String getForwardAddPurchaseCaseUrl(Integer sellCaseId) {
+		return String.format(forwardAddPurchaseCaseUrl, sellCaseId);
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,20 +40,20 @@ public class SellCaseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		//判斷第一頁還第二頁
-		String sellCasePage = (String)session.getAttribute("sellCasePage");
+		// 判斷第一頁還第二頁
+		String sellCasePage = (String) session.getAttribute("sellCasePage");
 		String changePage = request.getParameter("changePage");
-		if (sellCasePage==null) {
+		if (sellCasePage == null) {
 			session.setAttribute("sellCasePage", "before");
 		}
-		//怒換頁
+		// 怒換頁
 		if ("true".equals(changePage)) {
-			sellCasePage = sellCasePage.equals("after")?"before":"after";
+			sellCasePage = sellCasePage.equals("after") ? "before" : "after";
 			session.setAttribute("sellCasePage", sellCasePage);
 		}
-		
-		String action = request.getParameter("action");		
-		Set<String> errors = new LinkedHashSet<String>();		
+
+		String action = request.getParameter("action");
+		Set<String> errors = new LinkedHashSet<String>();
 
 		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("sellCaseList", service.getAll());
@@ -80,12 +83,20 @@ public class SellCaseServlet extends HttpServlet {
 				request.getRequestDispatcher(forwardAddUrl).forward(request, response);
 				return;
 			}
-		} else if ("getPurchaseCaseListBySellCaseId".equals(action)) {
-			Integer purchaseCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
-			request.setAttribute("purchaseCaseList1", service.getPurchaseCasesBySellCaseId(purchaseCaseId));
-		} else if ("getPurchaseCaseListBySellCaseIdIsNull".equals(action)) {
-			List<PurchaseCaseVO> list = service.getPurchaseCasesBySellCaseIdIsNull();
-			request.setAttribute("purchaseCaseList2", list);
+		} else if ("getPurchaseCaseList".equals(action)) {
+			try {
+				// 取得已經在出貨單中的進貨清單
+				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
+				request.setAttribute("purchaseCaseListInSellCase", service.getPurchaseCasesBySellCaseId(sellCaseId));
+
+				// 取得可以新增在出貨單中的進貨清單
+				request.setAttribute("purchaseCaseListNotInSellCase", service.getPurchaseCasesBySellCaseIdIsNull());
+				request.getRequestDispatcher(getForwardAddPurchaseCaseUrl(sellCaseId)).forward(request, response);
+			} catch (NumberFormatException e) {
+				// 沒有purchaseCaseId, 導回出貨清單
+				response.sendRedirect(sendRedirectUrl);
+			}
+
 		} else if ("create".equals(action)) {
 			SellCaseVO sellCaseVO = new SellCaseVO();
 
@@ -124,7 +135,6 @@ public class SellCaseServlet extends HttpServlet {
 			}
 
 			Integer sellCaseId = service.create(sellCaseVO);
-
 
 			Integer[] purchaseCaseIds = (Integer[]) session.getAttribute("purchaseCaseIds");
 			if (purchaseCaseIds != null)
@@ -204,43 +214,57 @@ public class SellCaseServlet extends HttpServlet {
 				service.delete(ids);
 			}
 			response.sendRedirect(sendRedirectUrl);
-			return;			
+			return;
 		} else if ("addSellCaseId".equals(action)) {
-			Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
-			String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
-			if (purchaseCaseIds == null) {
-				response.sendRedirect("/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=" + sellCaseId);
+			try {
+				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
+				String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
+				if (purchaseCaseIds != null) {
+					Integer[] ids = new Integer[purchaseCaseIds.length];
+					for (int i = 0; i < purchaseCaseIds.length; i++) {
+						ids[i] = Integer.valueOf(purchaseCaseIds[i]);
+					}
+					service.addSellCaseIdToPurchaseCases(sellCaseId, ids);
+				}
+
+				// 取得已經在出貨單中的進貨清單
+				request.setAttribute("purchaseCaseListInSellCase", service.getPurchaseCasesBySellCaseId(sellCaseId));
+
+				// 取得可以新增在出貨單中的進貨清單
+				request.setAttribute("purchaseCaseListNotInSellCase", service.getPurchaseCasesBySellCaseIdIsNull());
+				request.getRequestDispatcher(getForwardAddPurchaseCaseUrl(sellCaseId)).forward(request, response);
+			} catch (NumberFormatException e) {
+				// 沒有sellCaseId, 導回出貨清單
+				response.sendRedirect(sendRedirectUrl);
 				return;
 			}
-			Integer[] ids = new Integer[purchaseCaseIds.length];
-			for (int i = 0; i < purchaseCaseIds.length; i++) {
-				ids[i] = Integer.valueOf(purchaseCaseIds[i]);
-			}
-
-			if (sellCaseId.intValue() == 0) {
-				session.setAttribute("purchaseCaseIds", ids);
-				response.sendRedirect("/jersey/sellCase/add.jsp");
-			} else {
-				service.addSellCaseIdToPurchaseCases(sellCaseId, ids);
-				response.sendRedirect("/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=" + sellCaseId);
-			}
-			return;
 		} else if ("deleteSellCaseId".equals(action)) {
-			String sellCaseId = request.getParameter("sellCaseId");
-			String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
-			if (purchaseCaseIds == null) {
-				response.sendRedirect("/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=" + sellCaseId);
+			try {
+				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
+				String[] purchaseCaseIds = request.getParameterValues("purchaseCaseIds");
+				if (purchaseCaseIds != null) {
+					Integer[] ids = new Integer[purchaseCaseIds.length];
+					for (int i = 0; i < purchaseCaseIds.length; i++) {
+						ids[i] = Integer.valueOf(purchaseCaseIds[i]);
+					}
+					service.deleteSellCaseIdFromPurchaseCases(ids);
+				}
+
+				// 取得已經在出貨單中的進貨清單
+				request.setAttribute("purchaseCaseListInSellCase", service.getPurchaseCasesBySellCaseId(sellCaseId));
+
+				// 取得可以新增在出貨單中的進貨清單
+				request.setAttribute("purchaseCaseListNotInSellCase", service.getPurchaseCasesBySellCaseIdIsNull());
+				request.getRequestDispatcher(getForwardAddPurchaseCaseUrl(sellCaseId)).forward(request, response);
+			} catch (NumberFormatException e) {
+				// 沒有sellCaseId, 導回出貨清單
+				response.sendRedirect(sendRedirectUrl);
 				return;
 			}
-			Integer[] ids = new Integer[purchaseCaseIds.length];
-			for (int i = 0; i < purchaseCaseIds.length; i++) {
-				ids[i] = Integer.valueOf(purchaseCaseIds[i]);
-			}
-
-			service.deleteSellCaseIdFromPurchaseCases(ids);
-			response.sendRedirect("/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=" + sellCaseId);
-			return;
 		}
+		
 	}
 
+	
+	
 }
