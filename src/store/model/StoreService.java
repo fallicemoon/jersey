@@ -20,7 +20,7 @@ public class StoreService {
 	}
 	
 	public List<StoreVO> getStoreListByType(StoreType type) {
-		return storeDAO.getStoreListByType(type.toString());
+		return storeDAO.getStoreListByType(type);
 	}
 	
 	public void create(StoreVO vo) {

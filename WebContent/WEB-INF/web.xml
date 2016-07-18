@@ -130,7 +130,7 @@
     <servlet-name>TripleServlet</servlet-name>
     <url-pattern>/TripleServlet</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <description></description>
     <display-name>MemberServlet</display-name>
     <servlet-name>MemberServlet</servlet-name>
@@ -140,4 +140,10 @@
     <servlet-name>MemberServlet</servlet-name>
     <url-pattern>/MemberServlet</url-pattern>
   </servlet-mapping>
+  <listener>
+    <listener-class>tools.jerseyContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>tools.StoreChangeListener</listener-class>
+  </listener>
 </web-app>

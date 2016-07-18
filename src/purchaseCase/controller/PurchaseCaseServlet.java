@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,12 +28,14 @@ public class PurchaseCaseServlet extends HttpServlet {
 	private final String forwardAddUrl = forwardUrl + "/add.jsp";
 	private final String forwardUpdateUrl = forwardUrl + "/update.jsp";
 	private final String forwardAddCommodityUrl = forwardUrl + "/addCommodity.jsp?purchaseCaseId=%s";
+	private final PurchaseCaseService service = new PurchaseCaseService();
+	private final StoreService storeService = new StoreService();
 
 	public String getForwardAddCommodityUrl(Integer purchaseCaseId) {
 		return String.format(forwardAddCommodityUrl, purchaseCaseId);
 	}
 
-	private PurchaseCaseService service = new PurchaseCaseService();
+	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -42,7 +45,8 @@ public class PurchaseCaseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getParameter("action");
-
+		HttpSession session = request.getSession();
+		
 		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("purchaseCaseList", service.getAll());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
@@ -50,13 +54,14 @@ public class PurchaseCaseServlet extends HttpServlet {
 			request.setAttribute("purchaseCaseList", service.getAllOfNotComplete());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 		} else if ("getOne".equals(action)) {
-			StoreService storeService = new StoreService();
+			//取出可以選的商店和託運公司
 			request.setAttribute("stores", storeService.getStoreListByType(StoreType.store));
 			request.setAttribute("shippingCompanys", storeService.getStoreListByType(StoreType.shippingCompany));
 			try {
 				// update
 				Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
-				request.setAttribute("purchaseCase", service.getOne(purchaseCaseId));
+				//放在session, 這樣才不用再update的時候再重新get一次
+				session.setAttribute("purchaseCase", service.getOne(purchaseCaseId));
 				request.getRequestDispatcher(forwardUpdateUrl).forward(request, response);
 			} catch (NumberFormatException e) {
 				// create
@@ -142,13 +147,30 @@ public class PurchaseCaseServlet extends HttpServlet {
 			return;
 		} else if ("update".equals(action)) {
 			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
-			PurchaseCaseVO purchaseCaseVO = new PurchaseCaseVO();
+			
+			PurchaseCaseVO purchaseCaseVO = (PurchaseCaseVO)session.getAttribute("purchaseCase");
 			LinkedHashSet<String> errors = new LinkedHashSet<String>();
-			purchaseCaseVO.setPurchaseCaseId(purchaseCaseId);
+			
+			if (purchaseCaseVO==null || !purchaseCaseVO.getPurchaseCaseId().equals(purchaseCaseId)) {
+				//有壞人進來惹, 給我滾回進貨頁
+				response.sendRedirect(sendRedirectUrl);
+			}
 
-			String store = request.getParameter("store").trim();
+			Integer store;
+			Integer shippingCompany;
+			try {
+				store = Integer.valueOf(request.getParameter("store"));
+				shippingCompany = Integer.valueOf(request.getParameter("shippingCompany"));
+				StoreVO storeVO = new StoreVO();
+				storeVO.setStoreId(store);
+				purchaseCaseVO.setStore(storeVO);
+				StoreVO shippingCompanyVO = new StoreVO();
+				shippingCompanyVO.setStoreId(shippingCompany);
+				purchaseCaseVO.setShippingCompany(shippingCompanyVO);
+			} catch (NumberFormatException e) {
+				errors.add("請不要對商店和託運公司的ID做壞壞的事");
+			}
 			String progress = request.getParameter("progress").trim();
-			String shippingCompany = request.getParameter("shippingCompany").trim();
 			String trackingNumber = request.getParameter("trackingNumber").trim();
 			String trackingNumberLink = request.getParameter("trackingNumberLink").trim();
 			String agent = request.getParameter("agent").trim();
@@ -156,25 +178,18 @@ public class PurchaseCaseServlet extends HttpServlet {
 			String agentTrackingNumberLink = request.getParameter("agentTrackingNumberLink").trim();
 			String description = request.getParameter("description").trim();
 			Boolean isAbroad = Boolean.valueOf(request.getParameter("isAbroad"));
-			Integer cost = Integer.valueOf(0);
+			Integer cost = 0;
 			try {
 				cost = Integer.valueOf(request.getParameter("cost"));
 			} catch (NumberFormatException e) {
 				errors.add("成本需為數字");
 			}
-			Integer agentCost = Integer.valueOf(0);
+			Integer agentCost = 0;
 			try {
 				agentCost = Integer.valueOf(request.getParameter("agentCost"));
 			} catch (NumberFormatException e) {
 				errors.add("國際運費需為數字!");
 			}
-
-			StoreVO storeVO = new StoreVO();
-			storeVO.setName(store);
-			purchaseCaseVO.setStore(storeVO);
-			StoreVO shippingCompanyVO = new StoreVO();
-			shippingCompanyVO.setName(shippingCompany);
-			purchaseCaseVO.setShippingCompany(shippingCompanyVO);
 
 			purchaseCaseVO.setProgress(progress);
 			purchaseCaseVO.setTrackingNumber(trackingNumber);

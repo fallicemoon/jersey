@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 public class JerseyFilter implements Filter {
 	private String ENCODING;
-	private final String sendRedirectUrl="/jersey/MemberServlet";
+	private final String sendRedirectUrl = "/jersey/MemberServlet";
 	private final String ok = "ok";
 
 	public void destroy() {
@@ -30,6 +30,7 @@ public class JerseyFilter implements Filter {
 
 		HttpSession session = httpServletRequest.getSession();
 
+		// 判斷是否登入
 		if (!ok.equals(session.getAttribute("login"))) {
 			httpServletResponse.sendRedirect(sendRedirectUrl);
 			return;

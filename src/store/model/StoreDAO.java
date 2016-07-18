@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.criterion.Restrictions;
 
 import tools.AbstractDAO;
+import tools.JerseyEnum.StoreType;
 
 public class StoreDAO extends AbstractDAO<StoreVO> {
 	
@@ -79,7 +80,7 @@ public class StoreDAO extends AbstractDAO<StoreVO> {
 //		return false;
 //	}
 
-	public List<StoreVO> getStoreListByType(String type) {
+	public List<StoreVO> getStoreListByType(StoreType type) {
 		
 		return getHelper(Restrictions.eq("type", type));
 		

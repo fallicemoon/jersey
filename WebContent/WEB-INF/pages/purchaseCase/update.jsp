@@ -28,10 +28,6 @@
 <%-- 			<jsp:param name="purchaseCaseId" value="${param.purchaseCaseId}" /> --%>
 <%-- 		</jsp:include> --%>
 <%-- 	</c:if> --%>
-
-	<c:forEach items="${requestScope.errors}" var="error">
-		<p style="color: red">${error}</p><br>
-	</c:forEach>
 	
 	<form action="/jersey/PurchaseCaseServlet" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="update">
@@ -59,7 +55,7 @@
     	<select name="store">
     		<c:forEach items="${requestScope.stores}" var="vo">
     			<c:choose>
-    			<c:when test="${vo.storeId==purchaseCase.store}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
+    			<c:when test="${vo.storeId==purchaseCase.store.storeId}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
 				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
     			</c:choose>
     		</c:forEach>
@@ -112,7 +108,7 @@
     	<select name="shippingCompany">
     		<c:forEach items="${requestScope.shippingCompanys}" var="vo">
     			<c:choose>
-    			<c:when test="${vo.storeId==purchaseCase.shippingCompany}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
+    			<c:when test="${vo.storeId==purchaseCase.shippingCompany.storeId}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
 				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
     			</c:choose>
     		</c:forEach>

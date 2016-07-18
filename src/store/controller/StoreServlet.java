@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +25,13 @@ public class StoreServlet extends HttpServlet {
 	private final String sendRedirectUrl = "/jersey/StoreServlet";
 	private StoreService service = new StoreService();
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getParameter("action");
 
 		if (StringUtils.isEmpty(action)) {
@@ -53,7 +54,7 @@ public class StoreServlet extends HttpServlet {
 			storeVO.setName(request.getParameter("name"));
 			storeVO.setType(StoreType.valueOf(request.getParameter("type")));
 			service.create(storeVO);
-			
+
 			List<StoreVO> storeList = new ArrayList<>();
 			storeList.add(storeVO);
 			request.setAttribute("storeList", storeList);
@@ -65,7 +66,7 @@ public class StoreServlet extends HttpServlet {
 			storeVO.setName(request.getParameter("name"));
 			storeVO.setType(StoreType.valueOf(request.getParameter("type")));
 			service.update(storeVO);
-			
+
 			List<StoreVO> storeList = new ArrayList<>();
 			storeList.add(storeVO);
 			request.setAttribute("storeList", storeList);
@@ -82,8 +83,15 @@ public class StoreServlet extends HttpServlet {
 			}
 			response.sendRedirect(sendRedirectUrl);
 			return;
-		} 
+		}
 
 	}
-}
 
+	private void updateContextList(ServletContext servletContext, StoreVO... storeVOs) {
+		
+	}
+
+	
+	
+	
+}
