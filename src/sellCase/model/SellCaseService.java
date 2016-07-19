@@ -1,6 +1,7 @@
 package sellCase.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -145,7 +146,7 @@ public class SellCaseService {
 		return sellCaseWithBenefitVo;
 	}
 	
-	public List<SellCaseWithBenefitVO> getSellCaseWithBenefitVOList (List<SellCaseVO> sellCaseList) {
+	public List<SellCaseWithBenefitVO> getSellCaseWithBenefitVOList (Collection<SellCaseVO> sellCaseList) {
 		List<SellCaseWithBenefitVO> sellCaseWithBenefitList = new ArrayList<>();
 		SellCaseWithBenefitVO sellCaseWithBenefitVo;
 		for (SellCaseVO sellCaseVO : sellCaseList) {

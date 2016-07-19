@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import commodity.model.CommodityService;
 import commodity.model.CommodityVO;
+import commodity.model.CommodityWithPicCountVO;
 import purchaseCase.model.PurchaseCaseService;
 import purchaseCase.model.PurchaseCaseVO;
 import sellCase.model.SellCaseService;
@@ -41,10 +42,10 @@ public class TripleServlet extends HttpServlet {
 		String action = request.getParameter("action");
 
 		if ("commodity".equals(action)) {
-			List<CommodityVO> commodityList = new ArrayList<>();
+			List<CommodityWithPicCountVO> commodityList = new ArrayList<>();
 			List<PurchaseCaseVO> purchaseCaseList = new ArrayList<>();
 			List<SellCaseWithBenefitVO> sellCaseWithBenefitList = new ArrayList<>();
-			
+
 			CommodityVO commodityVO = cs.getOne(Integer.valueOf(request.getParameter("commodityId")));
 			ts.generateTriple(commodityVO, commodityList, purchaseCaseList, sellCaseWithBenefitList);
 
@@ -56,14 +57,15 @@ public class TripleServlet extends HttpServlet {
 			request.getRequestDispatcher(forwardListOneUrl).forward(request, response);
 			return;
 		} else if ("purchaseCase".equals(action)) {
-			Set<CommodityVO> commoditys = new LinkedHashSet<>();
+			Set<CommodityWithPicCountVO> commoditys = new LinkedHashSet<>();
 			List<PurchaseCaseVO> purchaseCaseList = new ArrayList<>();
 			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
 
 			PurchaseCaseVO purchaseCaseVO = pcs.getOne(Integer.valueOf(request.getParameter("purchaseCaseId")));
 			ts.generateTriple(purchaseCaseVO, commoditys, purchaseCaseList, sellCaseList);
 
-			request.setAttribute("title", "進貨:" + purchaseCaseVO.getPurchaseCaseId() + "/" + purchaseCaseVO.getStore().getName());
+			request.setAttribute("title",
+					"進貨:" + purchaseCaseVO.getPurchaseCaseId() + "/" + purchaseCaseVO.getStore().getName());
 			request.setAttribute("commodityList", commoditys);
 			request.setAttribute("purchaseCaseList", purchaseCaseList);
 			request.setAttribute("sellCaseList", sellCaseList);
@@ -71,11 +73,11 @@ public class TripleServlet extends HttpServlet {
 			request.getRequestDispatcher(forwardListOneUrl).forward(request, response);
 			return;
 		} else if ("sellCase".equals(action)) {
-			Set<CommodityVO> commoditys = new LinkedHashSet<>();
+			Set<CommodityWithPicCountVO> commoditys = new LinkedHashSet<>();
 			Set<PurchaseCaseVO> purchaseCases = new LinkedHashSet<>();
 			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
 			SellCaseVO sellCaseVO = scs.getOne(Integer.valueOf(request.getParameter("sellCaseId")));
-			
+
 			ts.generateTriple(sellCaseVO, commoditys, purchaseCases, sellCaseList);
 
 			request.setAttribute("title", "出貨:" + sellCaseVO.getSellCaseId() + "/" + sellCaseVO.getAddressee());

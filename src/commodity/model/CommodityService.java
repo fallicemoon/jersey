@@ -1,6 +1,7 @@
 package commodity.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -95,7 +96,7 @@ public class CommodityService {
 		return commodityWithPicCountVO;
 	}
 	
-	public List<CommodityWithPicCountVO> getCommodityWithPicCountList (List<CommodityVO> commodityList) {
+	public List<CommodityWithPicCountVO> getCommodityWithPicCountList (Collection<CommodityVO> commodityList) {
 		Map<Integer, Integer> pictureCountMap = getCommodityIdPictureCountMap();
 		List<CommodityWithPicCountVO> newList = new ArrayList<>();
 		for (CommodityVO commodityVO : commodityList) {

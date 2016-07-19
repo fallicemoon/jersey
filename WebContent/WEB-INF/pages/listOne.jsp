@@ -56,8 +56,8 @@
 <%--   	  	<jsp:param value="getOne" name="action"/> --%>
 <%--   	  	<jsp:param value="${vo.commodityId}" name="commodityId"/> --%>
 <%--   	  </jsp:include> --%>
-  	  <c:if test="${requestScope.commodityIdPictureCount != 0}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCount}</button></a></td></c:if> 
-  	  <c:if test="${requestScope.commodityIdPictureCount == 0}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
+  	  <c:if test="${requestScope.commodityIdPictureCount != 0}"><td><a href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${vo.pictureCount}</button></a></td></c:if> 
+  	  <c:if test="${requestScope.commodityIdPictureCount == 0}"><td><a href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
   	  
   	  <td>${vo.commodityId} - <c:out value="${vo.itemName}" />
   	  		<c:if test="${!empty vo.link}"><a href="${vo.link}" target="_blank"> 連結</a></c:if>
