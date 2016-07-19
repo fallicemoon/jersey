@@ -19,7 +19,6 @@
 
 	<form action="/jersey/SellCaseServlet" method="POST">
 		<c:import url="/WEB-INF/pages/header.jsp" />
-		<input type="hidden" name="action" value="${param.action}"/>
 		<span style="display: inline-block; width: 100px"></span> <a
 			href="/jersey/SellCaseServlet?action=getOne"><button
 				type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
@@ -160,7 +159,7 @@
 								<%--   	  		<jsp:param value="getOne" name="action"/> --%>
 								<%--   	  		<jsp:param value="${purchaseCase.store}" name="storeId"/> --%>
 								<%--   	  	</jsp:include> --%>
-  	  	${purchaseCase.purchaseCaseId}-${store.name}<br>
+  	  	${purchaseCase.purchaseCaseId}-${purchaseCase.store.name}<br>
 							</c:forEach></td>
 						<td>${vo.transportMethod}</td>
 						<td><c:out value="${vo.phone}" /></td>

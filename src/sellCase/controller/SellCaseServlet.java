@@ -75,7 +75,7 @@ public class SellCaseServlet extends HttpServlet {
 			try {
 				// update
 				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
-				request.setAttribute("sellCase", service.getOne(sellCaseId));
+				session.setAttribute("sellCase", service.getOne(sellCaseId));
 				request.getRequestDispatcher(forwardUpdateUrl).forward(request, response);
 				return;
 			} catch (NumberFormatException e) {
@@ -148,9 +148,14 @@ public class SellCaseServlet extends HttpServlet {
 			return;
 		} else if ("update".equals(action)) {
 			Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
-			SellCaseVO sellCaseVO = new SellCaseVO();
+			SellCaseVO sellCaseVO = (SellCaseVO)session.getAttribute("sellCase");
+			session.removeAttribute("sellCase");
+			if (sellCaseVO!=null && !sellCaseVO.getSellCaseId().equals(sellCaseId)) {
+				//壞人來了, 滾回出貨單
+				response.sendRedirect(sendRedirectUrl);
+				return;
+			}
 
-			sellCaseVO.setSellCaseId(sellCaseId);
 			sellCaseVO.setAddressee(request.getParameter("addressee").trim());
 			sellCaseVO.setPhone(request.getParameter("phone").trim());
 			sellCaseVO.setAddress(request.getParameter("address").trim());
@@ -184,21 +189,8 @@ public class SellCaseServlet extends HttpServlet {
 				request.getRequestDispatcher(forwardUpdateUrl).forward(request, response);
 				return;
 			}
-
 			service.update(sellCaseVO);
 
-			// if
-			// (Boolean.valueOf(request.getParameter("listOne")).booleanValue())
-			// {
-			// String id = request.getParameter("sellCaseId");
-			// response.sendRedirect("/jersey/OtherServlet?action=sellCase&sellCaseId="
-			// + id);
-			// return;
-			// }
-
-			// String page = request.getParameter("page");
-			// response.sendRedirect("/jersey/sellCase/list.jsp?action=getAll&page="
-			// + page);
 			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
 			sellCaseList.add(service.getSellCaseWithBenefitVo(sellCaseVO));
 			request.setAttribute("sellCaseList", sellCaseList);

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import store.model.StoreDAO;
 import store.model.StoreVO;
+import tools.JerseyEnum.StoreType;
 
 public class StoreDAOTest {
 	
@@ -21,7 +22,7 @@ public class StoreDAOTest {
 	
 	@Test
 	public void getStoreListByType () {
-		list = storeDAO.getStoreListByType("store");
+		list = storeDAO.getStoreListByType(StoreType.store);
 	}
 	
 	@After

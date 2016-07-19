@@ -36,4 +36,34 @@ public class StoreVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((storeId == null) ? 0 : storeId.hashCode());
+		return result;
+	}
+
+	//StoreId一樣就是一樣
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StoreVO other = (StoreVO) obj;
+		if (storeId == null) {
+			if (other.storeId != null)
+				return false;
+		} else if (!storeId.equals(other.storeId))
+			return false;
+		return true;
+	}
+
+	
+	
+	
 }

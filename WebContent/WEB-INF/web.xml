@@ -143,7 +143,4 @@
   <listener>
     <listener-class>tools.jerseyContextListener</listener-class>
   </listener>
-  <listener>
-    <listener-class>tools.StoreChangeListener</listener-class>
-  </listener>
 </web-app>

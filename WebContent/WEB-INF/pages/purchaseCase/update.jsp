@@ -53,7 +53,7 @@
 <%--     		<jsp:param value="getStores" name="action"/> --%>
 <%--     	</jsp:include> --%>
     	<select name="store">
-    		<c:forEach items="${requestScope.stores}" var="vo">
+    		<c:forEach items="${applicationScope.store}" var="vo">
     			<c:choose>
     			<c:when test="${vo.storeId==purchaseCase.store.storeId}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
 				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
@@ -106,7 +106,7 @@
 <%--     		<jsp:param value="getShippingCompanys" name="action"/> --%>
 <%--     	</jsp:include> --%>
     	<select name="shippingCompany">
-    		<c:forEach items="${requestScope.shippingCompanys}" var="vo">
+    		<c:forEach items="${applicationScope.shippingCompany}" var="vo">
     			<c:choose>
     			<c:when test="${vo.storeId==purchaseCase.shippingCompany.storeId}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
 				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	

@@ -1,8 +1,11 @@
+/accounting/
 /commodity/
+/hibernate.cfg.xml
+/log4j.properties
 /member/
 /picture/
+/purchaseCase/
+/sellCase/
 /store/
 /tools/
 /triple/
-/purchaseCase/
-/sellCase/

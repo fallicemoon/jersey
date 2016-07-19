@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,7 +38,8 @@ public class CommodityServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action = request.getParameter("action");	
+		String action = request.getParameter("action");
+		HttpSession session = request.getSession();
 
 		if (StringUtils.isEmpty(action)) {
 			List<CommodityWithPicCountVO> commodityList = service.getAll();
@@ -53,7 +55,7 @@ public class CommodityServlet extends HttpServlet {
 			//用在create和update的時候去DB取出資料
 			try {
 				Integer commodityId = Integer.valueOf(request.getParameter("commodityId"));
-				request.setAttribute("commodity", service.getOne(commodityId));
+				session.setAttribute("commodity", service.getOne(commodityId));
 			} catch (NumberFormatException e) {
 				//create
 				request.getRequestDispatcher(forwardAddUrl).forward(request, response);
@@ -161,9 +163,16 @@ public class CommodityServlet extends HttpServlet {
 			return;
 		} else if ("update".equals(action)) {
 			Integer commodityId = Integer.valueOf(request.getParameter("commodityId").trim());
-			CommodityVO commodityVO = new CommodityVO();
+			CommodityVO commodityVO = (CommodityVO)session.getAttribute("commodity");
+			session.removeAttribute("commodity");
+			
+			if (commodityVO==null || !commodityVO.getCommodityId().equals(commodityId)) {
+				//有壞人進來惹, 給我滾回商品頁
+				response.sendRedirect(sendResponseUrl);
+				return;
+			}
+			
 			LinkedHashSet<String> errors = new LinkedHashSet<String>();
-			commodityVO.setCommodityId(Integer.valueOf(request.getParameter("commodityId").trim()));
 			commodityVO.setItemName(request.getParameter("itemName").trim());
 			try {
 				commodityVO.setQty(Integer.valueOf(request.getParameter("qty").trim()));

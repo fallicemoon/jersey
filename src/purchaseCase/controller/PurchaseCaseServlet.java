@@ -17,8 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import purchaseCase.model.PurchaseCaseService;
 import purchaseCase.model.PurchaseCaseVO;
 import store.model.StoreService;
-import store.model.StoreVO;
-import tools.JerseyEnum.StoreType;
 
 public class PurchaseCaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -55,8 +53,6 @@ public class PurchaseCaseServlet extends HttpServlet {
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 		} else if ("getOne".equals(action)) {
 			//取出可以選的商店和託運公司
-			request.setAttribute("stores", storeService.getStoreListByType(StoreType.store));
-			request.setAttribute("shippingCompanys", storeService.getStoreListByType(StoreType.shippingCompany));
 			try {
 				// update
 				Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
@@ -105,14 +101,12 @@ public class PurchaseCaseServlet extends HttpServlet {
 			} catch (NumberFormatException e) {
 				errors.add("國際運費需為數字!");
 			}
-
-			StoreVO storeVO = new StoreVO();
-			storeVO.setName(store);
-			purchaseCaseVO.setStore(storeVO);
-			StoreVO shippingCompanyVO = new StoreVO();
-			shippingCompanyVO.setName(shippingCompany);
-			purchaseCaseVO.setShippingCompany(shippingCompanyVO);
-
+			try {
+				purchaseCaseVO.setStore(storeService.getOne(Integer.valueOf(store)));
+				purchaseCaseVO.setShippingCompany(storeService.getOne(Integer.valueOf(shippingCompany)));
+			} catch (NumberFormatException e) {
+				errors.add("請不要對商店和托運公司做壞壞的事");
+			}
 			purchaseCaseVO.setProgress(progress);
 			purchaseCaseVO.setTrackingNumber(trackingNumber);
 			purchaseCaseVO.setTrackingNumberLink(trackingNumberLink);
@@ -146,14 +140,15 @@ public class PurchaseCaseServlet extends HttpServlet {
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("update".equals(action)) {
-			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
-			
+			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));		
 			PurchaseCaseVO purchaseCaseVO = (PurchaseCaseVO)session.getAttribute("purchaseCase");
+			session.removeAttribute("purchaseCase");
 			LinkedHashSet<String> errors = new LinkedHashSet<String>();
 			
 			if (purchaseCaseVO==null || !purchaseCaseVO.getPurchaseCaseId().equals(purchaseCaseId)) {
 				//有壞人進來惹, 給我滾回進貨頁
 				response.sendRedirect(sendRedirectUrl);
+				return;
 			}
 
 			Integer store;
@@ -161,12 +156,8 @@ public class PurchaseCaseServlet extends HttpServlet {
 			try {
 				store = Integer.valueOf(request.getParameter("store"));
 				shippingCompany = Integer.valueOf(request.getParameter("shippingCompany"));
-				StoreVO storeVO = new StoreVO();
-				storeVO.setStoreId(store);
-				purchaseCaseVO.setStore(storeVO);
-				StoreVO shippingCompanyVO = new StoreVO();
-				shippingCompanyVO.setStoreId(shippingCompany);
-				purchaseCaseVO.setShippingCompany(shippingCompanyVO);
+				purchaseCaseVO.setStore(storeService.getOne(store));
+				purchaseCaseVO.setShippingCompany(storeService.getOne(shippingCompany));
 			} catch (NumberFormatException e) {
 				errors.add("請不要對商店和託運公司的ID做壞壞的事");
 			}
