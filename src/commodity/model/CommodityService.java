@@ -91,8 +91,10 @@ public class CommodityService {
 	
 	public CommodityWithPicCountVO getCommodityWithPicCountVO (CommodityVO commodityVO) {
 		CommodityWithPicCountVO commodityWithPicCountVO = new CommodityWithPicCountVO();
-		Tools.copyBeanProperties(commodityVO, commodityWithPicCountVO);
-		commodityWithPicCountVO.setPictureCount(getCommodityIdPictureCount(commodityVO.getCommodityId()));
+		if (commodityVO!=null) {
+			Tools.copyBeanProperties(commodityVO, commodityWithPicCountVO);
+			commodityWithPicCountVO.setPictureCount(getCommodityIdPictureCount(commodityVO.getCommodityId()));
+		}
 		return commodityWithPicCountVO;
 	}
 	
