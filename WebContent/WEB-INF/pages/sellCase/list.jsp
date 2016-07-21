@@ -13,9 +13,6 @@
 <title>出貨</title>
 </head>
 <body>
-	<%--   <jsp:include page="/SellCaseServlet"> --%>
-	<%--   	<jsp:param name="action" value="${param.action}"/> --%>
-	<%--   </jsp:include> --%>
 
 	<form action="/jersey/SellCaseServlet" method="POST">
 		<c:import url="/WEB-INF/pages/header.jsp" />
@@ -65,6 +62,7 @@
 					<tr>
 						<th></th>
 						<th></th>
+						<th></th>
 						<th>出貨編號/收件人</th>
 						<th>總價</th>
 						<th>是否已出貨</th>
@@ -81,6 +79,7 @@
 						<td><a
 							href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button
 									type="button" class="btn btn-warning">修改</button></a></td>
+						<td><a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-success">匯入進貨</button></a></td>
 						<td><a
 							href="/jersey/TripleServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId}
 								- <c:out value="${vo.addressee}" />
@@ -129,6 +128,7 @@
 					<tr>
 						<th></th>
 						<th></th>
+						<th></th>
 						<th>出貨編號/收件人</th>
 						<th>進貨編號/商家名稱</th>
 						<th>運送方式</th>
@@ -150,6 +150,7 @@
 						<td><a
 							href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button
 									type="button" class="btn btn-warning">修改</button></a></td>
+						<td><a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-success">匯入進貨</button></a></td>
 						<td><a
 							href="/jersey/TripleServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId}
 								- <c:out value="${vo.addressee}" />

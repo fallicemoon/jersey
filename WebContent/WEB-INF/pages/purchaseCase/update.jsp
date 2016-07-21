@@ -14,20 +14,10 @@
 </head>
 <c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
-<%-- 	<c:if test="${param.purchaseCaseId == null}"> --%>
-<%-- 		<c:redirect context="/jersey" url="/purchaseCase/list.jsp" /> --%>
-<%-- 	</c:if> --%>
 	<br/><br/>
 	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
 	</c:forEach>
-	
-<%-- 	<c:if test="${param.purchaseCaseId != null}"> --%>
-<%-- 		<jsp:include page="/PurchaseCaseServlet"> --%>
-<%-- 			<jsp:param name="action" value="getOne" /> --%>
-<%-- 			<jsp:param name="purchaseCaseId" value="${param.purchaseCaseId}" /> --%>
-<%-- 		</jsp:include> --%>
-<%-- 	</c:if> --%>
 	
 	<form action="/jersey/PurchaseCaseServlet" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="update">
@@ -41,17 +31,16 @@
         
     <div class="form-group">
 	<label for="inputEmail3" class="col-sm-2 control-label">商品編號/商品名稱：</label>
-	    	<div class="col-sm-10">
-	    	<a href="/jersey/PurchaseCaseServlet?action=getCommodityList&purchaseCaseId=${purchaseCase.purchaseCaseId}"><button type="button" class="btn btn-warning">匯入商品</button></a>
-	    	</div>
+	    <div class="col-sm-10">
+	    	<c:forEach items="${purchaseCase.commoditys}" var="commodity">
+	    		${commodity.commodityId}-${commodity.itemName}
+	    	</c:forEach>
+	    </div>
 	</div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家名稱：</label>
     	<div class="col-sm-10">
-<%--     	<jsp:include page="/StoreServlet"> --%>
-<%--     		<jsp:param value="getStores" name="action"/> --%>
-<%--     	</jsp:include> --%>
     	<select name="store">
     		<c:forEach items="${applicationScope.store}" var="vo">
     			<c:choose>
@@ -102,9 +91,6 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">託運公司：</label>
     	<div class="col-sm-10">
-<%--     	<jsp:include page="/StoreServlet"> --%>
-<%--     		<jsp:param value="getShippingCompanys" name="action"/> --%>
-<%--     	</jsp:include> --%>
     	<select name="shippingCompany">
     		<c:forEach items="${applicationScope.shippingCompany}" var="vo">
     			<c:choose>

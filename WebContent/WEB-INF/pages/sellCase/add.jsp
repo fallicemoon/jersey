@@ -20,21 +20,7 @@
 		<p style="color: red">${error}</p>
 	</c:forEach>
 	
-	<form action="/jersey/SellCaseServlet" method="post" class="form-horizontal">
-	<div class="form-group">
-	<label for="inputEmail3" class="col-sm-2 control-label">進貨編號/商家名稱：</label>
-	    	<div class="col-sm-10">
-	    	<a href="/jersey/sellCase/addPurchaseCase.jsp?sellCaseId=0"><button type="button" class="btn btn-warning">匯入</button></a>
-	    	<c:forEach items="${sessionScope.purchaseCaseIds}" var="purchaseCaseId">
-<%-- 	    		<jsp:include page="/PurchaseCaseServlet"> --%>
-<%-- 	    			<jsp:param value="getOne" name="action"/> --%>
-<%-- 	    			<jsp:param value="${purchaseCaseId}" name="purchaseCaseId"/> --%>
-<%-- 	    		</jsp:include> --%>
-	    		<span>${purchaseCaseId} - ${purchaseCase.store} / </span>
-	    	</c:forEach>
-	    	</div>
-	</div>
-	
+	<form action="/jersey/SellCaseServlet" method="post" class="form-horizontal">	
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">運送方式：</label>
     	<div class="col-sm-10">

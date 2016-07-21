@@ -14,18 +14,7 @@
 </head>
 <c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
-	
-<%-- 	<c:if test="${param.sellCaseId == null}"> --%>
-<%-- 		<c:redirect context="/jersey" url="/sellCase/list.jsp?action=getAll&page=1" /> --%>
-<%-- 	</c:if> --%>
 	<br/><br/>
-	
-<%-- 	<c:if test="${param.sellCaseId != null}"> --%>
-<%-- 		<jsp:include page="/SellCaseServlet"> --%>
-<%-- 			<jsp:param name="action" value="getOne" /> --%>
-<%-- 			<jsp:param name="sellCaseId" value="${param.sellCaseId}" /> --%>
-<%-- 		</jsp:include> --%>
-<%-- 	</c:if> --%>
 	
 	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
@@ -45,9 +34,11 @@
     
     <div class="form-group">
 	<label for="inputEmail3" class="col-sm-2 control-label">進貨編號/商家名稱：</label>
-	    	<div class="col-sm-10">
-	    	<a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${sellCase.sellCaseId}"><button type="button" class="btn btn-warning">匯入進貨單</button></a>
-	    	</div>
+	    <div class="col-sm-10">
+	    	<c:forEach items="${sellCase.purchaseCases}" var="purchaseCase">
+	    		${purchaseCase.purchaseCaseId}-${purchaseCase.store.name}
+	    	</c:forEach>
+	    </div>
 	</div>
     
     <div class="form-group">

@@ -37,21 +37,6 @@
 	<form action="/jersey/StoreServlet" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="update">
     <input type="hidden" name="storeId" value="${store.storeId}">
-    <div class="form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">商家類別:</label>
-    	<div class="col-sm-10">
-    	<select name="type" class="form-control" style="width: 14%">
-    		<c:if test="${store.type=='store'}">
-    		<option value="store" selected="selected">商店</option>
-    		<option value="shippingCompany">託運公司</option>
-    		</c:if>
-    		<c:if test="${store.type=='shippingCompany'}">
-    		<option value="store">商店</option>
-    		<option value="shippingCompany" selected="selected">託運公司</option>
-    		</c:if>
-    	</select>
-    	</div>
-    </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家名稱：</label>

@@ -22,19 +22,6 @@
 	
 	<form action="/jersey/PurchaseCaseServlet" method="post" class="form-horizontal">
 	<input type="hidden" name="action" value="create">
-    <div class="form-group">
-	<label for="inputEmail3" class="col-sm-2 control-label">商品編號/商品名稱：</label>
-	    	<div class="col-sm-10">
-	    	<a href="/jersey/PurchaseCaseServlet?action=getCommodityList"><button type="button" class="btn btn-warning">匯入</button></a>
-	    	<c:forEach items="${sessionScope.commodityIds}" var="commodityId">
-	    		<jsp:include page="/CommodityServlet">
-	    			<jsp:param value="getOne" name="action"/>
-	    			<jsp:param value="${commodityId}" name="commodityId"/>
-	    		</jsp:include>
-	    	<span>${commodityId} - ${commodity.itemName} / </span>
-	    	</c:forEach>
-	    	</div>
-	</div>
 	
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商家名稱：</label>
@@ -44,10 +31,7 @@
 <%--     	</jsp:include> --%>
     	<select name="store">
     		<c:forEach items="${applicationScope.store}" var="vo">
-    			<c:choose>
-    			<c:when test="${vo.storeId==purchaseCase.store}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
-				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
-    			</c:choose>
+				<option value="${vo.storeId}">${vo.name}</option>
     		</c:forEach>
     	</select>
     	</div>
@@ -97,10 +81,7 @@
 <%--     	</jsp:include> --%>
     	<select name="shippingCompany">
     		<c:forEach items="${applicationScope.shippingCompany}" var="vo">
-    			<c:choose>
-    			<c:when test="${vo.storeId==purchaseCase.shippingCompany}"><option value="${vo.storeId}" selected="selected">${vo.name}</option></c:when>
-				<c:otherwise><option value="${vo.storeId}">${vo.name}</option></c:otherwise>	
-    			</c:choose>
+    			<option value="${vo.storeId}">${vo.name}</option>
     		</c:forEach>
     	</select>
     	</div>

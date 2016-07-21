@@ -9,7 +9,7 @@
 <body>
   <div style="length:100%; bottom:9px; text-align:center;">
 		<div>
-  		<form action="index.jsp" method="post">
+  		<form action="/jersey/MemberServlet" method="post">
   		<button type="submit" class="btn btn-primary btn-lg">回到首頁</button>
   		</form>
   		</div>

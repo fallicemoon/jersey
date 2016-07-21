@@ -77,7 +77,7 @@ public class StoreServlet extends HttpServlet {
 			StoreVO storeVO = (StoreVO)session.getAttribute("store");
 			session.removeAttribute("store");
 			
-			if (storeVO!=null && !storeVO.getStoreId().equals(storeId)) {
+			if (storeVO==null || !storeVO.getStoreId().equals(storeId)) {
 				//壞人, 踢回去
 				response.sendRedirect(sendRedirectUrl);
 				return;

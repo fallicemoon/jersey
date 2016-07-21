@@ -140,7 +140,7 @@ public class PurchaseCaseServlet extends HttpServlet {
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("update".equals(action)) {
-			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));		
+			Integer purchaseCaseId = Integer.valueOf(request.getParameter("purchaseCaseId"));
 			PurchaseCaseVO purchaseCaseVO = (PurchaseCaseVO)session.getAttribute("purchaseCase");
 			session.removeAttribute("purchaseCase");
 			LinkedHashSet<String> errors = new LinkedHashSet<String>();
@@ -201,8 +201,9 @@ public class PurchaseCaseServlet extends HttpServlet {
 
 			service.update(purchaseCaseVO);
 
+			//因為匯入商品可能在別的瀏覽器分頁更新了, 所以這邊再取一次避免顯示的商品和DB不一致
 			List<PurchaseCaseVO> purchaseCaseList = new ArrayList<>();
-			purchaseCaseList.add(purchaseCaseVO);
+			purchaseCaseList.add(service.getOne(purchaseCaseId));
 			request.setAttribute("purchaseCaseList", purchaseCaseList);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 		} else if ("delete".equals(action)) {

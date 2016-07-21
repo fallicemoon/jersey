@@ -49,6 +49,7 @@ public class CommodityServlet extends HttpServlet {
 			}
 			
 			request.setAttribute("commodityList", commodityList);
+			request.setAttribute("showRule", true);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("getOne".equals(action)) {
@@ -104,12 +105,13 @@ public class CommodityServlet extends HttpServlet {
 			if (!isStored.equals("無"))
 				rule.put("isStored", Boolean.valueOf(isStored));
 			
-			List<CommodityVO> commodityList = service.getByRule(rule);
+			List<CommodityWithPicCountVO> commodityList = service.getByRule(rule);
 			Map<String, Set<String>> ruleMap = service.getRule(commodityList);
 			for (String key : ruleMap.keySet()) {
 				request.setAttribute(key, ruleMap.get(key));
 			}
 			request.setAttribute("commodityList", commodityList);
+			request.setAttribute("showRule", false);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
 		} else if ("create".equals(action)) {

@@ -150,7 +150,7 @@ public class SellCaseServlet extends HttpServlet {
 			Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));
 			SellCaseVO sellCaseVO = (SellCaseVO)session.getAttribute("sellCase");
 			session.removeAttribute("sellCase");
-			if (sellCaseVO!=null && !sellCaseVO.getSellCaseId().equals(sellCaseId)) {
+			if (sellCaseVO==null || !sellCaseVO.getSellCaseId().equals(sellCaseId)) {
 				//壞人來了, 滾回出貨單
 				response.sendRedirect(sendRedirectUrl);
 				return;
@@ -191,8 +191,9 @@ public class SellCaseServlet extends HttpServlet {
 			}
 			service.update(sellCaseVO);
 
+			//因為匯入進貨可能在別的瀏覽器分頁更新了, 所以這邊再取一次避免顯示的進貨和DB不一致
 			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
-			sellCaseList.add(service.getSellCaseWithBenefitVo(sellCaseVO));
+			sellCaseList.add(service.getSellCaseWithBenefitVo(service.getOne(sellCaseId)));
 			request.setAttribute("sellCaseList", sellCaseList);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;

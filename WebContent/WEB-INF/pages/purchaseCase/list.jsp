@@ -25,6 +25,7 @@
     <tr>
       <th></th>
       <th></th>
+      <th></th>
       <th>進貨編號/商家名稱</th>
 	  <th>商品編號/商品名稱</th>
       <th>進度</th>
@@ -48,17 +49,12 @@
   	  <td>
 		<a href="/jersey/PurchaseCaseServlet?action=getOne&purchaseCaseId=${vo.purchaseCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-<%--   	  <jsp:include page="/StoreServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${vo.store}" name="storeId"/> --%>
-<%--   	  </jsp:include> --%>
+	  <td>
+	    <a href="/jersey/PurchaseCaseServlet?action=getCommodityList&purchaseCaseId=${vo.purchaseCaseId}"><button type="button" class="btn btn-success">匯入商品</button></a>
+	  </td>
   	  <td><a href="/jersey/TripleServlet?action=purchaseCase&purchaseCaseId=${vo.purchaseCaseId}">${vo.purchaseCaseId} - <c:out value="${vo.store.name}" /></a></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity">${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
   	  <td>${vo.progress}</td>
-<%--   	  <jsp:include page="/StoreServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/> --%>
-<%--   	  </jsp:include> --%>
   	  <td><c:out value="${vo.shippingCompany.name}" /></td>
   	  <td><c:out value="${vo.trackingNumber}" /><c:if test="${!empty vo.trackingNumberLink}"><a href="${vo.trackingNumberLink}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.trackingNumberLink}"></c:if></td>
