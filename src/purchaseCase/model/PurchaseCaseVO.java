@@ -169,6 +169,31 @@ public class PurchaseCaseVO implements Serializable{
 				+ ", description=" + description + ", time=" + time + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((purchaseCaseId == null) ? 0 : purchaseCaseId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PurchaseCaseVO other = (PurchaseCaseVO) obj;
+		if (purchaseCaseId == null) {
+			if (other.purchaseCaseId != null)
+				return false;
+		} else if (!purchaseCaseId.equals(other.purchaseCaseId))
+			return false;
+		return true;
+	}
+
 	
 	
 	

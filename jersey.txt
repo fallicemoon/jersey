@@ -2,9 +2,11 @@
 選擇照片的checkBox拿掉，改成jQuery
 所有網址帶參數的用jQuery處理掉
 
+create和update回傳VO, 程式碼不要再get一次
 權限管理
-UUID
+UUID, ID不要秀出來
 vo的hashCode和equals
+createTime
 ------------------------------
 共同:
 listAll => 從header點進去後看是否正常

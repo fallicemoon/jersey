@@ -226,6 +226,31 @@ public class CommodityVO implements Serializable{
 				+ ", patchAndCertificate=" + patchAndCertificate + ", serial=" + serial + ", owner=" + owner + ", cost="
 				+ cost + ", sellPrice=" + sellPrice + ", sellPlatform=" + sellPlatform + ", isStored=" + isStored + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((commodityId == null) ? 0 : commodityId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CommodityVO other = (CommodityVO) obj;
+		if (commodityId == null) {
+			if (other.commodityId != null)
+				return false;
+		} else if (!commodityId.equals(other.commodityId))
+			return false;
+		return true;
+	}
 	
 	
 }

@@ -163,6 +163,31 @@ public class SellCaseVO implements Serializable{
 				+ transportCost + ", collected=" + collected + ", uncollected=" + uncollected + ", shippingTime="
 				+ shippingTime + ", closeTime=" + closeTime + ", isChecked=" + isChecked + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sellCaseId == null) ? 0 : sellCaseId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SellCaseVO other = (SellCaseVO) obj;
+		if (sellCaseId == null) {
+			if (other.sellCaseId != null)
+				return false;
+		} else if (!sellCaseId.equals(other.sellCaseId))
+			return false;
+		return true;
+	}
 	
 	
 }
