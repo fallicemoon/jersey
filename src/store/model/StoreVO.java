@@ -1,10 +1,9 @@
 package store.model;
 
-import java.io.Serializable;
-
+import tools.AbstractVo;
 import tools.JerseyEnum.StoreType;
 
-public class StoreVO implements Serializable{
+public class StoreVO extends AbstractVo {
 	/**
 	 * 
 	 */

@@ -26,7 +26,7 @@ public class SellCaseService {
 		return dao.getOne(id);
 	}
 
-	public Integer create(SellCaseVO vo) {
+	public SellCaseVO create(SellCaseVO vo) {
 		vo.setUncollected(vo.getIncome() - vo.getCollected());
 		
 		if (vo.getIsShipping()) {
@@ -40,7 +40,7 @@ public class SellCaseService {
 		return this.dao.create(vo);
 	}
 
-	public boolean update(SellCaseVO vo) {
+	public SellCaseVO update(SellCaseVO vo) {
 		vo.setUncollected(vo.getIncome() - vo.getCollected());
 		
 		if (vo.getIsShipping()) {

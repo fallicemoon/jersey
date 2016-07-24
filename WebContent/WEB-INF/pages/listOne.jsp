@@ -15,9 +15,9 @@
   <c:import url="/WEB-INF/pages/header.jsp"/>
   <br>
   <h1>${requestScope.title}</h1>
-<!-- 商品 -->
 	<h3>商品</h3>
 	<form action="/jersey/CommodityServlet" method="POST">
+	<input type="hidden" name="listOne" value="true">
   	<table border=1 width="1500px" class="table table-hover">
     <thead>
     <tr>
@@ -49,13 +49,8 @@
 		<input type="checkbox" name="commodityIds" value="${vo.commodityId}">
   	  </td>
   	  <td>
-		<a href="/jersey/CommodityServlet?action=getOne&commodityId=${vo.commodityId}"><button type="button" class="btn btn-warning">修改</button></a>
+		<a href="/jersey/CommodityServlet?action=getOne&commodityId=${vo.commodityId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-  	  
-<%--   	  <jsp:include page="/CommodityServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${vo.commodityId}" name="commodityId"/> --%>
-<%--   	  </jsp:include> --%>
   	  <c:if test="${requestScope.commodityIdPictureCount != 0}"><td><a href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${vo.pictureCount}</button></a></td></c:if> 
   	  <c:if test="${requestScope.commodityIdPictureCount == 0}"><td><a href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if>
   	  
@@ -85,11 +80,12 @@
   </form>
 
 <h3>進貨</h3>
-<!-- 進貨 -->
   <form action="/jersey/PurchaseCaseServlet" method="POST">
+  <input type="hidden" name="listOne" value="true">
   <table border=1 width="1500px" class="table table-hover">
     <thead>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th>進貨編號/商家名稱</th>
@@ -113,19 +109,14 @@
   	    <input type="checkbox" name="purchaseCaseIds" value="${vo.purchaseCaseId}">
   	  </td>
   	  <td>
-		<a href="/jersey/PurchaseCaseServlet?action=getOne&purchaseCaseId=${vo.purchaseCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
+		<a href="/jersey/PurchaseCaseServlet?action=getOne&purchaseCaseId=${vo.purchaseCaseId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
-<%--   	  <jsp:include page="/StoreServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${vo.store}" name="storeId"/> --%>
-<%--   	  </jsp:include> --%>
+  	  <td>
+	    <a href="/jersey/PurchaseCaseServlet?action=getCommodityList&purchaseCaseId=${vo.purchaseCaseId}"><button type="button" class="btn btn-success">匯入商品</button></a>
+	  </td>
   	  <td>${vo.purchaseCaseId} - <c:out value="${vo.store.name}" /></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity">${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
   	  <td>${vo.progress}</td>
-<%--   	  <jsp:include page="/StoreServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${vo.shippingCompany}" name="storeId"/> --%>
-<%--   	  </jsp:include> --%>
   	  <td><c:out value="${vo.shippingCompany.name}" /></td>
   	  <td><c:out value="${vo.trackingNumber}" /><c:if test="${!empty vo.trackingNumberLink}"><a href="${vo.trackingNumberLink}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.trackingNumberLink}"></c:if></td>
@@ -144,13 +135,13 @@
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   </form>	
 
-<!-- 出貨 -->
   <h3>出貨</h3>
   <form action="/jersey/SellCaseServlet" method="POST">
-  <c:if test="${empty param.page}">
+  <input type="hidden" name="listOne" value="true">
   <table border=1 width="1500px" class="table table-hover">
     <thead>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th>出貨編號/收件人</th>
@@ -178,8 +169,9 @@
   	  	<input type="checkbox" name="sellCaseIds" value="${vo.sellCaseId}">
   	  </td>
   	  <td>
-  	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-warning">修改</button></a>
+  	  	<a href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}&listOne=true"><button type="button" class="btn btn-warning">修改</button></a>
   	  </td>
+  	  <td><a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-success">匯入進貨</button></a></td>
   	  <td>${vo.sellCaseId} - <c:out value="${vo.addressee}" /></td>
   	  <td>${vo.income}</td>
   	  <c:if test="${vo.isShipping}"><td>是</td></c:if>
@@ -189,10 +181,6 @@
   	  <td>${vo.uncollected}</td>
   	  <td><c:if test="${vo.uncollected==0 && vo.isChecked}">是</c:if>
   	      <c:if test="${!vo.isChecked || vo.uncollected!=0}">否</c:if></td>
-<%--   	  <jsp:include page="/SellCaseServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${vo.sellCaseId}" name="sellCaseId"/> --%>
-<%--   	  </jsp:include> --%>
   	  <td>已收額${vo.collected} (總價${vo.income}) - 成本${vo.costs} - 國際運費${vo.agentCosts} - 國內運費${vo.transportCost} =   	  
   	  	  <c:if test="${vo.benefit < 0}"><span style="color: red">${vo.benefit} / </span></c:if>
 		  <c:if test="${vo.benefit >= 0}"><span style="color: blue">${vo.benefit} / </span></c:if>
@@ -200,10 +188,6 @@
 		  <c:if test="${vo.estimateBenefit >= 0}"><span style="color: blue">${vo.estimateBenefit}</span></c:if>
 	  </td>
   	  <td><c:forEach items="${vo.purchaseCases}" var="purchaseCase">
-<%--   	  <jsp:include page="/StoreServlet"> --%>
-<%--   	  	<jsp:param value="getOne" name="action"/> --%>
-<%--   	  	<jsp:param value="${purchaseCase.store}" name="storeId"/> --%>
-<%--   	  </jsp:include> --%>
   	  	${purchaseCase.purchaseCaseId}-${purchaseCase.store.name}<br>
   	  </c:forEach></td>
 	  <td>${vo.transportMethod}</td>
@@ -218,8 +202,6 @@
   	</tr>
   	</c:forEach>
   </table>
-  </c:if>
-
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
   </form>
 

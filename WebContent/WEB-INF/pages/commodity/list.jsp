@@ -12,9 +12,6 @@
 <title>商品</title>
 </head>
 <body>
-	<%--   <jsp:include page="/CommodityServlet"> --%>
-	<%--   	<jsp:param name="action" value="${param.action}"/> --%>
-	<%--   </jsp:include> --%>
 	<form action="/jersey/CommodityServlet" method="POST">
 		<c:import url="/WEB-INF/pages/header.jsp" />
 		<span style="display: inline-block; width: 100px"></span> <a
@@ -169,8 +166,6 @@
 					<td><a
 						href="/jersey/CommodityServlet?action=getOne&commodityId=${vo.commodityId}"><button
 								type="button" class="btn btn-warning">修改</button></a></td>
-					<%--   	  <c:if test="${not empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-success" data-toggle="modal">${commodityIdPictureCountMap[vo.commodityId]}</button></a></td></c:if>  --%>
-					<%--   	  <c:if test="${empty commodityIdPictureCountMap[vo.commodityId]}"><td><a href="/jersey/picture/uploadPicture.jsp?commodityId=${vo.commodityId}"><button type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td></c:if> --%>
 					<c:if test="${vo.pictureCount!=0}">
 						<td><a
 							href="/jersey/PictureServlet?commodityId=${vo.commodityId}"><button

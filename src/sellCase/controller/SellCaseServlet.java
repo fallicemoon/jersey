@@ -2,6 +2,7 @@ package sellCase.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
+import purchaseCase.model.PurchaseCaseVO;
 import sellCase.model.SellCaseService;
 import sellCase.model.SellCaseVO;
 import sellCase.model.SellCaseWithBenefitVO;
@@ -134,12 +136,7 @@ public class SellCaseServlet extends HttpServlet {
 				return;
 			}
 
-			Integer sellCaseId = service.create(sellCaseVO);
-
-			Integer[] purchaseCaseIds = (Integer[]) session.getAttribute("purchaseCaseIds");
-			if (purchaseCaseIds != null)
-				service.addSellCaseIdToPurchaseCases(sellCaseId, purchaseCaseIds);
-			session.removeAttribute("purchaseCaseIds");
+			service.create(sellCaseVO);
 
 			List<SellCaseWithBenefitVO> sellCaseList = new ArrayList<>();
 			sellCaseList.add(service.getSellCaseWithBenefitVo(sellCaseVO));
@@ -189,6 +186,7 @@ public class SellCaseServlet extends HttpServlet {
 				request.getRequestDispatcher(forwardUpdateUrl).forward(request, response);
 				return;
 			}
+
 			service.update(sellCaseVO);
 
 			//因為匯入進貨可能在別的瀏覽器分頁更新了, 所以這邊再取一次避免顯示的進貨和DB不一致
@@ -196,7 +194,6 @@ public class SellCaseServlet extends HttpServlet {
 			sellCaseList.add(service.getSellCaseWithBenefitVo(service.getOne(sellCaseId)));
 			request.setAttribute("sellCaseList", sellCaseList);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
 		} else if ("delete".equals(action)) {
 			String[] sellCaseIds = request.getParameterValues("sellCaseIds");
 			if (sellCaseIds != null) {
@@ -207,7 +204,6 @@ public class SellCaseServlet extends HttpServlet {
 				service.delete(ids);
 			}
 			response.sendRedirect(sendRedirectUrl);
-			return;
 		} else if ("addSellCaseId".equals(action)) {
 			try {
 				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));

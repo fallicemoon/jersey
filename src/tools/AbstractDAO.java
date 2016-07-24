@@ -1,6 +1,7 @@
 package tools;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -13,7 +14,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.transform.Transformers;
 
-public abstract class AbstractDAO<E> implements DAOInterface<E> {
+public abstract class AbstractDAO<E extends AbstractVo> implements DAOInterface<E> {
 
 	private Class<E> voType;
 	private String pk;
@@ -62,14 +63,16 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 		return vo;
 	}
 
+
 	@Override
-	public Integer create(E vo) {
+	public E create(E vo) {
 		Session session = HibernateSessionFactory.getSession();
 		try {
+			vo.setCreateTime(new Date());
 			session.beginTransaction();
-			Integer id = (Integer) session.save(vo);
+			session.save(vo);
 			session.getTransaction().commit();
-			return id;
+			return vo;
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
@@ -78,17 +81,17 @@ public abstract class AbstractDAO<E> implements DAOInterface<E> {
 	}
 
 	@Override
-	public boolean update(E vo) {
+	public E update(E vo) {
 		Session session = HibernateSessionFactory.getSession();
 		try {
 			session.beginTransaction();
 			session.update(vo);
 			session.getTransaction().commit();
-			return true;
+			return vo;
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 

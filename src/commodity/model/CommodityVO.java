@@ -1,10 +1,9 @@
 package commodity.model;
 
-import java.io.Serializable;
-
 import purchaseCase.model.PurchaseCaseVO;
+import tools.AbstractVo;
 
-public class CommodityVO implements Serializable{
+public class CommodityVO extends AbstractVo{
 	/**
 	 * 
 	 */

@@ -9,7 +9,7 @@
             <generator class="identity"/>
         </id>
         
-        <set name="purchaseCases" table="purchase_case" lazy="false" order-by="purchaseCaseId asc">
+        <set name="purchaseCases" table="purchase_case" lazy="false" order-by="purchaseCaseId asc" >
         	<key><column name="sell_case_id"></column></key>
         	<one-to-many class="purchaseCase.model.PurchaseCaseVO" />
         </set>
@@ -28,7 +28,7 @@
         <property name="shippingTime" column="shipping_time"/>
         <property name="closeTime" column="close_time" />        
         <property name="isChecked" column="is_checked" />
-                    
+        <property name="createTime" column="create_time" />
     </class>
 </hibernate-mapping>
 

@@ -13,7 +13,7 @@ import tools.AbstractDAO;
 import tools.HibernateSessionFactory;
 
 public class CommodityDAO extends AbstractDAO<CommodityVO> {
-	
+
 	public CommodityDAO() {
 		super(CommodityVO.class, "commodityId");
 	}
@@ -39,7 +39,6 @@ public class CommodityDAO extends AbstractDAO<CommodityVO> {
 	// }
 
 	public List<CommodityVO> getByRule(Map<String, Object> rule) {
-
 		Criterion[] criterions = new Criterion[rule.size()];
 		int i = 0;
 		for (String key : rule.keySet()) {
@@ -153,7 +152,6 @@ public class CommodityDAO extends AbstractDAO<CommodityVO> {
 			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
-
 	}
 
 	public void deletePurchaseCaseId(Integer[] commodityIds) {
@@ -177,6 +175,23 @@ public class CommodityDAO extends AbstractDAO<CommodityVO> {
 			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
-
 	}
+
+	//先刪掉圖片再刪商品
+	@Override
+	public boolean delete(Integer[] ids) {
+		Session session = HibernateSessionFactory.getSession();
+		try {
+			session.beginTransaction();
+			session.createQuery("delete from PictureVO vo where vo.commodityVO.commodityId in (:ids)").setParameterList("ids", ids).executeUpdate();
+			session.createQuery("delete from CommodityVO vo where vo.commodityId in (:ids)").setParameterList("ids", ids).executeUpdate();
+			session.getTransaction().commit();
+			return true;
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 }

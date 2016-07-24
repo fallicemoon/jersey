@@ -16,7 +16,7 @@
         </property>
         
         <property name="name" column="name" />
-        
+        <property name="createTime" column="create_time" />
     </class>
 </hibernate-mapping>
 

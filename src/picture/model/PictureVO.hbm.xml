@@ -15,7 +15,7 @@
         <property name="sequenceId" column="sequence_id" />
         <property name="picture" column="picture" />
         <property name="fileName" column="file_name" />
-    
+    	<property name="createTime" column="create_time" />
     </class>
 </hibernate-mapping>
 

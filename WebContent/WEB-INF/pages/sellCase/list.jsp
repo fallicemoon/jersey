@@ -22,41 +22,22 @@
 		<button type="submit" name="action" value="delete"
 			class="btn btn-danger" data-toggle="modal"
 			onclick="return confirm('確認刪除?')">刪除</button>
-		<c:if test="${param.action != 'getUncollectedNotZero'}">
-			<a href="/jersey/SellCaseServlet?action=getUncollectedNotZero"
-				class="btn btn-default btn-lg">尚有未收額</a>
-		</c:if>
-		<c:if test="${param.action == 'getUncollectedNotZero'}">
-			<a href="/jersey/SellCaseServlet?action=getUncollectedNotZero"
-				class="btn btn-default btn-lg disabled" style="color: red;">尚有未收額</a>
-		</c:if>
-		<c:if test="${param.action != 'getIsClosed'}">
-			<a href="/jersey/SellCaseServlet?action=getIsClosed"
-				class="btn btn-default btn-lg">已結案</a>
-		</c:if>
-		<c:if test="${param.action == 'getIsClosed'}">
-			<a href="/jersey/SellCaseServlet?action=getIsClosed"
-				class="btn btn-default btn-lg disabled" style="color: red;">已結案</a>
-		</c:if>
-		<c:if test="${param.action != 'getNotClosed'}">
-			<a href="/jersey/SellCaseServlet?action=getNotClosed"
-				class="btn btn-default btn-lg">未結案</a>
-		</c:if>
-		<c:if test="${param.action == 'getNotClosed'}">
-			<a href="/jersey/SellCaseServlet?action=getNotClosed"
-				class="btn btn-default btn-lg disabled" style="color: red;">未結案</a>
-		</c:if>
-		<c:if test="${param.action != 'getAll'}">
-			<a href="/jersey/SellCaseServlet" class="btn btn-default btn-lg">列出全部</a>
-		</c:if>
-		<c:if test="${param.action == 'getAll'}">
-			<a href="/jersey/SellCaseServlet"
-				class="btn btn-default btn-lg disabled" style="color: red;">列出全部</a>
-		</c:if>
-		
-		
-		<c:if test="${sessionScope.sellCasePage == 'before'}">			
-				<button type="submit" class="btn btn-normal" name="changePage" value="true">第二頁</button>
+		<a href="/jersey/SellCaseServlet?action=getUncollectedNotZero"
+			class="btn btn-default btn-lg"
+			style="${param.action=='getUncollectedNotZero' ? 'color: red;':''}">尚有未收額</a>
+		<a href="/jersey/SellCaseServlet?action=getIsClosed"
+			class="btn btn-default btn-lg"
+			style="${param.action=='getIsClosed' ? 'color: red;':''}">已結案</a> <a
+			href="/jersey/SellCaseServlet?action=getNotClosed"
+			class="btn btn-default btn-lg"
+			style="${param.action=='getNotClosed' ? 'color: red;':''}">未結案</a> <a
+			href="/jersey/SellCaseServlet"
+			class="btn btn-default btn-lg"
+			style="${param.action=='getAll' ? 'color: red;':''}">列出全部</a>
+
+		<c:if test="${sessionScope.sellCasePage == 'before'}">
+			<button type="submit" class="btn btn-normal" name="changePage"
+				value="true">第二頁</button>
 			<table border=1 width="1500px" class="table table-hover">
 				<thead>
 					<tr>
@@ -79,7 +60,9 @@
 						<td><a
 							href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button
 									type="button" class="btn btn-warning">修改</button></a></td>
-						<td><a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-success">匯入進貨</button></a></td>
+						<td><a
+							href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button
+									type="button" class="btn btn-success">匯入進貨</button></a></td>
 						<td><a
 							href="/jersey/TripleServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId}
 								- <c:out value="${vo.addressee}" />
@@ -122,7 +105,8 @@
 		</c:if>
 
 		<c:if test="${sessionScope.sellCasePage == 'after'}">
-			<button type="submit" class="btn btn-normal" name="changePage" value="true">第一頁</button>
+			<button type="submit" class="btn btn-normal" name="changePage"
+				value="true">第一頁</button>
 			<table border=1 width="1500px" class="table table-hover">
 				<thead>
 					<tr>
@@ -150,7 +134,9 @@
 						<td><a
 							href="/jersey/SellCaseServlet?action=getOne&sellCaseId=${vo.sellCaseId}"><button
 									type="button" class="btn btn-warning">修改</button></a></td>
-						<td><a href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button type="button" class="btn btn-success">匯入進貨</button></a></td>
+						<td><a
+							href="/jersey/SellCaseServlet?action=getPurchaseCaseList&sellCaseId=${vo.sellCaseId}"><button
+									type="button" class="btn btn-success">匯入進貨</button></a></td>
 						<td><a
 							href="/jersey/TripleServlet?action=sellCase&sellCaseId=${vo.sellCaseId}">${vo.sellCaseId}
 								- <c:out value="${vo.addressee}" />

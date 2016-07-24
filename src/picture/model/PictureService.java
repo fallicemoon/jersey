@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +49,9 @@ public class PictureService {
 		List<FileItem> items = upload.parseRequest(request);
 		List<PictureVO> pictureVOList = parseFormToPictureVO(items);
 		
-		for (PictureVO pictureVO : pictureVOList)
+		for (PictureVO pictureVO : pictureVOList) {
 			pictureDAO.create(pictureVO);
+		}
 	}
 
 	public Set<Integer> getPictureIds(Integer commodityId) {
@@ -101,11 +103,33 @@ public class PictureService {
 		ZipOutputStream zos = new ZipOutputStream(os);
 
 		try {
+			//處理fileName可能會有重複的問題
+			Map<String, PictureVO> fileNameAndPictureMap = new HashMap<>();
 			for (String pictureId : pictureIds) {
 				PictureVO vo = pictureDAO.getOne(Integer.valueOf(pictureId));
+				PictureVO previous = fileNameAndPictureMap.put(vo.getFileName(), vo);
+				if (previous!=null) {
+					int i = 2;
+				    do {
+				    	String fileName = previous.getFileName();
+				    	String file = fileName.substring(0, fileName.indexOf("."));
+				    	int j = i-1;
+				    	if (file.substring(file.length()-3).equals("("+j+")")) {
+				    		file = file.substring(0, file.length()-3);
+				    	}
+				    	String extension = fileName.substring(fileName.indexOf("."));
+				    	previous.setFileName(file + "(" + i + ")" + extension);
+						i++;
+					} while (fileNameAndPictureMap.get(previous.getFileName())!=null);
+				    fileNameAndPictureMap.put(previous.getFileName(), previous);
+				}
+			}
+			
+			//開始生成zip檔
+			for (String fileName : fileNameAndPictureMap.keySet()) {
+				PictureVO vo = fileNameAndPictureMap.get(fileName);
 				InputStream is = vo.getPicture().getBinaryStream();
 				zos.putNextEntry(new ZipEntry(vo.getFileName()));
-
 				byte[] b = new byte[1024];
 				int length;
 				while ((length = is.read(b)) != -1) {
@@ -124,20 +148,39 @@ public class PictureService {
 	public void getPicturesZip(Integer commodityId, OutputStream os) throws IOException {
 		List<PictureVO> list = pictureDAO.getPicturesByCommodityId(commodityId);
 		ZipOutputStream zos = new ZipOutputStream(os);
-		InputStream is;
 
 		try {
-			for (PictureVO vo : list) {
-				is = vo.getPicture().getBinaryStream();
+			//處理fileName可能會有重複的問題
+			Map<String, PictureVO> fileNameAndPictureMap = new HashMap<>();
+			for (PictureVO picture : list) {
+				PictureVO previous = fileNameAndPictureMap.put(picture.getFileName(), picture);
+				if (previous!=null) {
+					int i = 2;
+				    do {
+				    	String fileName = previous.getFileName();
+				    	String file = fileName.substring(0, fileName.indexOf("."));
+				    	int j = i-1;
+				    	if (file.substring(file.length()-3).equals("("+j+")")) {
+				    		file = file.substring(0, file.length()-3);
+				    	}
+				    	String extension = fileName.substring(fileName.indexOf("."));
+				    	previous.setFileName(file + "(" + i + ")" + extension);
+						i++;
+					} while (fileNameAndPictureMap.get(previous.getFileName())!=null);
+				    fileNameAndPictureMap.put(previous.getFileName(), previous);
+				}
+			}
+			
+			//開始生成zip檔
+			for (String fileName : fileNameAndPictureMap.keySet()) {
+				PictureVO vo = fileNameAndPictureMap.get(fileName);
+				InputStream is = vo.getPicture().getBinaryStream();
 				zos.putNextEntry(new ZipEntry(vo.getFileName()));
-
-				int length;
 				byte[] b = new byte[1024];
+				int length;
 				while ((length = is.read(b)) != -1) {
 					zos.write(b, 0, length);
-
 				}
-
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -51,7 +51,6 @@ public class CommodityServlet extends HttpServlet {
 			request.setAttribute("commodityList", commodityList);
 			request.setAttribute("showRule", true);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
 		} else if ("getOne".equals(action)) {
 			//用在create和update的時候去DB取出資料
 			try {
@@ -64,7 +63,6 @@ public class CommodityServlet extends HttpServlet {
 			}
 			//update
 			request.getRequestDispatcher(forwardUrl + "/update.jsp").forward(request, response);
-			return;
 		} else if ("getByRule".equals(action)) {
 			String itemName = request.getParameter("itemName");
 			String player = request.getParameter("player");
@@ -113,7 +111,6 @@ public class CommodityServlet extends HttpServlet {
 			request.setAttribute("commodityList", commodityList);
 			request.setAttribute("showRule", false);
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
 		} else if ("create".equals(action)) {
 				CommodityVO commodityVO = new CommodityVO();
 				LinkedHashSet<String> errors = new LinkedHashSet<String>();
@@ -157,12 +154,11 @@ public class CommodityServlet extends HttpServlet {
 			
 			service.create(commodityVO);
 			
-			List<CommodityVO> list = new ArrayList<>();
-			list.add(commodityVO);
+			List<CommodityWithPicCountVO> list = new ArrayList<>();
+			list.add(service.getCommodityWithPicCountVO(commodityVO));
 			request.setAttribute("commodityList", list);
 			
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
 		} else if ("update".equals(action)) {
 			Integer commodityId = Integer.valueOf(request.getParameter("commodityId").trim());
 			CommodityVO commodityVO = (CommodityVO)session.getAttribute("commodity");
@@ -216,14 +212,10 @@ public class CommodityServlet extends HttpServlet {
 
 			service.update(commodityVO);
 			
-			List<CommodityVO> list = new ArrayList<>();
-			list.add(commodityVO);
+			List<CommodityWithPicCountVO> list = new ArrayList<>();
+			list.add(service.getCommodityWithPicCountVO(commodityVO));
 			request.setAttribute("commodityList", list);
-			
-			request.setAttribute("title", "商品:" + commodityVO.getCommodityId() + "/" + commodityVO.getItemName());
-			
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
 		} else if ("delete".equals(action)) {
 			String[] commodityIds = request.getParameterValues("commodityIds");
 			if (commodityIds != null) {
@@ -234,7 +226,6 @@ public class CommodityServlet extends HttpServlet {
 				service.delete(ids);
 			}
 			response.sendRedirect(sendResponseUrl);
-			return;
 		} else if ("copy".equals(action)) {
 			String[] commodityIds = request.getParameterValues("commodityIds");
 			if ((commodityIds != null) && (commodityIds.length == 1)) {
@@ -243,7 +234,6 @@ public class CommodityServlet extends HttpServlet {
 				service.create(commodityVO);
 			}
 			response.sendRedirect(sendResponseUrl);
-			return;
 		}
 	}
 

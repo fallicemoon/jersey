@@ -26,11 +26,11 @@ public class CommodityService {
 		return this.dao.getOne(id);
 	}
 
-	public Integer create(CommodityVO vo) {
+	public CommodityVO create(CommodityVO vo) {
 		return this.dao.create(vo);
 	}
 
-	public boolean update(CommodityVO vo) {
+	public CommodityVO update(CommodityVO vo) {
 		return this.dao.update(vo);
 	}
 

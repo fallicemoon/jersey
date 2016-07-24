@@ -84,7 +84,6 @@ public class StoreServlet extends HttpServlet {
 			}
 
 			storeVO.setName(request.getParameter("name"));
-			storeVO.setType(StoreType.valueOf(request.getParameter("type")));
 			service.update(storeVO);
 			
 			//一次只能一個人動商店和托運公司清單

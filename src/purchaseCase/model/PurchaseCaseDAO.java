@@ -202,6 +202,23 @@ public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
+	
+	//先刪掉圖片再刪商品
+	@Override
+	public boolean delete(Integer[] ids) {
+		Session session = HibernateSessionFactory.getSession();
+		try {
+			session.beginTransaction();
+			session.createQuery("delete from CommodityVO vo where vo.purchaseCaseVO.purchaseCaseId in (:ids)").setParameterList("ids", ids).executeUpdate();
+			session.createQuery("delete from PurchaseCaseVO vo where vo.purchaseCaseId in (:ids)").setParameterList("ids", ids).executeUpdate();
+			session.getTransaction().commit();
+			return true;
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

@@ -10,11 +10,7 @@
 
 <title>進貨</title>
 </head>
-<body>
-<%--   <jsp:include page="/PurchaseCaseServlet"> --%>
-<%--   	<jsp:param name="action" value="${param.action}"/> --%>
-<%--   </jsp:include> --%>
-  
+<body>  
   <form action="/jersey/PurchaseCaseServlet" method="POST">
     <c:import url="/WEB-INF/pages/header.jsp"/><span style="display: inline-block; width: 100px"></span>
     <a href="/jersey/PurchaseCaseServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>

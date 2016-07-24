@@ -26,11 +26,11 @@ public class PurchaseCaseService {
 		return this.dao.getOne(id);
 	}
 
-	public Integer create(PurchaseCaseVO vo) {
+	public PurchaseCaseVO create(PurchaseCaseVO vo) {
 		return this.dao.create(vo);
 	}
 
-	public boolean update(PurchaseCaseVO vo) {
+	public PurchaseCaseVO update(PurchaseCaseVO vo) {
 		return this.dao.update(vo);
 	}
 

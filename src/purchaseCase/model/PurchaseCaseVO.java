@@ -1,6 +1,5 @@
 package purchaseCase.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -8,8 +7,9 @@ import java.util.Set;
 import commodity.model.CommodityVO;
 import sellCase.model.SellCaseVO;
 import store.model.StoreVO;
+import tools.AbstractVo;
 
-public class PurchaseCaseVO implements Serializable{
+public class PurchaseCaseVO extends AbstractVo {
 	/**
 	 * 
 	 */

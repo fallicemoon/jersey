@@ -1,11 +1,12 @@
 package sellCase.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-import purchaseCase.model.PurchaseCaseVO;
 
-public class SellCaseVO implements Serializable{
+import purchaseCase.model.PurchaseCaseVO;
+import tools.AbstractVo;
+
+public class SellCaseVO extends AbstractVo {
 	/**
 	 * 
 	 */

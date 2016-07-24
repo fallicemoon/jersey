@@ -1,11 +1,11 @@
 package picture.model;
 
-import java.io.Serializable;
 import java.sql.Blob;
 
 import commodity.model.CommodityVO;
+import tools.AbstractVo;
 
-public class PictureVO implements Serializable{
+public class PictureVO extends AbstractVo{
 	/**
 	 * 
 	 */

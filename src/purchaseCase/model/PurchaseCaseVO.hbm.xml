@@ -14,7 +14,7 @@
         	<one-to-many class="commodity.model.CommodityVO" />
         </set>
         
-        <many-to-one name="sellCaseVO" class="sellCase.model.SellCaseVO" lazy="false" >
+        <many-to-one name="sellCaseVO" class="sellCase.model.SellCaseVO" lazy="false">
         	<column name="sell_case_id"></column>
         </many-to-one>
         
@@ -37,7 +37,8 @@
         <property name="cost" column="cost" />
         <property name="agentCost" column="agent_cost"/>
         <property name="description" column="description" />
-        <property name="time" column="time" />       
+        <property name="time" column="time" />
+        <property name="createTime" column="create_time" />
     </class>
 </hibernate-mapping>
 

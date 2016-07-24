@@ -90,9 +90,10 @@ public class PictureServlet extends HttpServlet {
 			if (pictureIds != null) {
 				response.setHeader("Content-disposition", "attachment; filename=" + commodityId + ".zip");
 				service.getPicturesZip(pictureIds, response.getOutputStream());
+			} else {
+				 response.sendRedirect(sendRedirectUrl+commodityId);
 			}
-			// response.sendRedirect(sendRedirectUrl+commodityId);
-			// return;
+
 		} else if ("downloadAll".equals(action)) {
 			response.setHeader("Content-disposition", "attachment; filename=" + commodityId + "All.zip");
 			service.getPicturesZip(commodityId, response.getOutputStream());

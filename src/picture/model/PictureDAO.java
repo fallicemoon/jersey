@@ -153,7 +153,6 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 		try {
 			Query query = session.createQuery(COMMODITY_ID_PICTURE_COUNT_MAP);
 			query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-
 			result = query.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
@@ -195,7 +194,7 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 	}
 	
 	@Override
-	public Integer create (PictureVO pictureVO) {
+	public PictureVO create (PictureVO pictureVO) {
 		pictureVO.setSequenceId(getSequenceId(pictureVO.getCommodityVO()));
 		return super.create(pictureVO);
 	}
@@ -206,6 +205,9 @@ public class PictureDAO extends AbstractDAO<PictureVO> {
 		try {
 			Integer sequenceId = (Integer)session.createQuery(GET_NEXT_SEQUENCE_ID).setParameter("commodityVO", commodityVO).uniqueResult();
 			session.getTransaction().commit();
+			if (sequenceId==null) {
+				sequenceId = 1;
+			}
 			return sequenceId;
 		} catch (Exception e) {
 			session.getTransaction().rollback();
