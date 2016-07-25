@@ -8,21 +8,58 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="lib/jquery-multipleCheckboxSelect/multipleCheckboxSelect.css">
+<script src="lib/multipleCheckboxSelect.js"></script>
 <script src="lib/jquery-2.1.3.min.js"></script>
+
 <script type="text/javascript">
+	function filter (filterName, filterValue) {
+		$("select[name!='" + filterName + "']").val("無");
+		$("."+filterName).each(function(){
+			$(this).parents("tr").show();
+			if(filterValue!="無" && $(this).text()!=filterValue){
+				$(this).parents("tr").hide();
+			}
+		});	
+	}
+
 	$(function(){
-		$("input[name='itemName']").change();
-		$("input[name='player']")
-		$("input[name='team']")
-		$("input[name='style']")
-		$("input[name='brand']")
-		$("input[name='size']")
-		$("input[name='level']")
-		$("input[name='condition']")
-		$("input[name='tag']")
-		$("input[name='owner']")
-		$("input[name='sellPlatform']")
-		$("input[name='isStored']")
+		$("select[name='itemName']").change(function(){
+			filter("itemName", $(this).val());
+		});
+		$("select[name='player']").change(function(){
+			filter("player", $(this).val());
+		});
+		$("select[name='team']").change(function(){
+			filter("team", $(this).val());
+		});
+		$("select[name='style']").change(function(){
+			filter("style", $(this).val());
+		});
+		$("select[name='brand']").change(function(){
+			filter("brand", $(this).val());
+		});
+		$("select[name='size']").change(function(){
+			filter("size", $(this).val());
+		});
+		$("select[name='level']").change(function(){
+			filter("level", $(this).val());
+		});
+		$("select[name='condition']").change(function(){
+			filter("condition", $(this).val());
+		});
+		$("select[name='tag']").change(function(){
+			filter("tag", $(this).val());
+		});
+		$("select[name='owner']").change(function(){
+			filter("owner", $(this).val());
+		});
+		$("select[name='sellPlatform']").change(function(){
+			filter("sellPlatform", $(this).val());
+		});
+		$("select[name='isStored']").change(function(){
+			filter("isStored", $(this).val());
+		});
 	});
 </script>
 
@@ -37,8 +74,9 @@
 		<button type="submit" name="action" value="delete"
 			class="btn btn-danger" data-toggle="modal"
 			onclick="return confirm('確認刪除?')">刪除</button>
-		<button type="submit" name="action" value="getByRule"
-			class="btn btn-warning" data-toggle="modal">篩選</button>
+<!-- 			改成用javaScript篩選 -->
+<!-- 		<button type="submit" name="action" value="getByRule" -->
+<!-- 			class="btn btn-warning" data-toggle="modal">篩選</button> -->
 		<button type="submit" name="action" value="copy"
 			class="btn btn-warning" data-toggle="modal">複製</button>
 		<table border=1 width="1500px" class="table table-hover">
@@ -195,7 +233,7 @@
 					</c:if>
 
 					<td><a href="/jersey/TripleServlet?action=commodity&commodityId=${vo.commodityId}">
-						<div class="itemName">${vo.commodityId} - <c:out value="${vo.itemName}" /></div></a>
+						<div class="itemName"><c:out value="${vo.itemName}" /></div></a>
 					<c:if test="${!empty vo.link}">
 							<a href="${vo.link}" target="_blank"> 連結</a>
 						</c:if> <c:if test="${empty vo.link}"></c:if></td>
