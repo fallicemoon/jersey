@@ -8,6 +8,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="lib/jquery-2.1.3.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("input[name='itemName']").change();
+		$("input[name='player']")
+		$("input[name='team']")
+		$("input[name='style']")
+		$("input[name='brand']")
+		$("input[name='size']")
+		$("input[name='level']")
+		$("input[name='condition']")
+		$("input[name='tag']")
+		$("input[name='owner']")
+		$("input[name='sellPlatform']")
+		$("input[name='isStored']")
+	});
+</script>
 
 <title>商品</title>
 </head>
@@ -177,44 +194,34 @@
 									type="button" class="btn btn-danger" data-toggle="modal">0</button></a></td>
 					</c:if>
 
-					<td><a
-						href="/jersey/TripleServlet?action=commodity&commodityId=${vo.commodityId}">${vo.commodityId}
-							- <c:out value="${vo.itemName}" />
-					</a> <c:if test="${!empty vo.link}">
+					<td><a href="/jersey/TripleServlet?action=commodity&commodityId=${vo.commodityId}">
+						<div class="itemName">${vo.commodityId} - <c:out value="${vo.itemName}" /></div></a>
+					<c:if test="${!empty vo.link}">
 							<a href="${vo.link}" target="_blank"> 連結</a>
 						</c:if> <c:if test="${empty vo.link}"></c:if></td>
-					<td><c:out value="${vo.qty}" /></td>
-					<td><c:out value="${vo.player}" /></td>
-					<td><c:out value="${vo.number}" /></td>
-					<td><c:out value="${vo.season}" /></td>
-					<td><c:out value="${vo.team}" /></td>
-					<td><c:out value="${vo.style}" /></td>
-					<td><c:out value="${vo.color}" /></td>
-					<td><c:out value="${vo.brand}" /></td>
-					<td><c:out value="${vo.size}" /></td>
-					<td><c:out value="${vo.level}" /></td>
-					<td><c:out value="${vo.condition}" /></td>
-					<td><c:out value="${vo.tag}" /></td>
-					<td><c:out value="${vo.patchAndCertificate}" /></td>
-					<td><c:out value="${vo.serial}" /></td>
-					<td><c:out value="${vo.owner}" /></td>
-					<td><c:out value="${vo.cost}" /></td>
-					<td><c:out value="${vo.sellPrice}" /></td>
-					<td><c:out value="${vo.sellPlatform}" /></td>
-					<c:if test="${vo.isStored}">
-						<td>是</td>
-					</c:if>
-					<c:if test="${!vo.isStored}">
-						<td>否</td>
-					</c:if>
+					<td><div class=""><c:out value="${vo.qty}" /></div></td>
+					<td><div class="player"><c:out value="${vo.player}" /></div></td>
+					<td><div class=""><c:out value="${vo.number}" /></div></td>
+					<td><div class=""><c:out value="${vo.season}" /></div></td>
+					<td><div class="team"><c:out value="${vo.team}" /></div></td>
+					<td><div class="style"><c:out value="${vo.style}" /></div></td>
+					<td><div class=""><c:out value="${vo.color}" /></div></td>
+					<td><div class="brand"><c:out value="${vo.brand}" /></div></td>
+					<td><div class="size"><c:out value="${vo.size}" /></div></td>
+					<td><div class="level"><c:out value="${vo.level}" /></div></td>
+					<td><div class="condition"><c:out value="${vo.condition}" /></div></td>
+					<td><div class="tag"><c:out value="${vo.tag}" /></div></td>
+					<td><div class=""><c:out value="${vo.patchAndCertificate}" /></div></td>
+					<td><div class=""><c:out value="${vo.serial}" /></div></td>
+					<td><div class="owner"><c:out value="${vo.owner}" /></div></td>
+					<td><div class=""><c:out value="${vo.cost}" /></div></td>
+					<td><div class=""><c:out value="${vo.sellPrice}" /></div></td>
+					<td><div class="sellPlatform"><c:out value="${vo.sellPlatform}" /></div></td>
+					<td><div class="isStored"><c:if test="${vo.isStored ? '是':'否'}"></c:if></div></td>
 				</tr>
 			</c:forEach>
 		</table>
 	</form>
-
-
 	<c:import url="/WEB-INF/pages/footer.jsp"></c:import>
-
-
 </body>
 </html>
