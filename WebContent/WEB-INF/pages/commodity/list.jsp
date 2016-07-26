@@ -17,62 +17,63 @@
 </style>
 
 <script type="text/javascript">
-	function filter (filterName, filterValueArray) {
-		var value = [];
-		filterValueArray.each(function(){
-			value.push($(this).val());
-		});
-		$("input[name!='" + filterName + "']").val("無");
-		$(this).parents("tr").show();
+	function filter (filterName) {
+		var keep = $("input:checked[name='"+filterName+"']").map(function(){
+			return $(this).val();
+		}).toArray();
+		//$("input[name!='" + filterName + "']").val("無");
+		
 		$("."+filterName).each(function(){
-			if(!$.inArray($(this).text(), value)){
-				$(this).parents("tr").hide();
+			if($.inArray($(this).text(), keep)==-1){
+				$(this).closest("tr").hide();
+			} else {
+				$(this).closest("tr").show();
 			}
 		});	
 	}
 
 	$(function(){
 		//顯示下拉式篩選條件的按鈕們
-		$("#itemNameFilter").click(function(){
-			$("#itemNameValues").toggle();
+		$(".checkboxDiv").prev().click(function(){
+			$(this).next().toggle();
 		});
 		
 		//篩選條件發生變化時進行篩選
 		$("input[name='itemName']").change(function(){
-			filter("itemName", $("input:checkbox:checked[name='itemName']"));
+			filter("itemName");
 		});
-		$("select[name='player']").change(function(){
-			filter("player", $(this).val());
+		$("input[name='player']").change(function(){
+			filter("player");
 		});
-		$("select[name='team']").change(function(){
-			filter("team", $(this).val());
+		$("input[name='team']").change(function(){
+			filter("team");
 		});
-		$("select[name='style']").change(function(){
-			filter("style", $(this).val());
+		$("input[name='style']").change(function(){
+			filter("style");
 		});
-		$("select[name='brand']").change(function(){
-			filter("brand", $(this).val());
+		$("input[name='brand']").change(function(){
+			filter("brand");
 		});
-		$("select[name='size']").change(function(){
-			filter("size", $(this).val());
+		$("input[name='size']").change(function(){
+			filter("size");
 		});
-		$("select[name='level']").change(function(){
-			filter("level", $(this).val());
+		$("input[name='level']").change(function(){
+			filter("level");
 		});
-		$("select[name='condition']").change(function(){
-			filter("condition", $(this).val());
+		$("input[name='condition']").change(function(){
+			filter("condition");
 		});
-		$("select[name='tag']").change(function(){
-			filter("tag", $(this).val());
+		$("input[name='tag']").change(function(){
+			filter("tag");
 		});
-		$("select[name='owner']").change(function(){
-			filter("owner", $(this).val());
+		$("input[name='owner']").change(function(){
+			filter("owner");
 		});
-		$("select[name='sellPlatform']").change(function(){
-			filter("sellPlatform", $(this).val());
+		$("input[name='sellPlatform']").change(function(){
+			filter("sellPlatform");
 		});
-		$("select[name='isStored']").change(function(){
-			filter("isStored", $(this).val());
+		$("input[name='isStored']").change(function(){
+			filter("isStored");
 		});
 	});
 </script>
@@ -133,52 +134,67 @@
 <!-- 						</select> -->
 <!-- 						</th> -->
 						<th>
-							<button type="button" id="itemNameFilter" class="btn btn-danger"
+							<button type="button" class="btn btn-danger"
 								data-toggle="modal">商品編號/商品名稱</button>
-							<div id="itemNameValues" class="checkboxDiv">
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.itemNames}" var="itemName">
-									<label><input type="checkbox" name="itemName" value="${itemName}">${itemName}</label>
+									<label><input type="checkbox" name="itemName" value="${itemName}" checked="checked">${itemName}</label>
 								</c:forEach>
 							</div>
 						</th>
 						<th>Qty</th>
-						<th>player <select name="player">
-								<option selected="selected">無</option>
+						<th>
+							<button type="button" class="btn btn-danger"
+								data-toggle="modal">player</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.players}" var="player">
-									<option value="${player}">${player}</option>
+									<label><input type="checkbox" name="player"
+										value="${player}" checked="checked">${player}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>number</th>
 						<th>season</th>
-						<th>team <select name="team">
-								<option selected="selected">無</option>
+						<th>							
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">team</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.teams}" var="team">
-									<option value="${team}">${team}</option>
+									<label><input type="checkbox" name="team"
+										value="${team}" checked="checked">${team}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
-						<th>style <select name="style">
-								<option selected="selected">無</option>
+						<th>
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">style</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.styles}" var="style">
-									<option value="${style}">${style}</option>
+									<label><input type="checkbox" name="style"
+										value="${style}" checked="checked">${style}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>color</th>
-						<th>brand <select name="brand">
-								<option selected="selected">無</option>
+						<th>							
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">brand</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.brands}" var="brand">
-									<option value="${brand}">${brand}</option>
+									<label><input type="checkbox" name="brand"
+										value="${brand}" checked="checked">${brand}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
-						<th>size <select name="size">
-								<option selected="selected">無</option>
+						<th>						
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">size</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.sizes}" var="size">
-									<option value="${size}">${size}</option>
+									<label><input type="checkbox" name=size
+										value="${size}" checked="checked">${size}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>level <select name="level">
 								<option selected="selected">無</option>
@@ -193,12 +209,15 @@
 								<option>Game Used</option>
 						</select>
 						</th>
-						<th>condition <select name="condition">
-								<option selected="selected">無</option>
+						<th>						
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">condition</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.conditions}" var="condition">
-									<option value="${condition}">${condition}</option>
+									<label><input type="checkbox" name=condition
+										value="${condition}" checked="checked">${condition}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>tag <select name="tag">
 								<option>無</option>
@@ -209,22 +228,27 @@
 						</th>
 						<th>Patch/Certificate</th>
 						<th>serial</th>
-						<th>owner <select name="owner">
-								<option selected="selected">無</option>
+						<th>						
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">owner</button>
+							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.owners}" var="owner">
-									<option value="${owner}">${owner}</option>
+									<label><input type="checkbox" name=owner
+										value="${owner}" checked="checked">${owner}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>成本</th>
 						<th>售價</th>
-						<th>販售平台 <select name="sellPlatform">
-								<option selected="selected">無</option>
-								<c:forEach items="${requestScope.sellPlatforms}"
-									var="sellPlatform">
-									<option value="${sellPlatform}">${sellPlatform}</option>
+						<th>						
+						<button type="button" class="btn btn-danger"
+								data-toggle="modal">販售平台</button>
+							<div class="checkboxDiv">
+								<c:forEach items="${requestScope.sellPlatforms}" var="sellPlatform">
+									<label><input type="checkbox" name=sellPlatform
+										value="${sellPlatform}" checked="checked">${sellPlatform}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>是否仍在庫 <select name="isStored">
 								<option selected="selected">無</option>
