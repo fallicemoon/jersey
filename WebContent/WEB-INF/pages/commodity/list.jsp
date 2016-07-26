@@ -8,24 +8,38 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="lib/jquery-multipleCheckboxSelect/multipleCheckboxSelect.css">
-<script src="lib/multipleCheckboxSelect.js"></script>
 <script src="lib/jquery-2.1.3.min.js"></script>
 
+<style type="text/css">
+	.checkboxDiv{
+		display:none;
+	}
+</style>
+
 <script type="text/javascript">
-	function filter (filterName, filterValue) {
-		$("select[name!='" + filterName + "']").val("無");
+	function filter (filterName, filterValueArray) {
+		var value = [];
+		filterValueArray.each(function(){
+			value.push($(this).val());
+		});
+		$("input[name!='" + filterName + "']").val("無");
+		$(this).parents("tr").show();
 		$("."+filterName).each(function(){
-			$(this).parents("tr").show();
-			if(filterValue!="無" && $(this).text()!=filterValue){
+			if(!$.inArray($(this).text(), value)){
 				$(this).parents("tr").hide();
 			}
 		});	
 	}
 
 	$(function(){
-		$("select[name='itemName']").change(function(){
-			filter("itemName", $(this).val());
+		//顯示下拉式篩選條件的按鈕們
+		$("#itemNameFilter").click(function(){
+			$("#itemNameValues").toggle();
+		});
+		
+		//篩選條件發生變化時進行篩選
+		$("input[name='itemName']").change(function(){
+			filter("itemName", $("input:checkbox:checked[name='itemName']"));
 		});
 		$("select[name='player']").change(function(){
 			filter("player", $(this).val());
@@ -111,12 +125,21 @@
 						<th></th>
 						<th></th>
 						<th>圖片</th>
-						<th>商品編號/商品名稱 <select name="itemName">
-								<option selected="selected">無</option>
+<!-- 						<th>商品編號/商品名稱 <select name="itemName"> -->
+<!-- 								<option selected="selected">無</option> -->
+<%-- 								<c:forEach items="${requestScope.itemNames}" var="itemName"> --%>
+<%-- 									<option value="${itemName}">${itemName}</option> --%>
+<%-- 								</c:forEach> --%>
+<!-- 						</select> -->
+<!-- 						</th> -->
+						<th>
+							<button type="button" id="itemNameFilter" class="btn btn-danger"
+								data-toggle="modal">商品編號/商品名稱</button>
+							<div id="itemNameValues" class="checkboxDiv">
 								<c:forEach items="${requestScope.itemNames}" var="itemName">
-									<option value="${itemName}">${itemName}</option>
+									<label><input type="checkbox" name="itemName" value="${itemName}">${itemName}</label>
 								</c:forEach>
-						</select>
+							</div>
 						</th>
 						<th>Qty</th>
 						<th>player <select name="player">
