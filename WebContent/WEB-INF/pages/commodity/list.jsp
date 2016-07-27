@@ -12,8 +12,8 @@
 
 <style type="text/css">
 	.checkboxDiv{
-		position:absolute;
-		display:none;
+		position: absolute;
+		display: none;
 		background-color: #00A800;
 		border: solid;
 		min-width: 90px;
@@ -21,64 +21,39 @@
 </style>
 
 <script type="text/javascript">
-	function filter (filterName) {
-		<%-- 從篩選條件中取得要保留的資料 --%>
-		var keep = $("input:checked[name='"+filterName+"']").map(function(){
-			return $(this).val();
-		}).toArray();
-		<%-- 決定要顯示或隱藏資料 --%>
-		$("."+filterName).each(function(){
-			if($.inArray($(this).text(), keep)==-1){
-				$(this).closest("tr").hide();
-			} else {
-				$(this).closest("tr").show();
-			}
-		});	
+
+	var commodityAttr = [ "itemName", "player", "team", "style", "brand",
+			"size", "level", "condition", "tag", "owner", "sellPlatform",
+			"isStored" ];
+
+	function filter() {
+		$("tr").show();
+		for ( var index in commodityAttr) {
+			var filterName = commodityAttr[index];
+			<%-- 從篩選條件中取得要保留的資料 --%>
+			var keep = $("input:checked[name='"+filterName+"']").map(function(){
+				return $(this).val();
+			}).toArray();
+			<%-- 只要有任何條件不符合就隱藏資料 --%>
+			$("."+filterName).each(function(){
+				if($.inArray($(this).text(), keep)==-1){
+					$(this).closest("tr").hide();
+				}
+			});	
+		}
 	}
 
 	$(function(){
-		//顯示下拉式篩選條件的按鈕們
+		<%--顯示下拉式篩選條件的按鈕們--%>
 		$(".checkboxDiv").prev().click(function(){
 			$(this).next().slideToggle("fast");
 		});
 		
-		//篩選條件發生變化時進行篩選
-		$("input[name='itemName']").change(function(){
-			filter("itemName");
+		<%--篩選條件發生變化時進行篩選--%>
+		$("input[name]").change(function(){
+			filter();
 		});
-		$("input[name='player']").change(function(){
-			filter("player");
-		});
-		$("input[name='team']").change(function(){
-			filter("team");
-		});
-		$("input[name='style']").change(function(){
-			filter("style");
-		});
-		$("input[name='brand']").change(function(){
-			filter("brand");
-		});
-		$("input[name='size']").change(function(){
-			filter("size");
-		});
-		$("input[name='level']").change(function(){
-			filter("level");
-		});
-		$("input[name='condition']").change(function(){
-			filter("condition");
-		});
-		$("input[name='tag']").change(function(){
-			filter("tag");
-		});
-		$("input[name='owner']").change(function(){
-			filter("owner");
-		});
-		$("input[name='sellPlatform']").change(function(){
-			filter("sellPlatform");
-		});
-		$("input[name='isStored']").change(function(){
-			filter("isStored");
-		});
+
 	});
 </script>
 
@@ -105,7 +80,7 @@
 						<th></th>
 						<th></th>
 						<th>圖片</th>
-						<th>商品編號/商品名稱
+						<th>商品名稱
 						<th>Qty</th>
 						<th>player</th>
 						<th>number</th>
@@ -139,7 +114,7 @@
 <!-- 						</th> -->
 						<th>
 							<button type="button" class="btn btn-warning"
-								data-toggle="modal">商品編號/商品名稱</button>
+								data-toggle="modal">商品名稱</button>
 							<div class="checkboxDiv">
 								<c:forEach items="${requestScope.itemNames}" var="itemName">
 									<label><input type="checkbox" name="itemName" value="${itemName}" checked="checked">${itemName}&nbsp</label><br/>

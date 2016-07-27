@@ -54,6 +54,7 @@ public class CommodityServlet extends HttpServlet {
 			//用在create和update的時候去DB取出資料
 			try {
 				Integer commodityId = Integer.valueOf(request.getParameter("commodityId"));
+				CommodityVO commodityVO = service.getOne(commodityId);
 				session.setAttribute("commodity", service.getOne(commodityId));
 			} catch (NumberFormatException e) {
 				//create
