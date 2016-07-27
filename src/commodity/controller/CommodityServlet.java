@@ -2,7 +2,6 @@ package commodity.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,55 +62,58 @@ public class CommodityServlet extends HttpServlet {
 			}
 			//update
 			request.getRequestDispatcher(forwardUrl + "/update.jsp").forward(request, response);
-		} else if ("getByRule".equals(action)) {
-			String itemName = request.getParameter("itemName");
-			String player = request.getParameter("player");
-			String team = request.getParameter("team");
-			String style = request.getParameter("style");
-			String brand = request.getParameter("brand");
-			String size = request.getParameter("size");
-			String level = request.getParameter("level");
-			String condition = request.getParameter("condition");
-			String tag = request.getParameter("tag");
-			String owner = request.getParameter("owner");
-			String sellPlatform = request.getParameter("sellPlatform");
-			String isStored = request.getParameter("isStored");
-
-			Map<String, Object> rule = new HashMap<String, Object>();
-			if (!itemName.equals("無"))
-				rule.put("itemName", itemName);
-			if (!player.equals("無"))
-				rule.put("player", player);
-			if (!team.equals("無"))
-				rule.put("team", team);
-			if (!style.equals("無"))
-				rule.put("style", style);
-			if (!brand.equals("無"))
-				rule.put("brand", brand);
-			if (!size.equals("無"))
-				rule.put("size", size);
-			if (!level.equals("無"))
-				rule.put("level", level);
-			if (!condition.equals("無"))
-				rule.put("condition", condition);
-			if (!tag.equals("無"))
-				rule.put("tag", tag);
-			if (!owner.equals("無"))
-				rule.put("owner", owner);
-			if (!sellPlatform.equals("無"))
-				rule.put("sellPlatform", sellPlatform);
-			if (!isStored.equals("無"))
-				rule.put("isStored", Boolean.valueOf(isStored));
-			
-			List<CommodityWithPicCountVO> commodityList = service.getByRule(rule);
-			Map<String, Set<String>> ruleMap = service.getRule(commodityList);
-			for (String key : ruleMap.keySet()) {
-				request.setAttribute(key, ruleMap.get(key));
-			}
-			request.setAttribute("commodityList", commodityList);
-			request.setAttribute("showRule", false);
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-		} else if ("create".equals(action)) {
+		}
+		//改成由前端頁面jQuery篩選
+//		else if ("getByRule".equals(action)) {
+//			String itemName = request.getParameter("itemName");
+//			String player = request.getParameter("player");
+//			String team = request.getParameter("team");
+//			String style = request.getParameter("style");
+//			String brand = request.getParameter("brand");
+//			String size = request.getParameter("size");
+//			String level = request.getParameter("level");
+//			String condition = request.getParameter("condition");
+//			String tag = request.getParameter("tag");
+//			String owner = request.getParameter("owner");
+//			String sellPlatform = request.getParameter("sellPlatform");
+//			String isStored = request.getParameter("isStored");
+//
+//			Map<String, Object> rule = new HashMap<String, Object>();
+//			if (!itemName.equals("無"))
+//				rule.put("itemName", itemName);
+//			if (!player.equals("無"))
+//				rule.put("player", player);
+//			if (!team.equals("無"))
+//				rule.put("team", team);
+//			if (!style.equals("無"))
+//				rule.put("style", style);
+//			if (!brand.equals("無"))
+//				rule.put("brand", brand);
+//			if (!size.equals("無"))
+//				rule.put("size", size);
+//			if (!level.equals("無"))
+//				rule.put("level", level);
+//			if (!condition.equals("無"))
+//				rule.put("condition", condition);
+//			if (!tag.equals("無"))
+//				rule.put("tag", tag);
+//			if (!owner.equals("無"))
+//				rule.put("owner", owner);
+//			if (!sellPlatform.equals("無"))
+//				rule.put("sellPlatform", sellPlatform);
+//			if (!isStored.equals("無"))
+//				rule.put("isStored", Boolean.valueOf(isStored));
+//			
+//			List<CommodityWithPicCountVO> commodityList = service.getByRule(rule);
+//			Map<String, Set<String>> ruleMap = service.getRule(commodityList);
+//			for (String key : ruleMap.keySet()) {
+//				request.setAttribute(key, ruleMap.get(key));
+//			}
+//			request.setAttribute("commodityList", commodityList);
+//			request.setAttribute("showRule", false);
+//			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+//		} 
+		else if ("create".equals(action)) {
 				CommodityVO commodityVO = new CommodityVO();
 				LinkedHashSet<String> errors = new LinkedHashSet<String>();
 
