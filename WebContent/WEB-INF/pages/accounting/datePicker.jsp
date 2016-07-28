@@ -4,12 +4,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>請選擇時間</title>
 </head>
 <body>
 	<c:import url="/WEB-INF/pages/header.jsp"/>
+	<script type="text/javascript" src="lib/moment-with-locales.min.js"></script>
+	<script src="lib/bootstrap/bootstrap-datetimepicker.min.js"></script>
 	<br><br><br>
 	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p><br>

@@ -49,14 +49,17 @@
 			$(this).next().slideToggle("fast");
 		});
 		
+		<%--全選按鈕, 弄掉的話為全不選 --%>
+		$("input[name=all]").change(function(){
+			var checked = $(this).prop("checked");
+			$(this).parent().siblings().children().each(function(){
+				$(this).prop("checked", checked);
+			});
+		});
+		
 		<%--篩選條件發生變化時進行篩選--%>
 		$("input[name]").change(function(){
 			filter();
-		});
-		
-		<%--全選按鈕, 弄掉的話為全不選 --%>
-		$("input[name=all]").change(function(){
-			$(this).siblings().prop("checked", $(this).prop("checked"));
 		});
 	});
 </script>
@@ -121,7 +124,7 @@
 							<div class="checkboxDiv">
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.itemNames}" var="itemName">
-									<label><input type="checkbox" name="itemName" value="${itemName}" checked="checked">${itemName}&nbsp</label><br/>
+									<label><input type="checkbox" name="itemName" value='<c:out value="${itemName}"/>' checked="checked">${itemName}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -132,7 +135,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.players}" var="player">
 									<label><input type="checkbox" name="player"
-										value="${player}" checked="checked">${player}&nbsp</label><br/>
+										value='<c:out value="${player}"/>' checked="checked">${player}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -144,7 +147,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.teams}" var="team">
 									<label><input type="checkbox" name="team"
-										value="${team}" checked="checked">${team}&nbsp</label><br/>
+										value='<c:out value="${team}"/>' checked="checked">${team}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -154,7 +157,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.styles}" var="style">
 									<label><input type="checkbox" name="style"
-										value="${style}" checked="checked">${style}&nbsp</label><br/>
+										value='<c:out value="${style}"/>' checked="checked">${style}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -165,7 +168,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.brands}" var="brand">
 									<label><input type="checkbox" name="brand"
-										value="${brand}" checked="checked">${brand}&nbsp</label><br/>
+										value='<c:out value="${brand}"/>' checked="checked">${brand}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -175,7 +178,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.sizes}" var="size">
 									<label><input type="checkbox" name=size
-										value="${size}" checked="checked">${size}&nbsp</label><br/>
+										value='<c:out value="${size}"/>' checked="checked">${size}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -200,7 +203,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.conditions}" var="condition">
 									<label><input type="checkbox" name=condition
-										value="${condition}" checked="checked">${condition}&nbsp</label><br/>
+										value='<c:out value="${condition}"/>' checked="checked">${condition}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -222,7 +225,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.owners}" var="owner">
 									<label><input type="checkbox" name=owner
-										value="${owner}" checked="checked">${owner}&nbsp</label><br/>
+										value='<c:out value="${owner}"/>' checked="checked">${owner}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>
@@ -234,7 +237,7 @@
 								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.sellPlatforms}" var="sellPlatform">
 									<label><input type="checkbox" name=sellPlatform
-										value="${sellPlatform}" checked="checked">${sellPlatform}&nbsp</label><br/>
+										value='<c:out value="${sellPlatform}"/>' checked="checked">${sellPlatform}&nbsp</label><br/>
 								</c:forEach>
 							</div>
 						</th>

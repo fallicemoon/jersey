@@ -7,12 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
 <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="lib/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
 
 <script src="lib/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="lib/moment-with-locales.min.js"></script>
-<script src="lib/bootstrap/bootstrap-datetimepicker.min.js"></script>
 
 </head>
 <body>

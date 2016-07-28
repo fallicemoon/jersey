@@ -8,29 +8,51 @@
 <link href="lib/jquery-colorbox/colorbox.css" rel="stylesheet">
 <style type="text/css">
 .picture {
-	width: 100%;
-	height: 100%;
+	width: 60%;
+	height: 60%;
 }
-#commodity {
-	border: 1; 
-	width: 1500px; 
+#commodity { 
+	width: 100% ; 
 }
 #pictures {
- border: 0 ;
- width: 1500px;
+ border: 0px ;
+ width: 100% ;
+}
+span {
+	color: red ;
 }
 </style>
-<script src="lib/jquery-colorbox/jquery-2.1.3.min.js"></script>
-<script src="lib/jquery.colorbox-min.js" ></script>
-<script type="text/javascript">
-	$(function(){
-		$(".lightbox").colorbox({rel:'lightbox'});
-	});
-</script>
 <title>上傳圖片</title>
 </head>
 <body>
 	<c:import url="/WEB-INF/pages/header.jsp"/>
+	<script src="lib/jquery-colorbox/jquery.colorbox.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	$(function(){
+		<%--彈出式照片--%>
+		$(".lightbox").colorbox({rel:'lightbox', photo:true, width:"75%", height:"75%"});
+		
+		<%--點兩下選取照片--%>
+		$("input[type='checkbox']").hide();
+		$(".picture").contextmenu(function(e){
+			e.preventDefault();
+			var checkbox = $(this).parent().prevAll("input[type='checkbox']");
+			if(!checkbox.prop("checked")){
+				$(this).css("border", "solid 4px");
+				checkbox.prop("checked", true);
+			}else{
+				$(this).css("border", "");
+				checkbox.prop("checked", false);
+			}
+		});
+		
+		<%--刪除確認視窗--%>
+		$("button[name='action'][value='delete']").click(function(){
+			confirm("確認要刪除?");
+		});
+		
+	});
+	</script>
 	<br><br>
 	
 	<c:forEach items="${requestScope.errors}" var="error">
@@ -63,7 +85,7 @@
     </tr>
     </thead>
 	<tr>
-  	  <td><a href="/jersey/OtherServlet?action=commodity&commodityId=${requestScope.commodity.commodityId}">${requestScope.commodity.commodityId} - <c:out value="${requestScope.commodity.itemName}" /></a>
+  	  <td><a href="/jersey/TripleServlet?action=commodity&commodityId=${requestScope.commodity.commodityId}">${requestScope.commodity.commodityId} - <c:out value="${requestScope.commodity.itemName}" /></a>
   	  		<c:if test="${!empty requestScope.commodity.link}"><a href="${requestScope.commodity.link}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty requestScope.commodity.link}"></c:if></td>
   	  <td><c:out value="${requestScope.commodity.qty}" /></td>
@@ -112,6 +134,7 @@
 	<button type="submit" class="btn btn-danger" name="action" value="delete">刪除</button>
 	<button type="submit" class="btn btn-normal" name="action" value="download">下載</button>
 	<button type="submit" class="btn btn-normal" name="action" value="downloadAll">全部下載</button>
+	<span>選擇圖片請在圖片上按滑鼠右鍵</span>
 	
 	<table id="pictures" class="table table-hover">
 		<c:forEach items="${requestScope.pictureIds}" var="pictureId" varStatus="status">
@@ -119,7 +142,7 @@
 			<td>
 			<input type="checkbox" name="pictureId" value="${pictureId}" id="${pictureId}" style="margin-left:200px"><br>
 			<a href="/jersey/PictureServlet?action=getPicture&pictureId=${pictureId}" class="lightbox">
-				<img src="/jersey/PictureServlet?action=getPicture&pictureId=${pictureId}" alt="" class="picture">
+				<img src="/jersey/PictureServlet?action=getPicture&pictureId=${pictureId}" class="picture">
 			</a>
 			</td>
 			<c:if test="${status.index%4 == 3}"></tr></c:if>
