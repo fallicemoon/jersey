@@ -14,17 +14,7 @@
 </head>
 <c:import url="/WEB-INF/pages/header.jsp"/>
 <body>
-<%-- 	<c:if test="${param.commodityId == null}"> --%>
-<%-- 		<c:redirect context="/jersey" url="/commodity/list.jsp" /> --%>
-<%-- 	</c:if> --%>
 	<br/><br/>
-	
-<%-- 	<c:if test="${param.commodityId != null}"> --%>
-<%-- 		<jsp:include page="/CommodityServlet"> --%>
-<%-- 			<jsp:param name="action" value="getOne" /> --%>
-<%-- 			<jsp:param name="commodityId" value="${param.commodityId}" /> --%>
-<%-- 		</jsp:include> --%>
-<%-- 	</c:if> --%>
 	<br/><br/>
 	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
@@ -43,13 +33,13 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">商品名稱：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="itemName" value="${commodity.itemName}">
+    	<input type="text" name="itemName" value='<c:out value="${commodity.itemName}"/>'>
     	</div>
     </div>
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Qty：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="qty" value="${commodity.qty}"> 請輸入數字!
+    	<input type="text" name="qty" value='${commodity.qty}'> 請輸入數字!
     	</div>
     </div>      
     <div class="form-group">
@@ -62,54 +52,54 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">player：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="player" value="${commodity.player}">
+    	<input type="text" name="player" value='<c:out value="${commodity.player}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="number" value="${commodity.number}">
+    	<input type="text" name="number" value='<c:out value="${commodity.number}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">season：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="season" value="${commodity.season}">
+    	<input type="text" name="season" value='<c:out value="${commodity.season}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">team：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="team" value="${commodity.team}">
+    	<input type="text" name="team" value='<c:out value="${commodity.team}"/>'>
     	</div>
     </div>
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">style：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="style" value="${commodity.style}">
+    	<input type="text" name="style" value='<c:out value="${commodity.style}"/>'>
     	</div>
     </div>        
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">color：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="color" value="${commodity.color}">
+    	<input type="text" name="color" value='<c:out value="${commodity.color}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">brand：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="brand" value="${commodity.brand}">
+    	<input type="text" name="brand" value='<c:out value="${commodity.brand}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">size：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="size" value="${commodity.size}">
+    	<input type="text" name="size" value='<c:out value="${commodity.size}"/>'>
     	</div>
     </div>
     
@@ -142,7 +132,7 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">condition：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="condition" value="${commodity.condition}">
+    	<input type="text" name="condition" value='<c:out value="${commodity.condition}"/>'>
     	</div>
     </div>
     
@@ -169,21 +159,21 @@
         <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Patch/Certificate：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="patchAndCertificate" value="${commodity.patchAndCertificate}">
+    	<input type="text" name="patchAndCertificate" value='<c:out value="${commodity.patchAndCertificate}"/>'>
     	</div>
     </div>
     
         <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">serial：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="serial" value="${commodity.serial}">
+    	<input type="text" name="serial" value='<c:out value="${commodity.serial}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">owner：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="owner" value="${commodity.owner}">
+    	<input type="text" name="owner" value='<c:out value="${commodity.owner}"/>'>
     	</div>
     </div> 
     <div class="form-group">
@@ -201,7 +191,7 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">販售平台：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="sellPlatform" value="${commodity.sellPlatform}">
+    	<input type="text" name="sellPlatform" value='<c:out value="${commodity.sellPlatform}"/>'>
     	</div>
     </div>
     

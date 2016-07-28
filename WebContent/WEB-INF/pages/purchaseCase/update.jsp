@@ -105,35 +105,35 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Tracking number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="trackingNumber" value="${purchaseCase.trackingNumber}">
+    	<input type="text" name="trackingNumber" value='<c:out value="${purchaseCase.trackingNumber}"/>'>
     	</div>
     </div>
 
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Tracking number link：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="trackingNumberLink" value="${purchaseCase.trackingNumberLink}">
+    	<input type="text" name="trackingNumberLink" value='<c:out value="${purchaseCase.trackingNumberLink}"/>'>
     	</div>
     </div>
         
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">代運人：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agent" value="${purchaseCase.agent}">
+    	<input type="text" name="agent" value='<c:out value="${purchaseCase.agent}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">代運Tracking number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agentTrackingNumber" value="${purchaseCase.agentTrackingNumber}">
+    	<input type="text" name="agentTrackingNumber" value='<c:out value="${purchaseCase.agentTrackingNumber}"/>'>
     	</div>
     </div>
 
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">代運Tracking number link：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="agentTrackingNumberLink" value="${purchaseCase.agentTrackingNumberLink}">
+    	<input type="text" name="agentTrackingNumberLink" value='<c:out value="${purchaseCase.agentTrackingNumberLink}"/>'>
     	</div>
     </div>
             
@@ -154,7 +154,7 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">備註：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="description" value="${purchaseCase.description}">
+    	<input type="text" name="description" value='<c:out value="${purchaseCase.description}"/>'>
     	</div>
     </div>
     

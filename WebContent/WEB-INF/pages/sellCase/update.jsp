@@ -68,28 +68,28 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">收件人：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="addressee" value="${sellCase.addressee}">
+    	<input type="text" name="addressee" value='<c:out value="${sellCase.addressee}"/>'>
     	</div>
     </div>
 
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">手機</label>
     	<div class="col-sm-10">
-    	<input type="text" name="phone" value="${sellCase.phone}">
+    	<input type="text" name="phone" value='<c:out value="${sellCase.phone}"/>'>
     	</div>
     </div>
             
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">地址/店名：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="address" value="${sellCase.address}">
+    	<input type="text" name="address" value='<c:out value="${sellCase.address}"/>'>
     	</div>
     </div>
     
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">Tracking number：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="trackingNumber" value="${sellCase.trackingNumber}">
+    	<input type="text" name="trackingNumber" value='<c:out value="${sellCase.trackingNumber}"/>'>
     	</div>
     </div>
     
@@ -117,7 +117,7 @@
     <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">備註：</label>
     	<div class="col-sm-10">
-    	<input type="text" name="description" value="${sellCase.description}">
+    	<input type="text" name="description" value='<c:out value="${sellCase.description}"/>'>
     	</div>
     </div>
     

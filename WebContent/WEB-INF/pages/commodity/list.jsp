@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -53,7 +53,11 @@
 		$("input[name]").change(function(){
 			filter();
 		});
-
+		
+		<%--全選按鈕, 弄掉的話為全不選 --%>
+		$("input[name=all]").change(function(){
+			$(this).siblings().prop("checked", $(this).prop("checked"));
+		});
 	});
 </script>
 
@@ -113,9 +117,9 @@
 <!-- 						</select> -->
 <!-- 						</th> -->
 						<th>
-							<button type="button" class="btn btn-warning"
-								data-toggle="modal">商品名稱</button>
+							<button type="button" class="btn btn-warning" data-toggle="modal">商品名稱</button>				
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.itemNames}" var="itemName">
 									<label><input type="checkbox" name="itemName" value="${itemName}" checked="checked">${itemName}&nbsp</label><br/>
 								</c:forEach>
@@ -123,9 +127,9 @@
 						</th>
 						<th>Qty</th>
 						<th>
-							<button type="button" class="btn btn-warning"
-								data-toggle="modal">player</button>
+							<button type="button" class="btn btn-warning" data-toggle="modal">player</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.players}" var="player">
 									<label><input type="checkbox" name="player"
 										value="${player}" checked="checked">${player}&nbsp</label><br/>
@@ -135,9 +139,9 @@
 						<th>number</th>
 						<th>season</th>
 						<th>							
-						<button type="button" class="btn btn-warning"
-								data-toggle="modal">team</button>
+							<button type="button" class="btn btn-warning" data-toggle="modal">team</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.teams}" var="team">
 									<label><input type="checkbox" name="team"
 										value="${team}" checked="checked">${team}&nbsp</label><br/>
@@ -145,9 +149,9 @@
 							</div>
 						</th>
 						<th>
-						<button type="button" class="btn btn-warning"
-								data-toggle="modal">style</button>
+						<button type="button" class="btn btn-warning" data-toggle="modal">style</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.styles}" var="style">
 									<label><input type="checkbox" name="style"
 										value="${style}" checked="checked">${style}&nbsp</label><br/>
@@ -156,9 +160,9 @@
 						</th>
 						<th>color</th>
 						<th>							
-						<button type="button" class="btn btn-warning"
-								data-toggle="modal">brand</button>
+						<button type="button" class="btn btn-warning" data-toggle="modal">brand</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.brands}" var="brand">
 									<label><input type="checkbox" name="brand"
 										value="${brand}" checked="checked">${brand}&nbsp</label><br/>
@@ -166,9 +170,9 @@
 							</div>
 						</th>
 						<th>						
-						<button type="button" class="btn btn-warning"
-								data-toggle="modal">size</button>
+						<button type="button" class="btn btn-warning" data-toggle="modal">size</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.sizes}" var="size">
 									<label><input type="checkbox" name=size
 										value="${size}" checked="checked">${size}&nbsp</label><br/>
@@ -176,8 +180,9 @@
 							</div>
 						</th>
 						<th>					
-						<button type="button" class="btn btn-warning" data-toggle="modal">level</button>
+						<button type="button" class="btn btn-info" data-toggle="modal">level</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<label><input type="checkbox" name=level value="" checked="checked">&nbsp</label><br/>
 								<label><input type="checkbox" name=level value="Replica" checked="checked">Replica&nbsp</label><br/>
 								<label><input type="checkbox" name=level value="Swingman" checked="checked">Swingman&nbsp</label><br/>
@@ -190,9 +195,9 @@
 							</div>
 						</th>
 						<th>						
-						<button type="button" class="btn btn-warning"
-								data-toggle="modal">condition</button>
+						<button type="button" class="btn btn-warning" data-toggle="modal">condition</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.conditions}" var="condition">
 									<label><input type="checkbox" name=condition
 										value="${condition}" checked="checked">${condition}&nbsp</label><br/>
@@ -200,8 +205,9 @@
 							</div>
 						</th>
 						<th>
-							<button type="button" class="btn btn-warning" data-toggle="modal">tag</button>
+							<button type="button" class="btn btn-info" data-toggle="modal">tag</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<label><input type="checkbox" name=tag value="" checked="checked">&nbsp</label><br/>
 								<label><input type="checkbox" name=tag value="--" checked="checked">--&nbsp</label><br/>
 								<label><input type="checkbox" name=tag value="Yes" checked="checked">Yes&nbsp</label><br/>
@@ -211,9 +217,9 @@
 						<th>Patch/Certificate</th>
 						<th>serial</th>
 						<th>						
-						<button type="button" class="btn btn-warning"
-								data-toggle="modal">owner</button>
+						<button type="button" class="btn btn-warning" data-toggle="modal">owner</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.owners}" var="owner">
 									<label><input type="checkbox" name=owner
 										value="${owner}" checked="checked">${owner}&nbsp</label><br/>
@@ -225,6 +231,7 @@
 						<th>						
 							<button type="button" class="btn btn-warning" data-toggle="modal">販售平台</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<c:forEach items="${requestScope.sellPlatforms}" var="sellPlatform">
 									<label><input type="checkbox" name=sellPlatform
 										value="${sellPlatform}" checked="checked">${sellPlatform}&nbsp</label><br/>
@@ -232,8 +239,9 @@
 							</div>
 						</th>
 						<th>
-							<button type="button" class="btn btn-warning" data-toggle="modal">是否仍在庫</button>
+							<button type="button" class="btn btn-info" data-toggle="modal">是否仍在庫</button>
 							<div class="checkboxDiv">
+								<label><input type="checkbox" name="all" checked="checked">全選&nbsp</label><br/>
 								<label><input type="checkbox" name=isStored value="" checked="checked">&nbsp</label><br/>
 								<label><input type="checkbox" name=isStored value="是" checked="checked">是&nbsp</label><br/>
 								<label><input type="checkbox" name=isStored value="否" checked="checked">否&nbsp</label><br/>

@@ -1,16 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="lib/jquery-colorbox/colorbox.css" rel="stylesheet">
 <style type="text/css">
 .picture {
 	width: 100%;
 	height: 100%;
 }
+#commodity {
+	border: 1; 
+	width: 1500px; 
+}
+#pictures {
+ border: 0 ;
+ width: 1500px;
+}
 </style>
+<script src="lib/jquery-colorbox/jquery-2.1.3.min.js"></script>
+<script src="lib/jquery.colorbox-min.js" ></script>
+<script type="text/javascript">
+	$(function(){
+		$(".lightbox").colorbox({rel:'lightbox'});
+	});
+</script>
 <title>上傳圖片</title>
 </head>
 <body>
@@ -20,13 +36,8 @@
 	<c:forEach items="${requestScope.errors}" var="error">
 		<p style="color: red">${error}</p>
 	</c:forEach>
-
-<%--     <jsp:include page="/CommodityServlet"> --%>
-<%--   	  <jsp:param name="action" value="getOne"/> --%>
-<%--   	  <jsp:param name="commodityId" value="${param.commodityId}"/> --%>
-<%--     </jsp:include> --%>
     
-  <table border=1 width="1500px" class="table table-hover">
+  <table id="commodity" class="table table-hover">
     <thead>
     <tr>
       <th>商品編號/商品名稱</th>
@@ -95,15 +106,6 @@
 		</label>
 	</div>
 	</form>
-	
-<%-- 	<jsp:include page="/PictureServlet"> --%>
-<%-- 		<jsp:param name="action" value="getPicturesBase64" /> --%>
-<%-- 		<jsp:param name="commodityId" value="${param.commodityId}" /> --%>
-<%-- 	</jsp:include> --%>
-<%-- 	<jsp:include page="/PictureServlet"> --%>
-<%-- 		<jsp:param name="action" value="getPictureIds" /> --%>
-<%-- 		<jsp:param name="commodityId" value="${param.commodityId}" /> --%>
-<%-- 	</jsp:include> --%>
 
 	<form action="/jersey/PictureServlet" method="POST">
 	<input type="hidden" name="commodityId" value="${param.commodityId}">
@@ -111,21 +113,14 @@
 	<button type="submit" class="btn btn-normal" name="action" value="download">下載</button>
 	<button type="submit" class="btn btn-normal" name="action" value="downloadAll">全部下載</button>
 	
-	<table border=0 width="1500px" class="table table-hover">
-<%-- 		<c:forEach items="${requestScope.pictureBase64Map}" var="picture" varStatus="status"> --%>
-<%-- 			<c:if test="${status.index%3 == 0}"><tr></c:if> --%>
-<!-- 			<td> -->
-<%-- 			<input type="checkbox" name="pictureId" value="${picture.key}" id="${picture.key}" style="margin-left:200px"><br> --%>
-<%-- 			<img src="data:image/gif;base64,${picture.value}" style="width: 400px"> --%>
-<!-- 			</td> -->
-<%-- 			<c:if test="${status.index%3 == 2}"></tr></c:if> --%>
-<%-- 		</c:forEach> --%>
-
+	<table id="pictures" class="table table-hover">
 		<c:forEach items="${requestScope.pictureIds}" var="pictureId" varStatus="status">
 			<c:if test="${status.index%4 == 0}"><tr></c:if>
 			<td>
 			<input type="checkbox" name="pictureId" value="${pictureId}" id="${pictureId}" style="margin-left:200px"><br>
-			<img src="/jersey/PictureServlet?action=getPicture&pictureId=${pictureId}" alt="" class="picture">
+			<a href="/jersey/PictureServlet?action=getPicture&pictureId=${pictureId}" class="lightbox">
+				<img src="/jersey/PictureServlet?action=getPicture&pictureId=${pictureId}" alt="" class="picture">
+			</a>
 			</td>
 			<c:if test="${status.index%4 == 3}"></tr></c:if>
 		</c:forEach>
