@@ -204,7 +204,7 @@ public class PurchaseCaseDAO extends AbstractDAO<PurchaseCaseVO> {
 		}
 	}
 	
-	//先刪掉圖片再刪商品
+	//先刪掉商品再刪進貨
 	@Override
 	public boolean delete(Integer[] ids) {
 		Session session = HibernateSessionFactory.getSession();

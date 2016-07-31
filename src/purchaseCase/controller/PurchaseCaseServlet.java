@@ -48,10 +48,12 @@ public class PurchaseCaseServlet extends HttpServlet {
 		if (StringUtils.isEmpty(action)) {
 			request.setAttribute("purchaseCaseList", service.getAll());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-		} else if ("getProgressNotComplete".equals(action)) {
-			request.setAttribute("purchaseCaseList", service.getAllOfNotComplete());
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-		} else if ("getOne".equals(action)) {
+		} 
+//		else if ("getProgressNotComplete".equals(action)) {
+//			request.setAttribute("purchaseCaseList", service.getAllOfNotComplete());
+//			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+//		} 
+		else if ("getOne".equals(action)) {
 			//取出可以選的商店和託運公司
 			try {
 				// update

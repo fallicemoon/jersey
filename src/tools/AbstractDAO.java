@@ -84,6 +84,7 @@ public abstract class AbstractDAO<E extends AbstractVo> implements DAOInterface<
 	public E update(E vo) {
 		Session session = HibernateSessionFactory.getSession();
 		try {
+			vo.setLastModifyTime(new Date());
 			session.beginTransaction();
 			session.update(vo);
 			session.getTransaction().commit();

@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,9 +13,29 @@
 <body>  
   <form action="/jersey/PurchaseCaseServlet" method="POST">
     <c:import url="/WEB-INF/pages/header.jsp"/><span style="display: inline-block; width: 100px"></span>
+    <script type="text/javascript">
+    	$(function(){
+    		$("#getProgressNotComplete").click(function(){
+    			var button = $(this).text();
+    			$("tr").show();
+    			if(button=="進貨未完成"){
+        			$(".progress").each(function(){
+        				if($(this).text()=="進貨完成"){
+        					$(this).parent().hide();
+        				}
+        			});
+        			$(this).text("列出全部");
+    			} else {
+    				$(this).text("進貨未完成");
+    			}    			
+    		});
+    		
+    		
+    	});
+    </script>
     <a href="/jersey/PurchaseCaseServlet?action=getOne"><button type="button" class="btn btn-success" data-toggle="modal">新增</button></a>
   	<button type="submit" name="action" value="delete" class="btn btn-danger" data-toggle="modal" onclick="return confirm('確認刪除?')">刪除</button>
-  	<a href="/jersey/PurchaseCaseServlet?action=getProgressNotComplete"><button type="button" class="btn btn-normal">進貨未完成</button></a>
+  	<button type="button" class="btn btn-default btn-lg" id="getProgressNotComplete">進貨未完成</button>
   <table border=1 width="1500px" class="table table-hover">
     <thead>
     <tr>
@@ -50,7 +70,7 @@
 	  </td>
   	  <td><a href="/jersey/TripleServlet?action=purchaseCase&purchaseCaseId=${vo.purchaseCaseId}">${vo.purchaseCaseId} - <c:out value="${vo.store.name}" /></a></td>
   	  <td><c:forEach items="${vo.commoditys}" var="commodity">${commodity.commodityId}-${commodity.itemName}<br></c:forEach></td>
-  	  <td>${vo.progress}</td>
+  	  <td class="progress">${vo.progress}</td>
   	  <td><c:out value="${vo.shippingCompany.name}" /></td>
   	  <td><c:out value="${vo.trackingNumber}" /><c:if test="${!empty vo.trackingNumberLink}"><a href="${vo.trackingNumberLink}" target="_blank"> 連結</a></c:if>
   	  		<c:if test="${empty vo.trackingNumberLink}"></c:if></td>

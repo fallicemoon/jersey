@@ -34,6 +34,7 @@
         <property name="sellPlatform" column="sell_platform" />
         <property name="isStored" column="is_stored" />
     	<property name="createTime" column="create_time" />
+    	<property name="lastModifyTime" column="last_modify_time" />
     </class>
 </hibernate-mapping>
 

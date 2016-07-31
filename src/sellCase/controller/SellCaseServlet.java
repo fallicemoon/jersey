@@ -42,17 +42,17 @@ public class SellCaseServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		// 判斷第一頁還第二頁
-		String sellCasePage = (String) session.getAttribute("sellCasePage");
-		String changePage = request.getParameter("changePage");
-		if (sellCasePage == null) {
-			session.setAttribute("sellCasePage", "before");
-		}
-		// 怒換頁
-		if ("true".equals(changePage)) {
-			sellCasePage = sellCasePage.equals("after") ? "before" : "after";
-			session.setAttribute("sellCasePage", sellCasePage);
-		}
+//		// 判斷第一頁還第二頁
+//		String sellCasePage = (String) session.getAttribute("sellCasePage");
+//		String changePage = request.getParameter("changePage");
+//		if (sellCasePage == null) {
+//			session.setAttribute("sellCasePage", "before");
+//		}
+//		// 怒換頁
+//		if ("true".equals(changePage)) {
+//			sellCasePage = sellCasePage.equals("after") ? "before" : "after";
+//			session.setAttribute("sellCasePage", sellCasePage);
+//		}
 
 		String action = request.getParameter("action");
 		Set<String> errors = new LinkedHashSet<String>();
@@ -61,19 +61,21 @@ public class SellCaseServlet extends HttpServlet {
 			request.setAttribute("sellCaseList", service.getAll());
 			request.getRequestDispatcher(forwardListUrl).forward(request, response);
 			return;
-		} else if ("getUncollectedNotZero".equals(action)) {
-			request.setAttribute("sellCaseList", service.getUncollectedNotZero());
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
-		} else if ("getIsClosed".equals(action)) {
-			request.setAttribute("sellCaseList", service.getIsClosed());
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
-		} else if ("getNotClosed".equals(action)) {
-			request.setAttribute("sellCaseList", service.getNotClosed());
-			request.getRequestDispatcher(forwardListUrl).forward(request, response);
-			return;
-		} else if ("getOne".equals(action)) {
+		} 
+//		else if ("getUncollectedNotZero".equals(action)) {
+//			request.setAttribute("sellCaseList", service.getUncollectedNotZero());
+//			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+//			return;
+//		} else if ("getIsClosed".equals(action)) {
+//			request.setAttribute("sellCaseList", service.getIsClosed());
+//			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+//			return;
+//		} else if ("getNotClosed".equals(action)) {
+//			request.setAttribute("sellCaseList", service.getNotClosed());
+//			request.getRequestDispatcher(forwardListUrl).forward(request, response);
+//			return;
+//		}
+		else if ("getOne".equals(action)) {
 			try {
 				// update
 				Integer sellCaseId = Integer.valueOf(request.getParameter("sellCaseId"));

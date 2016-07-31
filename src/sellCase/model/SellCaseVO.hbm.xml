@@ -29,6 +29,7 @@
         <property name="closeTime" column="close_time" />        
         <property name="isChecked" column="is_checked" />
         <property name="createTime" column="create_time" />
+        <property name="lastModifyTime" column="last_modify_time" />
     </class>
 </hibernate-mapping>
 

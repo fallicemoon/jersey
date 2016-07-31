@@ -5,11 +5,15 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<style type="text/css">
+#changePage{
+	background-color: #FFDD55;
+}
+</style>
 <title>出貨</title>
 </head>
 <body>
@@ -20,12 +24,19 @@
 				var page = "before";
 				var listType = "getAll";
 				var closeListTypeButton = function(){
+					$(".listType").css("color", "");
 					$("#"+listType).css("color", "red");
 				};
+				
+				<%--列出全部和到第一頁--%>
+				$("#getAll").css("color", "red");
+				$(".after").hide();
+				
 
 				<%--列出未收額不為0的資料--%>
 				$("#getUncollectedNotZero").click(function(){
 					listType = "getUncollectedNotZero";
+					$("tr").show();
 					$(".uncollected").each(function(){
 						if($(this).text()=="0"){
 							$(this).parent().hide();
@@ -37,6 +48,7 @@
 				<%--列出已結案的資料--%>
 				$("#getIsClosed").click(function(){
 					listType = "getIsClosed";
+					$("tr").show();
 					$(".isClosed").each(function(){
 						if($(this).text()=="否"){
 							$(this).parent().hide();
@@ -46,8 +58,9 @@
 				});
 				
 				<%--列出未結案的資料--%>
-				$("#getIsClosed").click(function(){
+				$("#getNotClosed").click(function(){
 					listType = "getNotClosed";
+					$("tr").show();
 					$(".isClosed").each(function(){
 						if($(this).text()=="是"){
 							$(this).parent().hide();
@@ -59,19 +72,19 @@
 				<%--列出全部的資料--%>
 				$("#getAll").click(function(){
 					listType = "getAll";
-					$("tr").each(function(){
-						$(this).show();
-					});
+					$("tr").show();
 					closeListTypeButton();
 				});
 				
-				<%--切換到第二頁--%>
+				<%--切換到到第二頁--%>
 				$("#changePage").click(function(){
+					$("th").show();
+					$("td").show();
 					$("."+page).each(function(){
 						$(this).hide();
 					});					
 					page = page=="before"?"after":"before";
-					$(this).text(page=="before"?"第二頁":"第一頁");
+					$(this).text(page=="before"?"到第二頁":"到第一頁");
 				});
 				
 			});
@@ -83,11 +96,11 @@
 			class="btn btn-danger" data-toggle="modal"
 			onclick="return confirm('確認刪除?')">刪除</button>
 
-		<a href="#" class="btn btn-default btn-lg listType" id="getUncollectedNotZero" >尚有未收額</a>
-		<a href="#" class="btn btn-default btn-lg listType" id="getIsClosed">已結案</a>
-		<a href="#" class="btn btn-default btn-lg listType" id="getNotClosed">未結案</a>
-		<a href="#" class="btn btn-default btn-lg listType" id="getAll">列出全部</a>
-		<button class="btn btn-normal" id="changePage">第二頁</button>
+		<button type="button" class="btn btn-default btn-lg listType" id="getUncollectedNotZero">尚有未收額</button>
+		<button type="button" class="btn btn-default btn-lg listType" id="getIsClosed">已結案</button>
+		<button type="button" class="btn btn-default btn-lg listType" id="getNotClosed">未結案</button>
+		<button type="button" class="btn btn-default btn-lg listType" id="getAll">列出全部</button>
+		<button type="button" class="btn btn-default btn-lg" id="changePage">到第二頁</button>
 		
 			
 			<table border=1 width="1500px" class="table table-hover">
@@ -151,8 +164,9 @@
 							</c:if>
 						</td>
 						<td class="after"><c:forEach items="${vo.purchaseCases}" var="purchaseCase">
-  	  	${purchaseCase.purchaseCaseId}-${purchaseCase.store.name}<br>
-							</c:forEach></td>
+							<a href="/jersey/TripleServlet?action=purchaseCase&purchaseCaseId=${purchaseCase.purchaseCaseId}">${purchaseCase.purchaseCaseId}-${purchaseCase.store.name}</a>
+							<br>
+						</c:forEach></td>
 						<td class="after">${vo.transportMethod}</td>
 						<td class="after"><c:out value="${vo.phone}" /></td>
 						<td class="after"><c:out value="${vo.address}" /></td>

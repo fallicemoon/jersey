@@ -17,7 +17,6 @@ public class MemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final String forwardUrl = "/WEB-INF/pages";
 	private final String forwardLoginUrl = forwardUrl + "/login.jsp";
-	//private final String sendRedirectIndexUrl = "/jersey";
 	private final String forwardIndexUrl = forwardUrl + "/index.jsp";
 	private final MemberService memberService = new MemberService();
 
@@ -52,7 +51,7 @@ public class MemberServlet extends HttpServlet {
 				request.getRequestDispatcher(forwardLoginUrl).forward(request, response);
 			}
 		} else if (logout.equals(action)) {
-			session.invalidate();
+			session.removeAttribute("login");
 			request.getRequestDispatcher(forwardLoginUrl).forward(request, response);
 		}
 
@@ -70,11 +69,6 @@ public class MemberServlet extends HttpServlet {
 			login = true;
 		}
 		return login;
-	}
-
-	private void logout(HttpSession session) {
-		session.invalidate();
-	}
-	
+	}	
 	
 }

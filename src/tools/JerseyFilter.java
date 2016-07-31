@@ -29,7 +29,7 @@ public class JerseyFilter implements Filter {
 		httpServletRequest = new EncodingWrapper(httpServletRequest, this.ENCODING);
 
 		HttpSession session = httpServletRequest.getSession();
-
+		System.out.println(session.getAttribute("login"));
 		// 判斷是否登入
 		if (!ok.equals(session.getAttribute("login"))) {
 			httpServletResponse.sendRedirect(sendRedirectUrl);
